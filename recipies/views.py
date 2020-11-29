@@ -1,4 +1,4 @@
 from django.shortcuts import render
 
-def recipies(request):
+def show_recipies(request):
     return render(request, 'recipies/index.html')
