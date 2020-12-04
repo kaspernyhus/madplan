@@ -9,10 +9,10 @@ def show_ingredients_list(request):
         ingredients.append({'name': ingredient.name, 'description': ingredient.description})
 
     context = {'ingredients': ingredients}
-    return render(request, 'recipies/ingredients.html', context)
+    return render(request, 'ingredients/ingredients.html', context)
 
 
 def new_ingredient(request):
     
 
-    return render(request, 'recipies/new_ingredient.html')
+    return render(request, 'ingredients/new_ingredient.html')

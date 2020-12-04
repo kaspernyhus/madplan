@@ -16,7 +16,7 @@ def view_foodplans(request):
             foodplans.append(foodplan)
     
     context = {'foodplans': foodplans}
-    return render(request, 'pages/foodplans.html', context)
+    return render(request, 'foodplans/foodplans.html', context)
 
 
 def view_foodplan(request, foodplan_id):
@@ -42,7 +42,7 @@ def view_foodplan(request, foodplan_id):
         return redirect('/foodplans/')
 
     context = {'recipies': recipies, 'created_date': foodplan[0].date, 'foodplan_id': foodplan_id }
-    return render(request, 'pages/foodplan.html', context)
+    return render(request, 'foodplans/foodplan.html', context)
 
 
 def create_foodplan(request):
@@ -80,7 +80,7 @@ def edit_foodplan(request, foodplan_id):
         all_recipies.append({'name': recipe.name, 'type': recipe.get_type(), 'id': recipe.id})
 
     context = {'all_recipies': all_recipies, 'foodplan_recipies':foodplan_recipies, 'foodplan_id': foodplan_id, }
-    return render(request, 'pages/edit_foodplan.html', context)
+    return render(request, 'foodplans/edit_foodplan.html', context)
 
     
 def delete_foodplan(request, foodplan_id):
