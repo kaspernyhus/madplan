@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+<h1 class="header">Ingrediensliste</h1>
+<br>
+<a href="{% url 'new_ingredient' %}" class="center">Tilføj en ny ingrediens</a>
+
+<table class="center">
+  <!-- <colgroup>
+      <col style="width: 50%;">
+      <col style="width: 20%;">
+      <col style="width: 15%;">
+      <col style="width: 15%;">
+  </colgroup> -->
+<tbody>
+{% for ingredient in ingredients %}
+<tr>
+  <td>
+    <span>{{ingredient.name}}</span>
+  </td>
+  <td>
+    <span>{{ingredient.description}}</span>
+  </td>
+</tr>
+</tbody>
+</table>
+  
+{% endblock %}

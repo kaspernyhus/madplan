@@ -1,5 +1,7 @@
 from django.db import models
-
+from datetime import datetime
+from django.utils import timezone
+from ingredients.models import Ingredients
 
 
 class RecipeTypes(models.Model):
@@ -10,6 +12,7 @@ class RecipeTypes(models.Model):
 
 
 class Recipies(models.Model):
+  date = models.DateTimeField(default=timezone.now)
   name = models.CharField(max_length=50)
   description = models.CharField(max_length=300)
   recipe_type = models.ForeignKey(RecipeTypes, on_delete=models.DO_NOTHING, blank=True)
@@ -21,15 +24,6 @@ class Recipies(models.Model):
     return self.recipe_type.name
 
 
-class Ingredients(models.Model):
-  name = models.CharField(max_length=50)
-  description = models.CharField(max_length=300)
-  price = models.FloatField(blank=True)
-
-  def __str__(self):
-    return self.name
-
-
 class MeasurementUnits(models.Model):
   unit_name = models.CharField(max_length=50)
 
@@ -39,6 +33,12 @@ class RecipeIngredients(models.Model):
   ingredient = models.ForeignKey(Ingredients, on_delete=models.DO_NOTHING)
   measurement_unit = models.ForeignKey(MeasurementUnits, on_delete=models.DO_NOTHING, blank=False, default=1)
   amount = models.FloatField(default=1, blank=False)
+
+  def get_ingredient_name(self):
+    return self.ingredient.name
+  
+  def get_unit_name(self):
+    return self.measurement_unit.unit_name
 
 
 class RecipeInstructions(models.Model):

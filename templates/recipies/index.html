@@ -16,18 +16,14 @@
     {% for recipe in recipies %}
     <tr>
         <td>
-            <a href="">
+            <a href="{% url 'show_recipe' recipe.id %}">
                 <span>{{recipe.name}}</span>
             </a>
         </td>
         <td>
             <span>{{recipe.type}}</span>
         </td>
-        <td>
-            <a href="">
-                <span>Rediger</span>
-            </a>
-        </td>
+        
     </tr>
     {% endfor %}
 </tbody>
