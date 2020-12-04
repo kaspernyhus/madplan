@@ -14,11 +14,12 @@
 </a></h4>
 
 <table class="center">
-  <!-- <colgroup>
-      <col style="width: 60%;">
-      <col style="width: 25%;">
-      <col style="width: 15%;">
-  </colgroup> -->
+    <colgroup>
+        <col style="width: 50%;">
+        <col style="width: 20%;">
+        <col style="width: 15%;">
+        <col style="width: 15%;">
+    </colgroup>
 <tbody>
   {% for recipe in recipies %}
   <tr>
@@ -30,16 +31,21 @@
       <td>
         <form method="POST">
             {% csrf_token %}
-            <button name="name" value="{{recipe.id}}" type="submit">slet</button>
+                <input type="number" id="quantity" value="{{recipe.quantity}}" name="quantity" min="1" max="5">
+                <button name="edit_quantity" value="{{recipe.id}}" type="submit">rediger</button>
         </form>
-          <!-- <a href="{% url 'delete_foodplan_recipe' foodplan_id recipe.id %}">
-              <span>Slet</span>
-          </a> -->
+      </td>
+      <td>
+        <form method="POST">
+            {% csrf_token %}
+            <button name="delete" value="{{recipe.id}}" type="submit">slet</button>
+        </form>
       </td>
   </tr>
   {% endfor %}
 </tbody>
 </table>
-    
+
+<a href="{% url 'edit_foodplan' foodplan_id %} " class="center">Tilføj andre retter</a>
   
 {% endblock %}

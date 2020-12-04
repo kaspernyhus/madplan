@@ -22,15 +22,23 @@ def view_foodplans(request):
 def view_foodplan(request, foodplan_id):
     # delete recipe in current foodplan
     if request.method == 'POST':
-        recipe_id = request.POST.get('name')
-        foodplan = Foodplans.objects.get(foodplan_id=foodplan_id, recipe_id=recipe_id)
-        foodplan.delete()
+        if request.POST.get('delete') is not None:
+            recipe_id = request.POST.get('delete')
+            foodplan = Foodplans.objects.get(foodplan_id=foodplan_id, recipe_id=recipe_id)
+            foodplan.delete()
+        else:
+            recipe_id = request.POST.get('edit_quantity')
+            new_quantity = request.POST.get('quantity')
+            foodplan = Foodplans.objects.get(foodplan_id=foodplan_id, recipe_id=recipe_id)
+            foodplan.quantity = new_quantity
+            foodplan.save()
+
     
     # Get the recipies currently in active foodplan
     foodplan = Foodplans.objects.all().filter(foodplan_id=foodplan_id)
     recipies = []
     for recipe in foodplan:
-        recipies.append({'name': recipe.get_recipe_name(), 'id': recipe.recipe_id})
+        recipies.append({'name': recipe.get_recipe_name(), 'id': recipe.recipe_id, 'quantity': recipe.quantity})
     
     if not recipies: # if there is no more recipies in current foodplan
         return redirect('/foodplans/')
@@ -49,28 +57,35 @@ def create_foodplan(request):
 def edit_foodplan(request, foodplan_id):
     # add or delete foodplan from active foodplan
     if request.method == 'POST':
-        recipe_id = request.POST.get('delete')
-        if recipe_id is not None:
+        if request.POST.get('delete') is not None:
+            recipe_id = request.POST.get('delete')
             foodplan = Foodplans.objects.get(foodplan_id=foodplan_id, recipe_id=recipe_id)
             foodplan.delete()
-        recipe_id = request.POST.get('add')
-        if recipe_id is not None:
-            foodplan = Foodplans(foodplan_id=foodplan_id, recipe_id=recipe_id)
+        else:
+            recipe_id = request.POST.get('add')
+            quantity = request.POST.get('quantity')
+            foodplan = Foodplans(foodplan_id=foodplan_id, recipe_id=recipe_id, quantity=quantity)
             foodplan.save()
+            
         
-    # Get the recipies currently in active foodplan
-    foodplans = Foodplans.objects.all().filter(foodplan_id=foodplan_id)
-    foodplan_recipe_ids = [0]
-    for foodplan in foodplans:
-        foodplan_recipe_ids.append(foodplan.recipe_id)
+    # Get the recipies and their quantity currently in active foodplan
+    foodplan_quaryset = Foodplans.objects.all().filter(foodplan_id=foodplan_id)
+    
+    foodplan = []
+    foodplan_recipies = [0]
+
+    for recipe in foodplan_quaryset:
+        foodplan.append({'recipe_id': recipe.recipe_id, 'quantity': recipe.quantity})
+        foodplan_recipies.append(recipe.recipe_id)
+
 
     # Make a list of all recipies
-    all_recipies = Recipies.objects.all()
-    recipies = []
-    for recipe in all_recipies:
-        recipies.append({'name': recipe.name, 'type': recipe.get_type(), 'id': recipe.id})
+    recipies_quaryset = Recipies.objects.all()
+    all_recipies = []
+    for recipe in recipies_quaryset:
+        all_recipies.append({'name': recipe.name, 'type': recipe.get_type(), 'id': recipe.id})
 
-    context = {'recipies': recipies, 'foodplan_id': foodplan_id, 'foodplan_recipe_ids':foodplan_recipe_ids}
+    context = {'all_recipies': all_recipies, 'foodplan_recipies':foodplan_recipies, 'foodplan_id': foodplan_id, }
     return render(request, 'pages/edit_foodplan.html', context)
 
 

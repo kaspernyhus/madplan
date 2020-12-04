@@ -6,48 +6,45 @@
 
 
 <h1 class="header">Tilføj retter til madplanen</h1>
+<a href="{% url 'view_foodplan' foodplan_id %}" class="center">Se madplanen</a>
+
 <table>
-  <colgroup>
-      <col style="width: 50%;">
-      <col style="width: 30%;">
-      <col style="width: 20%;">
-  </colgroup>
+    <col style="width: 60%;">
+    <col style="width: 30%;">
 <tbody>
-  {% for recipe in recipies %}
-  <tr>
-      <td>
-          <a href="">
-              <span>{{recipe.name}}</span>
-          </a>
-      </td>
-      <td>
-          <span>
-            <span>{{recipe.type}}</span>
-          </span>
-      </td>
-      <td>
-            {% if recipe.id in foodplan_recipe_ids %}
-                <form method="POST">
-                    {% csrf_token %}
-                    <button name="delete" value="{{recipe.id}}" type="submit">slet</button>
-                </form>
-                <!-- <a href="{% url 'delete_foodplan_recipe' foodplan_id recipe.id %}">
-                    <span>Slet</span>
-                </a> -->
+{% for recipe in all_recipies %}
+<tr>
+    <td>
+        <a href="">
+            <span>{{recipe.name}}</span>
+        </a>
+    </td>
+    <td>
+        <form method="POST">
+            {% csrf_token %}
+            
+            {% if recipe.id in foodplan_recipies %}
+                <!-- then search for associated quantity -->
+                {% for foodplan_recipe in foodplan %}
+                    {% if foodplan_recipe.recipe_id == recipe.id %}
+                            <input type="number" id="quantity" value="{{foodplan_recipe.quantity}}" name="quantity" min="1" max="5">
+                    {% endif %}
+                {% endfor %}
+
+                <button name="delete" value="{{recipe.id}}" type="submit">slet</button>
+
             {% else %}
-                <form method="POST">
-                    {% csrf_token %}
-                    <button name="add" value="{{recipe.id}}" type="submit">tilføj</button>
-                </form>
-                <!-- <a href="{% url 'add_foodplan_recipe' foodplan_id recipe.id %}">
-                    <span>Tilføj</span>
-                </a> -->
+                <input type="number" id="quantity" value="1" name="quantity" min="1" max="5">
+                <button type="submit" name="add" value="{{recipe.id}}">tilføj</button>
+        
             {% endif %}
-      </td>
-  </tr>
-  {% endfor %}
+            
+        </form>
+    </td>
+</tr>
+{% endfor %}
 </tbody>
 </table>
     
-  
+
 {% endblock %}
