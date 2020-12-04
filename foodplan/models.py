@@ -1,3 +1,13 @@
 from django.db import models
+from recipies.models import Recipies
+from datetime import datetime
+from django.utils import timezone
 
-# Create your models here.
+
+class Foodplans(models.Model):
+  date = models.DateTimeField(default=timezone.now)
+  foodplan_id = models.IntegerField(blank=False, default=1)
+  recipe = models.ForeignKey(Recipies, on_delete=models.DO_NOTHING, blank=True, null=True)
+
+  def get_recipe_name(self):
+    return self.recipe.name

@@ -14,9 +14,25 @@
     ---------------------
     <br>
     <h4>Tidligere madplaner</h4>
-    <a href="" class="button">
-        <span>01/02/20</span>
-    </a>
+
+    <table class="center">
+    <tbody>
+        {% for foodplan in foodplans %}
+        <tr>
+            <td>
+                <a href="{% url 'view_foodplan' foodplan.foodplan_id %}">
+                    <span>{{foodplan.date|date:'d/m/Y' }}</span>
+                </a>
+            </td>
+            <td>
+                <a href="{% url 'delete_foodplan' foodplan.foodplan_id %}">
+                    <span>slet</span>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
     
   
 {% endblock %}

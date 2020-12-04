@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+<h1 class="header">Madplan</h1>
+<h6 class="header">Ændret {{created_date|date:'d/m/Y'}}</h6>
+<br>
+
+<h4 class="header"><a href="">
+    <span>Se indkøbsliste</span>
+</a></h4>
+
+<table class="center">
+  <!-- <colgroup>
+      <col style="width: 60%;">
+      <col style="width: 25%;">
+      <col style="width: 15%;">
+  </colgroup> -->
+<tbody>
+  {% for recipe in recipies %}
+  <tr>
+      <td>
+          <a href="">
+              <span>{{recipe.name}}</span>
+          </a>
+      </td>
+      <td>
+        <form method="POST">
+            {% csrf_token %}
+            <button name="name" value="{{recipe.id}}" type="submit">slet</button>
+        </form>
+          <!-- <a href="{% url 'delete_foodplan_recipe' foodplan_id recipe.id %}">
+              <span>Slet</span>
+          </a> -->
+      </td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+    
+  
+{% endblock %}

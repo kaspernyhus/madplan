@@ -6,19 +6,33 @@
 
 
 <h1 class="header">Nyhus Kaaes Opskrifter</h1>
-<div class="center">
-    <a href="" class="center aligned middle aligned">
-        <span>Mors kylling-karrygryde</span>
-    </a>
-    <a href="" class="center aligned middle aligned">
-        <span>Panang Gai</span>
-    </a>
-    <a href="" class="center aligned middle aligned">
-        <span>Indisk boller i karry</span>
-    </a>
-    <a href="" class="center aligned middle aligned">
-      <span>Pasta bolognese</span>
-  </a>
+<table>
+    <!-- <colgroup>
+        <col style="width: 60%;">
+        <col style="width: 25%;">
+        <col style="width: 15%;">
+    </colgroup> -->
+<tbody>
+    {% for recipe in recipies %}
+    <tr>
+        <td>
+            <a href="">
+                <span>{{recipe.name}}</span>
+            </a>
+        </td>
+        <td>
+            <span>{{recipe.type}}</span>
+        </td>
+        <td>
+            <a href="">
+                <span>Rediger</span>
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+
     
   
 {% endblock %}

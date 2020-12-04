@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="header">Slet madplan</h1>
+
+<div class="center">
+    <form method="POST">
+        {% csrf_token %}
+        <p>Er du sikker?</p>
+    <button type="submit" class="button">Slet</button>
+    </form>
+</div>
+
+{% endblock %}

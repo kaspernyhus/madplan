@@ -3,7 +3,10 @@ from django.db import models
 
 
 class RecipeTypes(models.Model):
-  type_name = models.CharField(max_length=50)
+  name = models.CharField(max_length=50)
+
+  def __str__(self):
+    return self.name
 
 
 class Recipies(models.Model):
@@ -13,6 +16,9 @@ class Recipies(models.Model):
 
   def __str__(self):
     return self.name
+  
+  def get_type(self):
+    return self.recipe_type.name
 
 
 class Ingredients(models.Model):
