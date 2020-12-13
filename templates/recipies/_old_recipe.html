@@ -22,16 +22,20 @@
 {% for ingredient in ingredients %}
 <tr>
   <td>
-    <span>{{ingredient.name}}</span>
+      {{ingredient.name}}
   </td>
   <td>
-    <span>{{ingredient.description}}</span>
+    <form method="POST">
+        {% csrf_token %}
+            <input type="number" id="quantity" value="{{ingredient.amount}}" name="quantity" min="0" max="1000" step="0.1"> {{ingredient.unit}}
+            <button name="edit_quantity" value="{{ingredient.id}}" type="submit">rediger</button>
+    </form>
   </td>
   <td>
-    <span>{{ingredient.amount}} {{ingredient.unit}}</span>
-  </td>
-  <td>
-    
+    <form method="POST">
+        {% csrf_token %}
+        <button name="delete" value="{{ingredient.id}}" type="submit">slet</button>
+    </form>
   </td>
 </tr>
 {% endfor %}

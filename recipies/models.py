@@ -37,6 +37,9 @@ class RecipeIngredients(models.Model):
   def get_ingredient_name(self):
     return self.ingredient.name
   
+  def get_ingredient_description(self):
+    return self.ingredient.description
+  
   def get_unit_name(self):
     return self.measurement_unit.unit_name
 

@@ -5,12 +5,12 @@
 {% block content %}
 
 
-<h1 class="header">Tilføj retter til madplanen</h1>
+<h1 class="header">Tilføj retter til madplanen --</h1>
 <a href="{% url 'view_foodplan' foodplan_id %}" class="center">Se madplanen</a>
 
 <table>
-    <col style="width: 60%;">
-    <col style="width: 30%;">
+    <!-- <col style="width: 60%;">
+    <col style="width: 30%;"> -->
 <tbody>
 {% for recipe in all_recipies %}
 <tr>
@@ -36,7 +36,7 @@
             {% else %}
                 <input type="number" id="quantity" value="1" name="quantity" min="1" max="5">
                 <button type="submit" name="add" value="{{recipe.id}}">tilføj</button>
-        
+                
             {% endif %}
             
         </form>

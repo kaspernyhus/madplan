@@ -10,6 +10,5 @@ class Foodplans(models.Model):
   recipe = models.ForeignKey(Recipies, on_delete=models.DO_NOTHING, blank=True, null=True)
   quantity = models.IntegerField(blank=False, default=1)
 
-
   def get_recipe_name(self):
     return self.recipe.name

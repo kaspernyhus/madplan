@@ -6,36 +6,11 @@
 
 
 <h1 class="header">Opret ny ingrediens</h1>
-
-<table class="center">
-  <!-- <colgroup>
-      <col style="width: 50%;">
-      <col style="width: 20%;">
-      <col style="width: 15%;">
-      <col style="width: 15%;">
-  </colgroup> -->
-<tbody>
-<tr>
   <form method="POST">
-  {% csrf_token %}
-    <td>
-      <input type="text" placeholder="navn">
-    </td>
-    <td>
-      <input type="text" placeholder="beskrivelse">
-    </td>
-    <td>
-      <input type="number" placeholder="pris">
-    </td>
-    <td>
-      <input type="number" placeholder="ca holdbarhed i dage">
-      <input type="submit" value="Tilføj">
-    </td>
+    {% csrf_token %}
+    {{ form.as_p }}
+  <button type="submit">Gem</button>
   </form>
-</tr>
-</tbody>
-</table>
 
 
-  
 {% endblock %}
