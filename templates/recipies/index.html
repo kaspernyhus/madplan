@@ -5,22 +5,32 @@
 {% block content %}
 
 
-<h1 class="header">Nyhus Kaaes Opskrifter</h1>
-<a href="{% url 'new_recipe' %}" class="center">Opret ny opskrift</a>
+<!-- <h1 class="header">Nyhus Kaaes Opskrifter</h1> -->
+<!-- <a href="{% url 'new_recipe' %}" class="center">Opret ny opskrift</a> -->
 
-<div class="center">
+<div class="center container">
     <table>
     <tbody>
         {% for recipe in recipies %}
-        <tr>
+        <tr class="recipe-info" style="background-image: url('/media/{{ recipe.photo_thumbnail }}'); background-size: 100%;">
+            <!-- <td class="center aligned middle aligned">
+                <div class="thumbnail">
+                  <img src="/media/photos/thumbnails/pasta-one-pot-valdemarsro.jpg" alt="" height="45">
+                </div>
+            </td> -->
             <td>
                 <a href="{% url 'show_recipe' recipe.id %}">
-                    <span>{{recipe.name}}</span>
+                    <span class="recipe-label">{{recipe.name}}
+
+                        <p class="sub-label">{{recipe.description}}</p>
+                    </span>
+                
+                    
                 </a>
             </td>
-            <td class="hide-ov">
+            <!-- <td class="hide-ov">
                 {{recipe.description}}
-            </td>
+            </td> -->
             
         </tr>
         {% endfor %}

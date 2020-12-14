@@ -16,6 +16,7 @@ class Recipies(models.Model):
   name = models.CharField(max_length=50)
   description = models.CharField(max_length=300, blank=True)
   recipe_type = models.ForeignKey(RecipeTypes, on_delete=models.DO_NOTHING, blank=True)
+  photo_thumbnail = models.ImageField(upload_to='photos/thumbnails/', blank=True)
 
   def __str__(self):
     return self.name

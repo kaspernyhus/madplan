@@ -4,10 +4,12 @@
 
 {% block content %}
 
-
-<h1 class="header">{{recipe.name}}</h1>
-<p class="subheader">{{recipe.description}}</p>
-<br>
+<div class="recipe-top" style="background-image: url('/media/{{ recipe.photo_thumbnail }}');">
+  <span class="recipe-header">
+    <h1 class="header">{{recipe.name}}</h1>
+    <p class="subheader">{{recipe.description}}</p>
+  </span>
+</div>
 
 <div class="center-nav">
   <button class="nav-but active" id="but1" onclick="showBlock1()">Ingredienser</button>

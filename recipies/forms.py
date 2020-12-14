@@ -11,11 +11,13 @@ class NewRecipeForm(forms.ModelForm):
       'name',
       'description',
       'recipe_type',
+      'photo_thumbnail',
     )
     labels = {
       'name': '',
       'description': '',
       'recipe_type': 'Type',
+      'photo_thumbnail': '',
     }
     widgets = {
       'name': forms.TextInput(attrs={'placeholder': 'Overskrift..', 'size': 30}),

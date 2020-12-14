@@ -11,7 +11,7 @@ def show_recipies(request):
     
     recipies = []
     for recipe in all_recipies:
-        recipies.append({'id':recipe.id, 'name': recipe.name, 'type': recipe.get_type(), 'description': recipe.description})
+        recipies.append({'id':recipe.id, 'name': recipe.name, 'type': recipe.get_type(), 'description': recipe.description, 'photo_thumbnail': recipe.photo_thumbnail})
     
     context = {'recipies': recipies}
     return render(request, 'recipies/index.html', context)
@@ -21,7 +21,7 @@ def show_recipe(request, recipe_id):
     # Get recipe data
     recipe_data = Recipies.objects.all().filter(pk=recipe_id)
     for data in recipe_data:
-        recipe = {'id': data.id, 'name': data.name, 'date': data.date, 'description': data.description}
+        recipe = {'id': data.id, 'name': data.name, 'date': data.date, 'description': data.description, 'photo_thumbnail': data.photo_thumbnail}
 
     # Get recipe ingredients
     recipe_ingredients = RecipeIngredients.objects.all().filter(recipe_id=recipe_id)
@@ -42,7 +42,7 @@ def show_recipe(request, recipe_id):
 
 def new_recipe(request):
     if request.method == 'POST':
-        form = NewRecipeForm(request.POST)
+        form = NewRecipeForm(request.POST, request.FILES)
         if form.is_valid:
             new_recipe = form.save()
             
