@@ -11,12 +11,20 @@ class RecipeTypes(models.Model):
     return self.name
 
 
+class RecipeTags(models.Model):
+  tag = models.CharField(max_length=50)
+
+  def __str__(self):
+    return self.name
+
+
 class Recipies(models.Model):
   date = models.DateTimeField(default=timezone.now)
   name = models.CharField(max_length=50)
   description = models.CharField(max_length=300, blank=True)
   recipe_type = models.ForeignKey(RecipeTypes, on_delete=models.DO_NOTHING, blank=True)
   photo_thumbnail = models.ImageField(upload_to='photos/thumbnails/', blank=True)
+  tags = models.ManyToManyField(RecipeTags)
 
   def __str__(self):
     return self.name

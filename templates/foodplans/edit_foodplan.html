@@ -5,46 +5,47 @@
 {% block content %}
 
 
-<h1 class="header">Tilføj retter til madplanen --</h1>
+<h1 class="header">Retter til madplanen</h1>
 <a href="{% url 'view_foodplan' foodplan_id %}" class="center">Se madplanen</a>
 
-<table>
-    <!-- <col style="width: 60%;">
-    <col style="width: 30%;"> -->
-<tbody>
-{% for recipe in all_recipies %}
-<tr>
-    <td>
-        <a href="">
-            <span>{{recipe.name}}</span>
-        </a>
-    </td>
-    <td>
-        <form method="POST">
-            {% csrf_token %}
-            
-            {% if recipe.id in foodplan_recipies %}
-                <!-- then search for associated quantity -->
-                {% for foodplan_recipe in foodplan %}
-                    {% if foodplan_recipe.recipe_id == recipe.id %}
-                            <input type="number" id="quantity" value="{{foodplan_recipe.quantity}}" name="quantity" min="1" max="5">
+<div class="container-5px">
+    <table>
+    <colgroup>
+    <col style="width: 68%;">
+    <col style="width: 32%;">
+    </colgroup>
+        <tbody>
+        {% for recipe in all_recipies %}
+        <tr >
+            <td class="recipe-foodplan recipe-label-td" style="background-image: url('/media/{{ recipe.photo_thumbnail }}')">
+                <a href="{% url 'show_recipe' recipe.id %}">
+                    <span class="sml-recipe-label">{{recipe.name}}</span>
+                </a>
+            </td>
+            <td>
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    {% if recipe.id in foodplan_recipies %}
+                        <!-- then search for associated quantity -->
+                        {% for foodplan_recipe in foodplan %}
+                            {% if foodplan_recipe.recipe_id == recipe.id %}
+                                    <input type="number" id="quantity" value="{{foodplan_recipe.quantity}}" name="quantity" min="1" max="5">
+                            {% endif %}
+                        {% endfor %}
+
+                        <button name="delete" value="{{recipe.id}}" type="submit">slet</button>
+
+                    {% else %}
+                        <input type="number" id="quantity" value="1" name="quantity" min="1" max="5">
+                        <button type="submit" name="add" value="{{recipe.id}}">tilføj</button>
                     {% endif %}
-                {% endfor %}
-
-                <button name="delete" value="{{recipe.id}}" type="submit">slet</button>
-
-            {% else %}
-                <input type="number" id="quantity" value="1" name="quantity" min="1" max="5">
-                <button type="submit" name="add" value="{{recipe.id}}">tilføj</button>
-                
-            {% endif %}
-            
-        </form>
-    </td>
-</tr>
-{% endfor %}
-</tbody>
-</table>
-    
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 {% endblock %}

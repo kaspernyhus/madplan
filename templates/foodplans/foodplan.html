@@ -14,37 +14,37 @@
 </a></h4>
 
 <table class="center">
-    <colgroup>
+    <!-- <colgroup>
         <col style="width: 50%;">
         <col style="width: 20%;">
         <col style="width: 15%;">
         <col style="width: 15%;">
-    </colgroup>
+    </colgroup> -->
 <tbody>
-  {% for recipe in recipies %}
-  <tr>
-      <td>
-          <a href="">
-              <span>{{recipe.name}}</span>
-          </a>
-      </td>
-      <td>
-        <form method="POST">
-            {% csrf_token %}
-                <input type="number" id="quantity" value="{{recipe.quantity}}" name="quantity" min="1" max="5">
-                <button name="edit_quantity" value="{{recipe.id}}" type="submit">rediger</button>
-        </form>
-      </td>
-      <td>
-        <form method="POST">
-            {% csrf_token %}
-            <button name="delete" value="{{recipe.id}}" type="submit">slet</button>
-        </form>
-      </td>
-  </tr>
-  {% endfor %}
+    <form method="POST">
+    {% csrf_token %}
+    {% for recipe in recipies %}
+    <tr>
+        <td>
+            <a href="{% url 'show_recipe' recipe.id %}">
+                <span>{{recipe.name}}</span>
+            </a>
+        </td>
+        <td>
+            <input type="number" id="qty" value="{{recipe.quantity}}" name="qty" min="1" max="5">
+            <input type="hidden" id="recipe_id" name="recipe_id" value="{{recipe.id}}">
+        </td>
+        <td>
+            <button type="submit" class="delete_cross" name="delete_recipe" value="{{recipe.id}}">x</button>
+        </td>
+    </tr>
+    {% endfor %}
 </tbody>
 </table>
+<div class="center">
+    <button type="submit" name="edit_quantity">gem</button>
+</div>
+</form>
 
 <a href="{% url 'edit_foodplan' foodplan_id %} " class="center">Tilføj andre retter</a>
   

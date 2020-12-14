@@ -16,6 +16,12 @@
 
 <div id="Block1">
 <table class="center">
+  <colgroup>
+      <col style="width: 50%;">
+      <col style="width: 20%;">
+      <col style="width: 25%;">
+      <col style="width: 5%;">
+  </colgroup>
   <tbody>
   <form method="POST">
     {% csrf_token %}
@@ -28,7 +34,7 @@
         <span>{% if recipe_ingredient.description %} {{recipe_ingredient.description}} {% endif %}</span>
       </td>
       <td>
-        <input type="number" id="qty" value="{{recipe_ingredient.amount}}" name="qty" min="0" max="1000" step="0.1"> {{recipe_ingredient.unit}}
+        <input type="number" class="sml-number-input" id="qty" value="{{recipe_ingredient.amount}}" name="qty" min="0" max="1000" step="0.1"> {{recipe_ingredient.unit}}
         <input type="hidden" id="ingredient_id" name="ingredient_id" value="{{recipe_ingredient.ingredient_id}}">
       </td>
       <td>
@@ -39,7 +45,7 @@
   </tbody>
 </table>
 <div class="center">
-<button type="submit" name="edit_quantities" value="">Gem</button>
+<button type="submit" name="edit_quantities">Gem</button>
 </div>
 </form>
 
@@ -56,7 +62,7 @@
     {% endfor  %}
   </datalist>
   
-  <input type="number" name="qty" value="" placeholder="hvor meget.." required>
+  <input type="number" name="qty" value="" placeholder="mængde" style="width: 80px;" required>
   
   <select list="qty_units" name="qty_unit" value="" placeholder="enhed.." required>
     {% for unit in units %}

@@ -45,8 +45,6 @@ def new_recipe(request):
         form = NewRecipeForm(request.POST, request.FILES)
         if form.is_valid:
             new_recipe = form.save()
-            
-            print(new_recipe.pk)
         return redirect('/recipies/edit/'+str(new_recipe.pk))
 
     form = NewRecipeForm()

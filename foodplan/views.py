@@ -6,7 +6,6 @@ from django.views.generic import DeleteView
 
 def view_foodplans(request):
     all_foodplans = Foodplans.objects.all().order_by('-date')
-
     # select most recent foodplan entry per foodplan (remove duplicates)
     foodplans = []
     seen_ids = []
@@ -22,17 +21,19 @@ def view_foodplans(request):
 def view_foodplan(request, foodplan_id):
     # delete recipe in current foodplan
     if request.method == 'POST':
-        if request.POST.get('delete') is not None:
-            recipe_id = request.POST.get('delete')
-            foodplan = Foodplans.objects.get(foodplan_id=foodplan_id, recipe_id=recipe_id)
+        if request.POST.getlist('delete_recipe'):
+            recipe_id = request.POST.getlist('delete_recipe')
+            foodplan = Foodplans.objects.get(foodplan_id=foodplan_id, recipe_id=recipe_id[0])
             foodplan.delete()
-        else:
-            recipe_id = request.POST.get('edit_quantity')
-            new_quantity = request.POST.get('quantity')
-            foodplan = Foodplans.objects.get(foodplan_id=foodplan_id, recipe_id=recipe_id)
-            foodplan.quantity = new_quantity
-            foodplan.save()
-
+        elif request.POST.getlist('edit_quantity'):
+            recipe_ids = request.POST.getlist('recipe_id')
+            quantities = request.POST.getlist('qty')
+            print('Recipe ids:', recipe_ids)
+            print('Qty: ', quantities)
+            for i, recipe_id in enumerate(recipe_ids):
+                foodplan = Foodplans.objects.get(foodplan_id=foodplan_id, recipe_id=recipe_id)
+                foodplan.quantity = quantities[i]
+                foodplan.save()
     # Get the recipies currently in active foodplan
     foodplan = Foodplans.objects.all().filter(foodplan_id=foodplan_id)
     recipies = []
@@ -77,7 +78,7 @@ def edit_foodplan(request, foodplan_id):
     recipies_quaryset = Recipies.objects.all()
     all_recipies = []
     for recipe in recipies_quaryset:
-        all_recipies.append({'name': recipe.name, 'type': recipe.get_type(), 'id': recipe.id})
+        all_recipies.append({'id': recipe.id, 'name': recipe.name, 'type': recipe.get_type(), 'photo_thumbnail': recipe.photo_thumbnail})
 
     context = {'all_recipies': all_recipies, 'foodplan_recipies':foodplan_recipies, 'foodplan_id': foodplan_id, }
     return render(request, 'foodplans/edit_foodplan.html', context)
