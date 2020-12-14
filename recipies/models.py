@@ -14,7 +14,7 @@ class RecipeTypes(models.Model):
 class Recipies(models.Model):
   date = models.DateTimeField(default=timezone.now)
   name = models.CharField(max_length=50)
-  description = models.CharField(max_length=300)
+  description = models.CharField(max_length=300, blank=True)
   recipe_type = models.ForeignKey(RecipeTypes, on_delete=models.DO_NOTHING, blank=True)
 
   def __str__(self):

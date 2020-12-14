@@ -1,18 +1,24 @@
 from django import forms
-from .models import RecipeIngredients
+from django.db.models import fields
+from .models import Recipies
 
 
-class AddIngredientsForm(forms.ModelForm):
-  
-  measurement_unit = forms.CharField(label='')
-
+class NewRecipeForm(forms.ModelForm):
   class Meta:
-    model = RecipeIngredients
-    fields = [
-      'ingredient',
-      'amount',
-    ]
+    model = Recipies
+    
+    fields = (
+      'name',
+      'description',
+      'recipe_type',
+    )
     labels = {
-            'ingredient': '',
-            'amount': '',
-        }
+      'name': '',
+      'description': '',
+      'recipe_type': 'Type',
+    }
+    widgets = {
+      'name': forms.TextInput(attrs={'placeholder': 'Overskrift..', 'size': 30}),
+      'description': forms.Textarea(
+          attrs={'cols':30, 'rows': 3, 'placeholder': 'Beskrivelse..'}),
+    }

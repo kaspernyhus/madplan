@@ -6,38 +6,49 @@
 
 
 <h1 class="header">{{recipe.name}}</h1>
-<h4 class="header">{{recipe.description}}</h4>
-<p class="header">Ændret {{recipe.date|date:'d/m/Y'}}</p>
+<p class="subheader">{{recipe.description}}</p>
 <br>
 
+<div class="center-nav">
+  <button class="nav-but active" id="but1" onclick="showBlock1()">Ingredienser</button>
+  <button class="nav-but" id="but2" onclick="showBlock2()">Fremgangsmåde</button>
+</div>
 
-<table class="center">
-  <!-- <colgroup>
-      <col style="width: 50%;">
-      <col style="width: 20%;">
-      <col style="width: 15%;">
-      <col style="width: 15%;">
-  </colgroup> -->
-<tbody>
-{% for ingredient in ingredients %}
-<tr>
-  <td>
-    <span>{{ingredient.name}}</span>
-  </td>
-  <td>
-    <span>{{ingredient.description}}</span>
-  </td>
-  <td>
-    <span>{{ingredient.amount}} {{ingredient.unit}}</span>
-  </td>
-  <td>
-    
-  </td>
-</tr>
-{% endfor %}
-</tbody>
-</table>
+<div id="Block1">
+  <table class="center">
+  <tbody>
+  {% for ingredient in ingredients %}
+  <tr>
+    <td>
+      <span>{{ingredient.name}}</span>
+    </td>
+    <td>
+      <span>{% if ingredient.description %} {{ingredient.description}} {% endif %}</span>
+    </td>
+    <td>
+      <span>{{ingredient.amount}} {{ingredient.unit}}</span>
+    </td>
+    <td>
+      
+    </td>
+  </tr>
+  {% endfor %}
+  </tbody>
+  </table>
+</div>
+
+<div id="Block2" class="center">
+  <ul class="center">
+    {% for instruction in instructions %}
+    <li class="instructions">{{instruction.description}}</li>
+    {% endfor %}
+  </ul>
+</div>
 
 <a href="{% url 'edit_recipe' recipe.id %}" class="center">Rediger opskrift</a>
-  
+<p class="small-text">Ændret {{recipe.date|date:'d/m/Y'}}</p>
+
+
+
+
 {% endblock %}

@@ -6,31 +6,27 @@
 
 
 <h1 class="header">Nyhus Kaaes Opskrifter</h1>
-<a href="" class="center">Opret ny opskrift</a>
+<a href="{% url 'new_recipe' %}" class="center">Opret ny opskrift</a>
 
-<table>
-    <!-- <colgroup>
-        <col style="width: 60%;">
-        <col style="width: 25%;">
-        <col style="width: 15%;">
-    </colgroup> -->
-<tbody>
-    {% for recipe in recipies %}
-    <tr>
-        <td>
-            <a href="{% url 'show_recipe' recipe.id %}">
-                <span>{{recipe.name}}</span>
-            </a>
-        </td>
-        <td>
-            <span>{{recipe.type}}</span>
-        </td>
-        
-    </tr>
-    {% endfor %}
-</tbody>
-</table>
-
+<div class="center">
+    <table>
+    <tbody>
+        {% for recipe in recipies %}
+        <tr>
+            <td>
+                <a href="{% url 'show_recipe' recipe.id %}">
+                    <span>{{recipe.name}}</span>
+                </a>
+            </td>
+            <td class="hide-ov">
+                {{recipe.description}}
+            </td>
+            
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+</div>
     
   
 {% endblock %}
