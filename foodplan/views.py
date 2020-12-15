@@ -3,6 +3,7 @@ from .models import *
 from recipies.models import Recipies
 from recipies.forms import RecipeTypeFilterBox
 from django.views.generic import DeleteView
+from random import shuffle
 
 
 def view_foodplans(request):
@@ -90,6 +91,9 @@ def edit_foodplan(request, foodplan_id):
     for recipe in foodplan_quaryset:
         foodplan.append({'recipe_id': recipe.recipe_id, 'quantity': recipe.quantity})
         foodplan_recipies.append(recipe.recipe_id)
+
+    # Randomize recipies order
+    #shuffle(recipies_query)
 
     context = {'all_recipies': recipies_query, 'foodplan_recipies':foodplan_recipies, 'foodplan_id': foodplan_id, 'form': form}
     return render(request, 'foodplans/edit_foodplan.html', context)

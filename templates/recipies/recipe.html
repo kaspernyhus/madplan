@@ -39,7 +39,7 @@
   </table>
 </div>
 
-<div id="Block2" class="center">
+<div id="Block2" class="center container">
   <ul class="center">
     {% for instruction in instructions %}
     <li class="instructions">{{instruction.description}}</li>
@@ -47,6 +47,7 @@
   </ul>
 </div>
 
+<br>
 <a href="{% url 'edit_recipe' recipe.id %}" class="center">Rediger opskrift</a>
 <p class="small-text">Ændret {{recipe.date|date:'d/m/Y'}}</p>
 

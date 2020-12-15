@@ -4,6 +4,7 @@ from .forms import NewRecipeForm, RecipeTypeFilterBox, RecipeTagsForm
 from recipies.models import Recipies, RecipeTags
 from datetime import datetime
 from django.utils import timezone
+from random import shuffle
 
 
 def show_recipies(request):
@@ -23,12 +24,12 @@ def show_recipies(request):
     else:
         recipies_query = Recipies.objects.all()
         form = RecipeTypeFilterBox()
-    
-    
     recipies = []
     for recipe in recipies_query:
         recipies.append({'id':recipe.id, 'name': recipe.name, 'type': recipe.get_type(), 'description': recipe.description, 'photo_thumbnail': recipe.photo_thumbnail})
-    
+    # Randomize recipies order
+    shuffle(recipies)
+
     context = {'recipies': recipies, 'form': form}
     return render(request, 'recipies/index.html', context)
 
@@ -61,7 +62,6 @@ def new_recipe(request):
         form = NewRecipeForm(request.POST, request.FILES)
         if form.is_valid:
             new_recipe = form.save()
-            print(new_recipe.tags)
         return redirect('/recipies/edit/'+str(new_recipe.pk))
 
     form = NewRecipeForm()
@@ -70,6 +70,9 @@ def new_recipe(request):
 
 def edit_recipe(request, recipe_id):
     if request.method == 'POST':
+        print(request.POST)
+        
+
         if request.POST.getlist('delete_ingredient'):
             RecipeIngredient_id = request.POST.getlist('delete_ingredient')
             RecipeIngredient_id = int(RecipeIngredient_id[0])
@@ -80,16 +83,24 @@ def edit_recipe(request, recipe_id):
             recipe.date = timezone.now()
             recipe.save()
         elif request.POST.getlist('add_ingredient'):
-            # Get value (name) from dropdown and split to be able to search db
-            ingredient_name_POST = request.POST.getlist('ingredient')
-            ingredient_name = [name.strip() for name in ingredient_name_POST[0].split(',')]
-            # Get id of ingredient name from db
+            # Get str value from html datalist and split to get id to be able to search db
+            ingredient_id_POST = request.POST.getlist('ingredient')
+            ingredient_id_name = ingredient_id_POST[0].split(':') # seperate by ':'
+            # if 'id:' present
+            if len(ingredient_id_name) == 2:
+                ingredient_id = ingredient_id_name[0]
+                ingredient_name = ingredient_id_name[1].strip()
+            # if not propably a user input = new ingredient
+            else:
+                ingredient_id = 0
+                ingredient_name = ingredient_id_name[0]
+            # Try to get object from db
             try:
-                ingredient_query = Ingredients.objects.get(name=ingredient_name[0])
+                ingredient_query = Ingredients.objects.get(pk=ingredient_id)
             # if not found in data base create new ingredient
             except:
                 next_path = request.path
-                return redirect('/ingredients/new_ingredient?next='+next_path+'&ing_name='+ingredient_name[0])
+                return redirect('/ingredients/new_ingredient?next='+next_path+'&ing_name='+ingredient_name)
             # Get values from other form fields
             ingredient_quantity = request.POST.getlist('qty')
             ingredient_unit = request.POST.getlist('qty_unit')
@@ -138,10 +149,11 @@ def edit_recipe(request, recipe_id):
 
     
     # Get recipe data
-    recipe_data = Recipies.objects.all().filter(pk=recipe_id)
-    for data in recipe_data:
-        recipe = {'id': data.id, 'name': data.name, 'date': data.date, 'description': data.description, 'photo_thumbnail': data.photo_thumbnail, 'tags': data.tags}
-
+    recipe_data_quary = Recipies.objects.all().filter(pk=recipe_id)
+    recipe_data = []
+    for data in recipe_data_quary:
+        recipe_data = {'id': data.id, 'name': data.name, 'date': data.date, 'description': data.description, 'photo_thumbnail': data.photo_thumbnail, 'tags': data.tags}
+    
     # Get info on the ingredients in the recipe
     recipe_ingredients_quary = RecipeIngredients.objects.all().filter(recipe_id=recipe_id)
     recipe_ingredients = []
@@ -169,6 +181,6 @@ def edit_recipe(request, recipe_id):
     tags = [object.id for object in tags_query]
     form = RecipeTagsForm(initial={'tags':tags})
 
-    context = {'recipe': recipe, 'recipe_ingredients': recipe_ingredients, 'instructions': recipe_instructions, 'all_ingredients': all_ingredients_quary, 'units': units, 'form': form }
+    context = {'recipe': recipe_data, 'recipe_ingredients': recipe_ingredients, 'instructions': recipe_instructions, 'all_ingredients': all_ingredients_quary, 'units': units, 'form': form}
     return render(request, 'recipies/edit_recipe.html', context)
 

@@ -14,10 +14,6 @@ def show_ingredients_list(request):
 
 
 def new_ingredient(request):
-    print('----------------')
-    print(request.GET)
-    print('----------------')
-    
     if request.method == 'POST':
         try:
             previous_page = request.GET['next']
