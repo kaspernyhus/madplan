@@ -5,9 +5,12 @@
 {% block content %}
 
 
-<h1 class="header">{{recipe.name}}</h1>
-<h6 class="header">Ændret {{recipe.date|date:'d/m/Y'}}</h6>
-<br>
+<div class="recipe-top" style="background-image: url('/media/{{ recipe.photo_thumbnail }}');">
+  <span class="recipe-header">
+    <a href="{% url 'show_recipe' recipe.id %}" class=""><h1 class="header">{{recipe.name}}</h1></a>
+    <p class="subheader">{{recipe.description}}</p>
+  </span>
+</div>
 
 <div class="center-nav">
   <button class="nav-but active" id="but1" onclick="showBlock1()">Ingredienser</button>
@@ -91,6 +94,14 @@
   </div>
 </div>
 
+
+<div class="center">
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" name="edit_tags">Opdater</button>
+  </form>
+</div>
 
   
 {% endblock %}

@@ -8,7 +8,12 @@
 <h1 class="header">Retter til madplanen</h1>
 <a href="{% url 'view_foodplan' foodplan_id %}" class="center">Se madplanen</a>
 
-<div class="container-5px">
+<div class="center container">
+    <form method="GET" class="filterbox" name="filterbox" action="{% url 'edit_foodplan' foodplan_id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+    </form>
+    
     <table>
     <colgroup>
     <col style="width: 68%;">

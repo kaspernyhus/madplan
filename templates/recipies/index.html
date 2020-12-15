@@ -6,20 +6,25 @@
 
 
 <div class="center container">
+        <form method="GET" class="filterbox" name="filterbox" action="{% url 'show_recipies' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+        </form>
+
     <table>
-    <tbody>
-        {% for recipe in recipies %}
-        <tr class="recipe-info" style="background-image: url('/media/{{ recipe.photo_thumbnail }}')">
-            <td class="recipe-label-td">
-                <a href="{% url 'show_recipe' recipe.id %}">
-                    <span class="recipe-label">{{recipe.name}}
-                        <p class="sub-label">{{recipe.description}}</p>
-                    </span>
-                </a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
+        <tbody>
+            {% for recipe in recipies %}
+            <tr class="recipe-info" style="background-image: url('/media/{{ recipe.photo_thumbnail }}')">
+                <td class="recipe-label-td">
+                    <a href="{% url 'show_recipe' recipe.id %}">
+                        <span class="recipe-label">{{recipe.name}}
+                            <p class="sub-label">{{recipe.description}}</p>
+                        </span>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
 </div>
     

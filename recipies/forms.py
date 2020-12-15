@@ -1,6 +1,8 @@
 from django import forms
 from django.db.models import fields
-from .models import Recipies
+from django.db.models.fields import files
+from django.forms import widgets
+from .models import Recipies, RecipeTypes
 
 
 class NewRecipeForm(forms.ModelForm):
@@ -11,6 +13,7 @@ class NewRecipeForm(forms.ModelForm):
       'name',
       'description',
       'recipe_type',
+      'tags',
       'photo_thumbnail',
     )
     labels = {
@@ -24,3 +27,37 @@ class NewRecipeForm(forms.ModelForm):
       'description': forms.Textarea(
           attrs={'cols':30, 'rows': 3, 'placeholder': 'Beskrivelse..'}),
     }
+
+
+class RecipeTypeFilterBox(forms.ModelForm):
+  class Meta:
+    model = Recipies
+
+    fields = (
+    'recipe_type',
+    'tags',
+    )
+    
+    labels = {
+      'recipe_type': '',
+      'tags': '',
+    }
+
+    widgets = {
+      'recipe_type': forms.Select(attrs={'onchange': 'filterbox.submit();'}),
+      'tags': forms.Select(attrs={'onchange': 'filterbox.submit();'}),
+    }
+
+
+class RecipeTagsForm(forms.ModelForm):
+  class Meta:
+    model = Recipies
+
+    fields = (
+      'tags',
+    )
+    labels = {
+      'tags': '',
+    }
+
+    

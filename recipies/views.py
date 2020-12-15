@@ -1,19 +1,35 @@
 from django.shortcuts import render, redirect
 from .models import *
-from .forms import NewRecipeForm
-from recipies.models import Recipies
+from .forms import NewRecipeForm, RecipeTypeFilterBox, RecipeTagsForm
+from recipies.models import Recipies, RecipeTags
 from datetime import datetime
 from django.utils import timezone
 
 
 def show_recipies(request):
-    all_recipies = Recipies.objects.all()
+    if request.GET.get('recipe_type') and request.GET.get('tags'):
+        filter_by_type = request.GET.get('recipe_type')
+        filter_by_tags = request.GET.get('tags')
+        recipies_query = Recipies.objects.filter(recipe_type_id=filter_by_type, tags=filter_by_tags)
+        form = RecipeTypeFilterBox(initial={'recipe_type': filter_by_type, 'tags': filter_by_tags})
+    elif request.GET.get('recipe_type'):
+        filter_by = request.GET.get('recipe_type')
+        recipies_query = Recipies.objects.filter(recipe_type_id=filter_by)
+        form = RecipeTypeFilterBox(initial={'recipe_type': filter_by})
+    elif request.GET.get('tags'):
+        filter_by = request.GET.get('tags')
+        recipies_query = Recipies.objects.filter(tags=filter_by)
+        form = RecipeTypeFilterBox(initial={'tags': filter_by})
+    else:
+        recipies_query = Recipies.objects.all()
+        form = RecipeTypeFilterBox()
+    
     
     recipies = []
-    for recipe in all_recipies:
+    for recipe in recipies_query:
         recipies.append({'id':recipe.id, 'name': recipe.name, 'type': recipe.get_type(), 'description': recipe.description, 'photo_thumbnail': recipe.photo_thumbnail})
     
-    context = {'recipies': recipies}
+    context = {'recipies': recipies, 'form': form}
     return render(request, 'recipies/index.html', context)
 
 
@@ -45,6 +61,7 @@ def new_recipe(request):
         form = NewRecipeForm(request.POST, request.FILES)
         if form.is_valid:
             new_recipe = form.save()
+            print(new_recipe.tags)
         return redirect('/recipies/edit/'+str(new_recipe.pk))
 
     form = NewRecipeForm()
@@ -62,12 +79,10 @@ def edit_recipe(request, recipe_id):
             recipe = Recipies.objects.get(pk=recipe_id)
             recipe.date = timezone.now()
             recipe.save()
-        
         elif request.POST.getlist('add_ingredient'):
             # Get value (name) from dropdown and split to be able to search db
             ingredient_name_POST = request.POST.getlist('ingredient')
             ingredient_name = [name.strip() for name in ingredient_name_POST[0].split(',')]
-
             # Get id of ingredient name from db
             try:
                 ingredient_query = Ingredients.objects.get(name=ingredient_name[0])
@@ -86,7 +101,6 @@ def edit_recipe(request, recipe_id):
             recipe = Recipies.objects.get(pk=recipe_id)
             recipe.date = timezone.now()
             recipe.save()
-
         elif request.POST.getlist('edit_quantities'):
             ingredient_ids = request.POST.getlist('ingredient_id')
             quantities = request.POST.getlist('qty')
@@ -98,7 +112,6 @@ def edit_recipe(request, recipe_id):
             recipe = Recipies.objects.get(pk=recipe_id)
             recipe.date = timezone.now()
             recipe.save()
-        
         elif request.POST.getlist('edit_instructions'):
             recipe_instructions_query = RecipeInstructions.objects.all().filter(recipe_id=recipe_id)
             instructions = request.POST.getlist('textarea_instructions')
@@ -109,23 +122,25 @@ def edit_recipe(request, recipe_id):
                 rec_inst_object.description = instructions[i]
                 rec_inst_object.save()
                 step = i
-            
             if new_instruction[0] is not '':
-                print(new_instruction)
                 next_step = step+1
                 new_line = RecipeInstructions(recipe_id=recipe_id, step=next_step, description=new_instruction[0])
                 new_line.save()
-            
             # Update changes date for recipe
             recipe = Recipies.objects.get(pk=recipe_id)
             recipe.date = timezone.now()
+            recipe.save()
+        elif request.POST.getlist('edit_tags'):
+            tags = request.POST.getlist('tags')
+            recipe = Recipies.objects.get(pk=recipe_id)
+            recipe.tags.set(tags)
             recipe.save()
 
     
     # Get recipe data
     recipe_data = Recipies.objects.all().filter(pk=recipe_id)
     for data in recipe_data:
-        recipe = {'id': data.id, 'name': data.name, 'date': data.date, 'description': data.description}
+        recipe = {'id': data.id, 'name': data.name, 'date': data.date, 'description': data.description, 'photo_thumbnail': data.photo_thumbnail, 'tags': data.tags}
 
     # Get info on the ingredients in the recipe
     recipe_ingredients_quary = RecipeIngredients.objects.all().filter(recipe_id=recipe_id)
@@ -149,6 +164,11 @@ def edit_recipe(request, recipe_id):
     # Get a list of all measurement unit options
     units = MeasurementUnits.objects.all()
 
-    context = {'recipe': recipe, 'recipe_ingredients': recipe_ingredients, 'instructions': recipe_instructions, 'all_ingredients': all_ingredients_quary, 'units': units }
+    # Tags form
+    tags_query = RecipeTags.objects.all().filter(recipies=recipe_id)
+    tags = [object.id for object in tags_query]
+    form = RecipeTagsForm(initial={'tags':tags})
+
+    context = {'recipe': recipe, 'recipe_ingredients': recipe_ingredients, 'instructions': recipe_instructions, 'all_ingredients': all_ingredients_quary, 'units': units, 'form': form }
     return render(request, 'recipies/edit_recipe.html', context)
 

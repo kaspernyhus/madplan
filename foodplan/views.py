@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import *
 from recipies.models import Recipies
+from recipies.forms import RecipeTypeFilterBox
 from django.views.generic import DeleteView
 
 
@@ -54,6 +55,23 @@ def create_foodplan(request):
 
 
 def edit_foodplan(request, foodplan_id):
+    # Get recipies based on filter boxes
+    if request.GET.get('recipe_type') and request.GET.get('tags'):
+        filter_by_type = request.GET.get('recipe_type')
+        filter_by_tags = request.GET.get('tags')
+        recipies_query = Recipies.objects.filter(recipe_type_id=filter_by_type, tags=filter_by_tags)
+        form = RecipeTypeFilterBox(initial={'recipe_type': filter_by_type, 'tags': filter_by_tags})
+    elif request.GET.get('recipe_type'):
+        filter_by = request.GET.get('recipe_type')
+        recipies_query = Recipies.objects.filter(recipe_type_id=filter_by)
+        form = RecipeTypeFilterBox(initial={'recipe_type': filter_by})
+    elif request.GET.get('tags'):
+        filter_by = request.GET.get('tags')
+        recipies_query = Recipies.objects.filter(tags=filter_by)
+        form = RecipeTypeFilterBox(initial={'tags': filter_by})
+    else: # Get all recipies in db
+        form = RecipeTypeFilterBox()
+        recipies_query = Recipies.objects.all()
     # add or delete foodplan from active foodplan
     if request.method == 'POST':
         if request.POST.get('delete') is not None:
@@ -64,8 +82,7 @@ def edit_foodplan(request, foodplan_id):
             recipe_id = request.POST.get('add')
             quantity = request.POST.get('quantity')
             foodplan = Foodplans(foodplan_id=foodplan_id, recipe_id=recipe_id, quantity=quantity)
-            foodplan.save()
-            
+            foodplan.save()   
     # Get the foodplan recipies and their quantity currently in active foodplan
     foodplan_quaryset = Foodplans.objects.all().filter(foodplan_id=foodplan_id)
     foodplan = []
@@ -74,13 +91,7 @@ def edit_foodplan(request, foodplan_id):
         foodplan.append({'recipe_id': recipe.recipe_id, 'quantity': recipe.quantity})
         foodplan_recipies.append(recipe.recipe_id)
 
-    # Make a list of all recipies
-    recipies_quaryset = Recipies.objects.all()
-    all_recipies = []
-    for recipe in recipies_quaryset:
-        all_recipies.append({'id': recipe.id, 'name': recipe.name, 'type': recipe.get_type(), 'photo_thumbnail': recipe.photo_thumbnail})
-
-    context = {'all_recipies': all_recipies, 'foodplan_recipies':foodplan_recipies, 'foodplan_id': foodplan_id, }
+    context = {'all_recipies': recipies_query, 'foodplan_recipies':foodplan_recipies, 'foodplan_id': foodplan_id, 'form': form}
     return render(request, 'foodplans/edit_foodplan.html', context)
 
     

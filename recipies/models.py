@@ -15,7 +15,7 @@ class RecipeTags(models.Model):
   tag = models.CharField(max_length=50)
 
   def __str__(self):
-    return self.name
+    return self.tag
 
 
 class Recipies(models.Model):
