@@ -409,6 +409,7 @@ p {
 
 .instructions {
   padding-bottom: 10px;
+  width: 100%;
 }
 
 .instr-text {
