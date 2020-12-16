@@ -27,8 +27,9 @@ SECRET_KEY = 'd=r$8fak9ocbde4_3ebz30ny)4cyweyh#9bnexv_in_b1o53(3'
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    'Eskemusro.pythonanywhere.com',
     'localhost',
-    '192.168.0.38'
+    '192.168.0.38',
     ]
 
 
