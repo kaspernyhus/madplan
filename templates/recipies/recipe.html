@@ -3,55 +3,55 @@
 {% load static %}
 
 {% block content %}
+<div class="container">
+  
+  <div class="recipe-top" style="background-image: url('/media/{{ recipe.photo_thumbnail }}');">
+    <span class="recipe-header">
+      <h1 class="header">{{recipe.name}}</h1>
+      <p class="subheader">{{recipe.description}}</p>
+    </span>
+  </div>
 
-<div class="recipe-top" style="background-image: url('/media/{{ recipe.photo_thumbnail }}');">
-  <span class="recipe-header">
-    <h1 class="header">{{recipe.name}}</h1>
-    <p class="subheader">{{recipe.description}}</p>
-  </span>
-</div>
+  <div class="center-nav">
+    <button class="nav-but active" id="but1" onclick="showBlock1()">Ingredienser</button>
+    <button class="nav-but" id="but2" onclick="showBlock2()">Fremgangsmåde</button>
+  </div>
 
-<div class="center-nav">
-  <button class="nav-but active" id="but1" onclick="showBlock1()">Ingredienser</button>
-  <button class="nav-but" id="but2" onclick="showBlock2()">Fremgangsmåde</button>
-</div>
-
-<div id="Block1">
-  <table class="center">
-  <tbody>
-  {% for ingredient in ingredients %}
-  <tr>
-    <td>
-      <span>{{ingredient.name}}</span>
-    </td>
-    <td>
-      <span>{% if ingredient.description %} {{ingredient.description}} {% endif %}</span>
-    </td>
-    <td>
-      <span>{{ingredient.amount}} {{ingredient.unit}}</span>
-    </td>
-    <td>
-      
-    </td>
-  </tr>
-  {% endfor %}
-  </tbody>
-  </table>
-</div>
-
-<div id="Block2" class="center container">
-  <ul class="center">
-    {% for instruction in instructions %}
-    <li class="instructions">{{instruction.description}}</li>
+  <div id="Block1">
+    <table class="center">
+    <tbody>
+    {% for ingredient in ingredients %}
+    <tr>
+      <td>
+        <span>{{ingredient.name}}</span>
+      </td>
+      <td>
+        <span>{% if ingredient.description %} {{ingredient.description}} {% endif %}</span>
+      </td>
+      <td>
+        <span>{{ingredient.amount}} {{ingredient.unit}}</span>
+      </td>
+      <td>
+        
+      </td>
+    </tr>
     {% endfor %}
-  </ul>
+    </tbody>
+    </table>
+  </div>
+
+  <div id="Block2" class="center container">
+    <ul class="center">
+      {% for instruction in instructions %}
+      <li class="instructions">{{instruction.description}}</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <br>
+  <a href="{% url 'edit_recipe' recipe.id %}" class="center">Rediger opskrift</a>
+  <p class="small-text">Ændret {{recipe.date|date:'d/m/Y'}}</p>
+
 </div>
-
-<br>
-<a href="{% url 'edit_recipe' recipe.id %}" class="center">Rediger opskrift</a>
-<p class="small-text">Ændret {{recipe.date|date:'d/m/Y'}}</p>
-
-
-
 
 {% endblock %}
