@@ -36,7 +36,7 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'todo.apps.TodoCinfig',
+    'todo.apps.TodoConfig',
     'pages.apps.PagesConfig',
     'foodplan.apps.FoodplanConfig',
     'recipies.apps.RecipiesConfig',
