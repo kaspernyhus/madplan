@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+  <table>
+      <tbody>
+          {% for task in tasks %}
+          <tr>
+              <td>
+                  <a href="">
+                      <span>{{ task.title }}</span>
+                  </a>
+              </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+  </table>
+</div>
+    
+  
+{% endblock %}

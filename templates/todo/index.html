@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<table class="center">
+  <tbody>
+      {% for foodplan in foodplans %}
+      <tr>
+          <td>
+              <a href="">
+                  <span>{{foodplan.date|date:'d/m/Y' }}</span>
+              </a>
+          </td>
+          <td>
+              <a href="{% url 'delete_foodplan' foodplan.foodplan_id %}">
+                  <span>slet</span>
+              </a>
+          </td>
+      </tr>
+      {% endfor %}
+  </tbody>
+  </table>
+    
+  
+{% endblock %}
