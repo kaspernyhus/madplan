@@ -3,9 +3,10 @@ from foodplan.models import Foodplans
 
 class Task(models.Model):
   title = models.CharField(max_length=200)
+  ingredient_category = models.IntegerField(blank=True, default=0)
   complete = models.BooleanField(default=False)
   created = models.DateTimeField(auto_now_add=True)
-  foodplan = models.ForeignKey(Foodplans, blank=True, null=True, on_delete=models.DO_NOTHING,)
+  foodplan = models.IntegerField(blank=False, default=1)
 
   def __str__(self):
     return self.title

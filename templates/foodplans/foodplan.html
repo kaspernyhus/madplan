@@ -9,37 +9,39 @@
 <h6 class="header">Ændret {{created_date|date:'d/m/Y'}}</h6>
 <br>
 
-<h4 class="header"><a href="">
-    <span>Se indkøbsliste</span>
-</a></h4>
+{% if not status.complete %}
+<h4 class="header">
+    <a href="{% url 'create_shoppinglist' foodplan_id %}">
+    <span>
+       Opret indkøbsliste
+        <p class="sub-text">madplanen kan ikke længere redigeres</p>
+    </span>
+</a>
+</h4>
+</a>
+
 
 <table class="center">
-    <!-- <colgroup>
-        <col style="width: 50%;">
-        <col style="width: 20%;">
-        <col style="width: 15%;">
-        <col style="width: 15%;">
-    </colgroup> -->
-<tbody>
-    <form method="POST">
-    {% csrf_token %}
-    {% for recipe in recipies %}
-    <tr>
-        <td>
-            <a href="{% url 'show_recipe' recipe.id %}">
-                <span>{{recipe.name}}</span>
-            </a>
-        </td>
-        <td>
-            <input type="number" id="qty" value="{{recipe.quantity}}" name="qty" min="1" max="5">
-            <input type="hidden" id="recipe_id" name="recipe_id" value="{{recipe.id}}">
-        </td>
-        <td>
-            <button type="submit" class="delete_cross" name="delete_recipe" value="{{recipe.id}}">x</button>
-        </td>
-    </tr>
-    {% endfor %}
-</tbody>
+    <tbody>
+        <form method="POST">
+        {% csrf_token %}
+        {% for recipe in recipies %}
+        <tr>
+            <td>
+                <a href="{% url 'show_recipe' recipe.id %}">
+                    <span>{{recipe.name}}</span>
+                </a>
+            </td>
+            <td>
+                <input type="number" id="qty" value="{{recipe.quantity}}" name="qty" min="1" max="5">
+                <input type="hidden" id="recipe_id" name="recipe_id" value="{{recipe.id}}">
+            </td>
+            <td>
+                <button type="submit" class="delete_cross" name="delete_recipe" value="{{recipe.id}}">x</button>
+            </td>
+        </tr>
+        {% endfor %}  
+    </tbody>
 </table>
 <div class="center">
     <button type="submit" name="edit_quantity">gem</button>
@@ -47,5 +49,28 @@
 </form>
 
 <a href="{% url 'edit_foodplan' foodplan_id %}" class="center">Tilføj andre retter</a>
-  
+
+
+{% else %}
+<h4 class="header"><a href="{% url 'view_shoppinglist' foodplan_id %}">
+    <span>Se indkøbsliste</span>
+</a></h4>
+
+<table class="center">
+    <tbody>
+        {% for recipe in recipies %}
+        <tr>
+            <td>
+                <a href="{% url 'show_recipe' recipe.id %}">
+                    <span>{{recipe.name}}</span>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}  
+    </tbody>
+</table>
+{% endif %}
+
+
+
 {% endblock %}

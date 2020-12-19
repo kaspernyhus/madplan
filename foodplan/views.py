@@ -44,14 +44,23 @@ def view_foodplan(request, foodplan_id):
     if not recipies: # if there is no more recipies in current foodplan
         return redirect('/foodplans/')
 
-    context = {'recipies': recipies, 'created_date': foodplan[0].date, 'foodplan_id': foodplan_id }
+    # Foodplan status
+    status = FoodplanStatus.objects.get(foodplan_id=foodplan_id)
+
+    context = {'recipies': recipies, 'created_date': foodplan[0].date, 'foodplan_id': foodplan_id, 'status': status }
     return render(request, 'foodplans/foodplan.html', context)
 
 
 def create_foodplan(request):
     # Get next available foodplan ID
-    latest = Foodplans.objects.latest('foodplan_id')
-    next_id = latest.foodplan_id + 1
+    try:
+        latest = Foodplans.objects.latest('foodplan_id')
+        next_id = latest.foodplan_id + 1
+    except:
+        next_id = 1
+    # Create FoodplanStatus entry
+    foodplan_status = FoodplanStatus(pk=next_id)
+    foodplan_status.save()
     return redirect('/foodplans/edit/' + str(next_id))
 
 
@@ -104,3 +113,6 @@ def delete_foodplan(request, foodplan_id):
     for foodplan in foodplans:
         foodplan.delete()
     return redirect('/foodplans/')
+
+
+
