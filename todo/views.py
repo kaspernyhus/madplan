@@ -21,7 +21,7 @@ def index(request):
 
 
 def view_shoppinglist(request, foodplan_id):
-  tasks = Task.objects.filter(foodplan=foodplan_id).order_by('ingredient_category')
+  tasks = Task.objects.filter(foodplan=foodplan_id).order_by('ingredient_category__shop_order')
   form = TaskForm()
   context = {'tasks': tasks, 'form': form}
   return render(request, 'todo/shoppinglist.html', context)
@@ -46,12 +46,15 @@ def create_shoppinglist(request, foodplan_id):
     recipe_ingredients = RecipeIngredients.objects.filter(recipe_id=recipe.recipe_id)
     for ingredient in recipe_ingredients:
       ingredient_list.append({
-        'name': ingredient.get_ingredient_name(), 
+        'name': ingredient.get_ingredient_name(),
+        'ingredient_description': ingredient.get_ingredient_description(),
         'ingredient_id': ingredient.ingredient_id,
         'ingredient_category': ingredient.get_ingredient_category(),
         'unit': ingredient.measurement_unit.id, 
         'unit_name':ingredient.get_unit_name(), 
-        'amount': ingredient.amount})
+        'amount': ingredient.amount,
+        'recipe_ingredient_description': ingredient.description
+        })
 
   # Consolidate ingredient list
   consolidated_list = []
@@ -86,17 +89,31 @@ def create_shoppinglist(request, foodplan_id):
       
   # Create shoppinglist
   for ingredient in consolidated_list:
+    shopping_text = ''
+    # unit name
     if ingredient['unit'] == 1:
-      if ingredient['amount'].is_integer():
-        shopping_text = str(int(ingredient['amount'])) + ' ' + str(ingredient['name'])
-      else:
-        shopping_text = str(ingredient['amount']) + ' ' + str(ingredient['name'])
+      unit = ''
     else:
-      if ingredient['amount'].is_integer():
-        shopping_text = str(int(ingredient['amount'])) + ' ' + str(ingredient['unit_name']) + ' ' + str(ingredient['name'])
-      else:
-        shopping_text = str(ingredient['amount']) + ' ' + str(ingredient['unit_name']) + ' ' + str(ingredient['name'])
-    shopping_task = Task(title=shopping_text, ingredient_category=ingredient['ingredient_category'].id, foodplan=foodplan_id)
+      unit = str(ingredient['unit_name'])
+    # ingredient description
+    if ingredient['ingredient_description']:
+      ingredient_description = str(ingredient['ingredient_description'])
+    else:
+      ingredient_description = ''
+    # recipe ingredient description
+    if ingredient['recipe_ingredient_description']:
+      recipe_ingredient_description = str(ingredient['recipe_ingredient_description'])
+    else:
+      recipe_ingredient_description = ''
+    # amount
+    if ingredient['amount'].is_integer():
+      amount = str(int(ingredient['amount']))
+    else:
+      amount = str(ingredient['amount'])
+    # Make string
+    shopping_text = amount + '' + unit + ' ' + str(ingredient['name']) + ' ' + ingredient_description + ' ' + recipe_ingredient_description
+    # Make db entry
+    shopping_task = Task(title=shopping_text, ingredient_category=ingredient['ingredient_category'], foodplan=foodplan_id)
     shopping_task.save()
   
   # Mark foodplan as compete (disables editing)

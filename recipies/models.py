@@ -5,6 +5,8 @@ from ingredients.models import Ingredients
 
 
 class RecipeTypes(models.Model):
+  class Meta:
+    verbose_name = 'Recipe type'
   name = models.CharField(max_length=50)
 
   def __str__(self):
@@ -12,6 +14,8 @@ class RecipeTypes(models.Model):
 
 
 class RecipeTags(models.Model):
+  class Meta:
+    verbose_name = 'Recipe tag'
   tag = models.CharField(max_length=50)
 
   def __str__(self):
@@ -19,6 +23,9 @@ class RecipeTags(models.Model):
 
 
 class Recipies(models.Model):
+  class Meta:
+    verbose_name = 'Recipe'
+    verbose_name_plural = 'Recipies'
   date = models.DateTimeField(default=timezone.now)
   name = models.CharField(max_length=50)
   description = models.CharField(max_length=300, blank=True)
@@ -34,12 +41,17 @@ class Recipies(models.Model):
 
 
 class MeasurementUnits(models.Model):
+  class Meta:
+    verbose_name = 'Recipe measurement unit'
   unit_name = models.CharField(max_length=50)
 
 
 class RecipeIngredients(models.Model):
+  class Meta:
+    verbose_name = 'Recipe Ingredient'
   recipe = models.ForeignKey(Recipies, on_delete=models.CASCADE)
   ingredient = models.ForeignKey(Ingredients, on_delete=models.DO_NOTHING)
+  description = models.CharField(max_length=300, blank=True, null=True)
   measurement_unit = models.ForeignKey(MeasurementUnits, on_delete=models.DO_NOTHING, blank=False, default=1)
   amount = models.FloatField(default=1, blank=False)
 
@@ -57,6 +69,8 @@ class RecipeIngredients(models.Model):
 
 
 class RecipeInstructions(models.Model):
+  class Meta:
+    verbose_name = 'Recipe instruction'
   recipe = models.ForeignKey(Recipies, on_delete=models.CASCADE)
   step = models.IntegerField(default=1, blank=False)
   description = models.CharField(max_length=2000)

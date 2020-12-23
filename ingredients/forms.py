@@ -12,3 +12,10 @@ class NewIngredientForm(forms.ModelForm):
       'best_before',
       'price'
     ]
+  
+  def save(self, commit=True):
+      instance = super(NewIngredientForm, self).save(commit=False)
+      instance.name = self.cleaned_data['name'].lower()
+      if commit:
+          instance.save()
+      return instance

@@ -17,20 +17,15 @@ def new_ingredient(request):
     if request.method == 'POST':
         try:
             previous_page = request.GET['next']
-
         except:
             previous_page = None
-
         form = NewIngredientForm(request.POST)
         if form.is_valid():
             form.save()
-        
         if previous_page:
             return redirect(previous_page)
         else:
             return redirect('/')
-
-
     try:
         ingredient_name = request.GET['ing_name']
         form = NewIngredientForm(initial={'name': ingredient_name})

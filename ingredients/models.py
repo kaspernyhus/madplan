@@ -3,11 +3,15 @@ from django.db import models
 
 class IngredientCategory(models.Model):
   name = models.CharField(max_length=50)
+  shop_order = models.IntegerField(blank=True, null=True)
 
-
+  def __str__(self):
+    return self.name
 
 
 class Ingredients(models.Model):
+  class Meta:
+    verbose_name = 'Ingredient'
   name = models.CharField(max_length=50)
   description = models.CharField(max_length=300, blank=True, null=True)
   category = models.ForeignKey(IngredientCategory, on_delete=models.DO_NOTHING, blank=True, null=True)
@@ -19,4 +23,3 @@ class Ingredients(models.Model):
   
   def get_type(self):
     return self.category.name
-

@@ -10,6 +10,8 @@ class FoodplanStatus(models.Model):
 
 
 class Foodplans(models.Model):
+  class Meta:
+    verbose_name = 'Foodplan'
   date = models.DateTimeField(default=timezone.now)
   foodplan_id = models.IntegerField(blank=False, default=1)
   recipe = models.ForeignKey(Recipies, on_delete=models.DO_NOTHING, blank=True, null=True)
