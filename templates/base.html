@@ -23,11 +23,11 @@
 
   
   <script type="text/javascript">
-    $(window).on('beforeunload', function(){
+    $(window).on('pagehide', function(){
         localStorage.setItem('my-scroll-pos', $(window).scrollTop());
     });
 
-    $(window).on('load', function(){
+    $(window).on('pageshow', function(){
         var pos = localStorage.getItem('my-scroll-pos', 0);
         if (pos)
             $(window).scrollTop(pos);
