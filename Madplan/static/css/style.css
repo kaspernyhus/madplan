@@ -284,6 +284,11 @@ tr:nth-child(even) {
   font-size: 10px;
 }
 
+.grouplabel {
+  background: #4c6faf;
+  color: white;
+  text-align: center;
+}
 
 .filterbox {
   display: flex;
