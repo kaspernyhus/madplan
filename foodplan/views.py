@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import *
+from todo.models import Task
 from recipies.models import Recipies
 from recipies.forms import RecipeTypeFilterBox
 from django.views.generic import DeleteView
@@ -110,8 +111,11 @@ def edit_foodplan(request, foodplan_id):
     
 def delete_foodplan(request, foodplan_id):
     foodplans = Foodplans.objects.all().filter(foodplan_id=foodplan_id)
+    todos = Task.objects.filter(foodplan=foodplan_id)
     for foodplan in foodplans:
         foodplan.delete()
+        todos.delete()
+    
     return redirect('/foodplans/')
 
 

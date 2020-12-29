@@ -6,10 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!-- Autocomplete -->
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="{% static 'css/all.css' %}">
+    
     <!-- Bootstrap -->
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     <!-- Custom -->
@@ -17,40 +14,27 @@
     <title>Madplan</title>
 </head>
 <body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!-- Nav Bar -->
   {% include 'partials/_navbar.html' %}
   <!-- Main Content -->
   {% block content %}
   {% endblock %}
 
-  <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
-  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-  <script src="{% static 'js/main.js' %} "></script>
-  <script>
-    function showBlock1() {
-      var block1 = document.getElementById("Block1");
-      var block2 = document.getElementById("Block2");
-      var but1 = document.getElementById("but1")
-      var but2 = document.getElementById("but2")
-      but1.classList.add('active');
-      but2.classList.remove('active');
-      block1.style.display = "block";
-      block2.style.display = "none";
-    }
-    window.onload = showBlock1;
+  
+  <script type="text/javascript">
+    $(window).on('beforeunload', function(){
+        localStorage.setItem('my-scroll-pos', $(window).scrollTop());
+    });
+
+    $(window).on('load', function(){
+        var pos = localStorage.getItem('my-scroll-pos', 0);
+        if (pos)
+            $(window).scrollTop(pos);
+    });
   </script>
   
-  <script>
-    function showBlock2() {
-      var block1 = document.getElementById("Block1");
-      var block2 = document.getElementById("Block2");
-      var but1 = document.getElementById("but1")
-      var but2 = document.getElementById("but2")
-      but1.classList.remove('active');
-      but2.classList.add('active');
-      block1.style.display = "none";
-      block2.style.display = "block";
-    }
-  </script>
+  <script src="{% static 'js/main.js' %} "></script>
+  
 </body>
 </html>

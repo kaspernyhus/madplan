@@ -23,10 +23,16 @@ def index(request):
 def view_shoppinglist(request, foodplan_id):
   tasks = Task.objects.filter(foodplan=foodplan_id).order_by('ingredient_category__shop_order')
   form = TaskForm()
+
+  for task in tasks:
+    print(task.ingredient_category.id)
+
+
   context = {'tasks': tasks, 'form': form}
+
   return render(request, 'todo/shoppinglist.html', context)
 
-
+ 
 # Toggle task complete/incomplete
 def check_task(request, task_id):
   task = Task.objects.get(pk=task_id)
@@ -86,15 +92,17 @@ def create_shoppinglist(request, foodplan_id):
               consolidated_list.append(ingredient_dict)
     else:
       consolidated_list.append(ingredient_dict)
-      
+
   # Create shoppinglist
   for ingredient in consolidated_list:
     shopping_text = ''
     # unit name
     if ingredient['unit'] == 1:
       unit = ''
-    else:
+    elif ingredient['unit'] < 8:
       unit = str(ingredient['unit_name'])
+    else:
+      unit = ' ' + str(ingredient['unit_name'])
     # ingredient description
     if ingredient['ingredient_description']:
       ingredient_description = str(ingredient['ingredient_description'])
@@ -111,11 +119,11 @@ def create_shoppinglist(request, foodplan_id):
     else:
       amount = str(ingredient['amount'])
     # Make string
-    shopping_text = amount + '' + unit + ' ' + str(ingredient['name']) + ' ' + ingredient_description + ' ' + recipe_ingredient_description
+    shopping_text = amount + unit + ' ' + str(ingredient['name']) + ' ' + ingredient_description + ' ' + recipe_ingredient_description
     # Make db entry
     shopping_task = Task(title=shopping_text, ingredient_category=ingredient['ingredient_category'], foodplan=foodplan_id)
     shopping_task.save()
-  
+
   # Mark foodplan as compete (disables editing)
   status = FoodplanStatus(pk=foodplan_id)
   status.complete = True
