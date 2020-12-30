@@ -7,7 +7,7 @@
 
 <div class="recipe-top" style="background-image: url('/media/{{ recipe.photo_thumbnail }}');">
   <span class="recipe-header">
-    <a href="{% url 'show_recipe' recipe.id %}" class="header"><h1 class="header">{{recipe.name}}</h1></a>
+    <a href="{% url 'show_recipe' recipe.id %}" class="header"><h1 class="header">{{ recipe.name }}</h1></a>
     <p class="subheader">{{recipe.description}}</p>
   </span>
 </div>

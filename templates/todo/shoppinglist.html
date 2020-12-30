@@ -6,6 +6,7 @@
 
 <div class="center">
     <form method="POST" class="filterbox">
+        {% csrf_token %}
         {{form.as_p}}
         <input type="submit" name="create_task" value="Tilføj">
     </form>
@@ -13,11 +14,18 @@
 
 <div class="container">
   <table>
+    <colgroup>
+        <col style="width: 90%;">
+        <col style="width: 10%;">
+    </colgroup>
     
     {% for category in categories %}
     
     <tbody id="section1">
-        <tr class="grouplabel"><th>{{ category }}</th></tr>
+        <tr class="grouplabel">
+            <th colspan="2">{{ category }}</th>
+        </tr>
+        
         {% for task in tasks %}
         {% if task.ingredient_category.id == category.id %}
             <tr>
@@ -35,6 +43,12 @@
                             <span style="padding-left: 8px;">{{ task.title }}</span>
                         {% endif %}
                     </a>
+                </td>
+                <td>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="delete_cross" id="delete_task" name="delete_task" value="{{ task.id }}">x</button>
+                    </form>
                 </td>
             </tr>
         {% endif %}

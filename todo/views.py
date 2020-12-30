@@ -21,6 +21,19 @@ def index(request):
 
 
 def view_shoppinglist(request, foodplan_id):
+  if request.method == 'POST':
+    if request.POST.getlist('delete_task'):
+        task_id = request.POST.getlist('delete_task')
+        task_id = int(task_id[0])
+        task = Task.objects.get(pk=task_id)
+        task.delete()
+    else:
+      form = TaskForm(request.POST)
+      if form.is_valid:
+        form_tosave = form.save(commit=False)
+        form_tosave.foodplan = foodplan_id
+        form_tosave.save()
+  
   tasks_quary = Task.objects.filter(foodplan=foodplan_id).order_by('ingredient_category__shop_order')
   form = TaskForm()
 
