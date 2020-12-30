@@ -4,19 +4,17 @@
 
 {% block content %}
 
-
-<h1 class="header">Madplaner</h1>
+<br>
 <div class="center">
     <a href="{% url 'create_foodplan' %}" class="button">
         <span>Ny madplan</span>
     </a>
     <br>
-    ---------------------
-    <br>
+    
     <h4>Tidligere madplaner</h4>
 
     <table class="center">
-    <tbody>
+    <tbody class="table-body">
         {% for foodplan in foodplans %}
         <tr>
             <td>

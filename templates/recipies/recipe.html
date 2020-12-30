@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block content %}
-<div class="container">
+<div class="">
   
   <div class="recipe-top" style="background-image: url('/media/{{ recipe.photo_thumbnail }}');">
     <span class="recipe-header">
@@ -19,7 +19,7 @@
 
   <div id="Block1" class="center container">
     <table class="center">
-    <tbody>
+    <tbody class="table-body">
     {% for ingredient in ingredients %}
     <tr>
       <td>

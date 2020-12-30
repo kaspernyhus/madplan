@@ -4,8 +4,8 @@ body {
    }
 
 .container {
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 15px;
+  padding-right: 15px;
   padding-bottom: 30px;
   max-width: 576px;
 }
@@ -215,6 +215,12 @@ table {
   width: 100%;
 }
 
+
+.table-body {
+  width: 100%;
+  display: table;
+}
+
 .sml-number-input {
   width: 50px;
 }
@@ -289,6 +295,11 @@ tr:nth-child(even) {
   color: white;
   text-align: center;
 }
+
+.add-form {
+  display: inline-grid;
+}
+
 
 .filterbox {
   display: flex;

@@ -17,6 +17,9 @@
   <button class="nav-but" id="but2" onclick="showBlock2()">Fremgangsmåde</button>
 </div>
 
+
+<h5 class="header">Rediger ingrediensliste</h5>
+
 <div id="Block1">
 <table class="center">
   <colgroup>
@@ -58,32 +61,35 @@
 
 <div class="center">
 <h6>Tilføj en ingrediens</h6>
-<form method="POST">
+<form method="POST" class="add-form">
   {% csrf_token %}
-  <input type="text" list="ingredient_list" name="ingredient" placeholder="Vælg ingrediens.." style="width: 155px;">
+  <input type="text" list="ingredient_list" name="ingredient" placeholder="Vælg ingrediens..">
   <datalist id="ingredient_list">
     {% for ingredient in all_ingredients %}
       <option value="{{ingredient.id}}: {{ ingredient.name|title }}{% if ingredient.description %}, {{ingredient.description}} {% endif %}"></option>
     {% endfor  %}
   </datalist>
-  
-  <input type="text" name="description" value="" placeholder="beskrivelse.." style="width: 120px;">
-
-  <input type="number" name="qty" value="" placeholder="mængde" style="width: 80px;" step="0.1" required>
-  
+  <input type="text" name="description" value="" placeholder="beskrivelse..">
+  <input type="number" name="qty" value="" placeholder="mængde" step="0.1" required>
   <select list="qty_units" name="qty_unit" value="" placeholder="enhed.." required>
     {% for unit in units %}
       <option value="{{ unit.unit_name }}">{{ unit.unit_name }}</option>
     {% endfor %}
   </select>
-
+  <div class="center">
   <button type="submit" name="add_ingredient" value="">tilføj</button>
+</div>
 </form>
 </div>
 
 
 <a href="{% url 'new_ingredient' %}?next={{ request.path }}" class="center">Opret ny ingrediens</a>
 </div>
+
+
+<br>
+
+<h5 class="header">Rediger fremgangsmåde</h5>
 
 <div id="Block2">
   <div class="center">
@@ -93,17 +99,23 @@
         <textarea class="center instr-text" name="textarea_instructions" form="instructions">{{instruction.description}}</textarea>
       {% endfor %}
         <textarea class="center instr-text" name="new_instruction" form="instructions"></textarea>
-      <button type="submit" name="edit_instructions">gem</button>
+      <div class="center">
+      <button type="submit" name="edit_instructions">Gem</button>
+    </div>
     </form>
   </div>
 </div>
 
 
+<h5 class="header">Rediger tags</h5>
+
 <div class="center">
   <form method="POST">
     {% csrf_token %}
     {{ form.as_p }}
+    <div class="center">
     <button type="submit" name="edit_tags">Opdater</button>
+  </div>
   </form>
 </div>
 
