@@ -57,9 +57,13 @@ class RecipeTagsForm(forms.ModelForm):
 
     fields = (
       'tags',
+      'prep_time'
     )
     labels = {
       'tags': '',
+      'prep_time': ''
     }
-
+    widgets = {
+      'prep_time': forms.TextInput(attrs={'size': 6}),
+    }
     

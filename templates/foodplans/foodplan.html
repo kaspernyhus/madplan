@@ -6,8 +6,11 @@
 
 
 <h1 class="header">Madplan</h1>
-<h6 class="header">Ændret {{created_date|date:'d/m/Y'}}</h6>
+<p class="center sml-text">Ændret {{created_date|date:'d/m/Y'}}</p>
 <br>
+
+<div class="center container">
+
 
 {% if not status.complete %}
 <h4 class="header">
@@ -16,9 +19,9 @@
        Opret indkøbsliste
         <p class="sub-text">madplanen kan ikke længere redigeres</p>
     </span>
-</a>
+    </a>
 </h4>
-</a>
+
 
 
 <table class="center">
@@ -28,16 +31,16 @@
         {% for recipe in recipies %}
         <tr>
             <td>
-                <a href="{% url 'show_recipe' recipe.id %}">
-                    <span>{{recipe.name}}</span>
+                <a href="{% url 'show_recipe' recipe.recipe_obj.id %}">
+                    <span>{{recipe.recipe_obj.name}}</span>
                 </a>
             </td>
             <td>
                 <input type="number" id="qty" value="{{recipe.quantity}}" name="qty" min="1" max="5">
-                <input type="hidden" id="recipe_id" name="recipe_id" value="{{recipe.id}}">
+                <input type="hidden" id="recipe_id" name="recipe_id" value="{{recipe.recipe_obj.id}}">
             </td>
             <td>
-                <button type="submit" class="delete_cross" name="delete_recipe" value="{{recipe.id}}">x</button>
+                <button type="submit" class="delete_cross" name="delete_recipe" value="{{recipe.recipe_obj.id}}">x</button>
             </td>
         </tr>
         {% endfor %}  
@@ -52,17 +55,21 @@
 
 
 {% else %}
-<h4 class="header"><a href="{% url 'view_shoppinglist' foodplan_id %}">
+<h5 class="header">
+    <a href="{% url 'view_shoppinglist' foodplan_id %}">
     <span>Se indkøbsliste</span>
-</a></h4>
-
-<table class="center">
+    </a>
+</h5>
+<br>
+<table>
     <tbody>
         {% for recipe in recipies %}
-        <tr>
-            <td>
-                <a href="{% url 'show_recipe' recipe.id %}">
-                    <span>{{recipe.name}}</span>
+        <tr class="recipe-info" style="background-image: url('/media/{{ recipe.recipe_obj.photo_thumbnail }}')">
+            <td class="recipe-label-td">
+                <a href="{% url 'show_recipe' recipe.recipe_obj.id %}">
+                    <span class="recipe-label">{{recipe.recipe_obj.name}}
+                        <p class="sub-label">{{recipe.recipe_obj.description}}</p>
+                    </span>
                 </a>
             </td>
         </tr>
@@ -71,6 +78,5 @@
 </table>
 {% endif %}
 
-
-
+</div>
 {% endblock %}

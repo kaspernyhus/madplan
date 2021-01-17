@@ -4,13 +4,6 @@
   <ul>
     <li>
       <a 
-      {% if '/' == request.path %}
-        class="active"
-      {% endif %}
-      href="{% url 'index' %}">Hjem</a>
-    </li> 
-    <li>
-      <a 
       {% if '/recipies/' == request.path %}
         class="active"
       {% endif %}
@@ -22,6 +15,13 @@
         class="active"
       {% endif %}
       href="{% url 'view_foodplans' %}">Madplaner</a>
+    </li>
+    <li>
+      <a 
+      {% if '/todo/' == request.path %}
+        class="active"
+      {% endif %}
+      href="{% url 'todo_index' %}">Indkøbslister</a>
     </li>
   </ul>
 </div>

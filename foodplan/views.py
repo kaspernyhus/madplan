@@ -31,8 +31,6 @@ def view_foodplan(request, foodplan_id):
         elif request.POST.getlist('edit_quantity'):
             recipe_ids = request.POST.getlist('recipe_id')
             quantities = request.POST.getlist('qty')
-            print('Recipe ids:', recipe_ids)
-            print('Qty: ', quantities)
             for i, recipe_id in enumerate(recipe_ids):
                 foodplan = Foodplans.objects.get(foodplan_id=foodplan_id, recipe_id=recipe_id)
                 foodplan.quantity = quantities[i]
@@ -41,7 +39,8 @@ def view_foodplan(request, foodplan_id):
     foodplan = Foodplans.objects.all().filter(foodplan_id=foodplan_id)
     recipies = []
     for recipe in foodplan:
-        recipies.append({'name': recipe.get_recipe_name(), 'id': recipe.recipe_id, 'quantity': recipe.quantity})
+        recipe_obj = Recipies.objects.get(pk=recipe.recipe_id)
+        recipies.append({'recipe_obj': recipe_obj, 'quantity': recipe.quantity})
     if not recipies: # if there is no more recipies in current foodplan
         return redirect('/foodplans/')
 

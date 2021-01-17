@@ -26,7 +26,14 @@ def show_recipies(request):
         form = RecipeTypeFilterBox()
     recipies = []
     for recipe in recipies_query:
-        recipies.append({'id':recipe.id, 'name': recipe.name, 'type': recipe.get_type(), 'description': recipe.description, 'photo_thumbnail': recipe.photo_thumbnail})
+        recipies.append({
+            'id':recipe.id, 
+            'name': recipe.name, 
+            'type': recipe.get_type(), 
+            'description': recipe.description, 
+            'photo_thumbnail': recipe.photo_thumbnail,
+            'prep_time': recipe.prep_time
+            })
     # Randomize recipies order
     shuffle(recipies)
 
@@ -150,8 +157,10 @@ def edit_recipe(request, recipe_id):
             recipe.save()
         elif request.POST.getlist('edit_tags'):
             tags = request.POST.getlist('tags')
+            prep_time = request.POST.get('prep_time')
             recipe = Recipies.objects.get(pk=recipe_id)
             recipe.tags.set(tags)
+            recipe.prep_time = prep_time
             recipe.save()
 
     
@@ -165,7 +174,9 @@ def edit_recipe(request, recipe_id):
             'date': data.date, 
             'description': data.description, 
             'photo_thumbnail': data.photo_thumbnail, 
-            'tags': data.tags}
+            'tags': data.tags,
+            'prep_time': data.prep_time
+            }
     # Get info on the ingredients in the recipe
     recipe_ingredients_quary = RecipeIngredients.objects.all().filter(recipe_id=recipe_id)
     recipe_ingredients = []
@@ -188,7 +199,7 @@ def edit_recipe(request, recipe_id):
     # Tags form
     tags_query = RecipeTags.objects.all().filter(recipies=recipe_id)
     tags = [object.id for object in tags_query]
-    form = RecipeTagsForm(initial={'tags':tags})
+    form = RecipeTagsForm(initial={'tags':tags, 'prep_time': recipe_data['prep_time']})
 
     context = {'recipe': recipe_data, 'recipe_ingredients': recipe_ingredients, 'instructions': recipe_instructions, 'all_ingredients': all_ingredients_quary, 'units': units, 'form': form}
     return render(request, 'recipies/edit_recipe.html', context)

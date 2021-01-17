@@ -32,6 +32,7 @@ class Recipies(models.Model):
   recipe_type = models.ForeignKey(RecipeTypes, on_delete=models.DO_NOTHING, blank=True)
   photo_thumbnail = models.ImageField(upload_to='photos/thumbnails/', blank=True)
   tags = models.ManyToManyField(RecipeTags)
+  prep_time = models.CharField(max_length=6, blank=True, null=True)
 
   def __str__(self):
     return self.name

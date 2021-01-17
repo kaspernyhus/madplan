@@ -3,25 +3,23 @@
 {% load static %}
 
 {% block content %}
+<div class="center container">
+    <table class="center">
+    <tbody class="table-body">
+        <th>
+            Indkøbsliste for madplan oprettet:
+        </th>
+        {% for foodplan in foodplans %}
+        <tr>
+            <td>
+                <a href="{% url 'view_shoppinglist' foodplan.foodplan_id %}">
+                    <span>{{foodplan.date|date:'l d/m/Y' }}</span>
+                </a>
+            </td>
 
-<table class="center">
-  <tbody class="table-body">
-      {% for foodplan in foodplans %}
-      <tr>
-          <td>
-              <a href="{% url 'view_shoppinglist' foodplan.foodplan_id %}">
-                  <span>{{foodplan.date|date:'d/m/Y' }}</span>
-              </a>
-          </td>
-          <td>
-              <a href="{% url 'delete_foodplan' foodplan.foodplan_id %}">
-                  <span>slet</span>
-              </a>
-          </td>
-      </tr>
-      {% endfor %}
-  </tbody>
-  </table>
-    
-  
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+</div>
 {% endblock %}

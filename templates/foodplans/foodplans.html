@@ -5,21 +5,22 @@
 {% block content %}
 
 <br>
-<div class="center">
+<div class="center container">
     <a href="{% url 'create_foodplan' %}" class="button">
         <span>Ny madplan</span>
     </a>
     <br>
-    
-    <h4>Tidligere madplaner</h4>
 
     <table class="center">
     <tbody class="table-body">
+        <th>
+            Madplan oprettet:
+        </th>
         {% for foodplan in foodplans %}
         <tr>
             <td>
                 <a href="{% url 'view_foodplan' foodplan.foodplan_id %}">
-                    <span>{{foodplan.date|date:'D d/m/Y' }}</span>
+                    <span>{{foodplan.date|date:'l d/m/Y' }}</span>
                 </a>
             </td>
             <td>
