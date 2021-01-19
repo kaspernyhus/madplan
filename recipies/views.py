@@ -149,8 +149,15 @@ def edit_recipe(request, recipe_id):
                 step = i
             # Add new instruction
             if new_instruction[0] is not '':
+                new_isbold = request.POST.getlist('new_isbold')
+                print(new_isbold)
+                if not new_isbold:
+                    new_isbold = False
+                else:
+                    new_isbold = True
+                print(new_isbold)
                 next_step = step+1
-                new_line = RecipeInstructions(recipe_id=recipe_id, step=next_step, description=new_instruction[0])
+                new_line = RecipeInstructions(recipe_id=recipe_id, step=next_step, description=new_instruction[0], is_bold=new_isbold)
                 new_line.save()
             # Edit is_bold
             is_bold = request.POST.getlist('isbold')
@@ -161,6 +168,7 @@ def edit_recipe(request, recipe_id):
                 else:
                     rec_inst_object.is_bold = False
                 rec_inst_object.save()
+            
             # Update changed date for recipe
             recipe = Recipies.objects.get(pk=recipe_id)
             recipe.date = timezone.now()
