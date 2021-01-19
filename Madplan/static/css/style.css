@@ -449,6 +449,16 @@ p {
   width: 100%;
 }
 
+.bold-instr {
+  padding-top: 14px;
+  font-size: 110%;
+}
+
+.no-margin-top {
+  margin-top: 0px;
+  padding-top: 0px;
+}
+
 .instr-text {
   height: 125px;
   width: 360px;

@@ -42,10 +42,10 @@
   </div>
 
   <div id="Block2" class="center container">
-    <ul class="center">
+    <ul class="center no-margin-top">
       {% for instruction in instructions %}
       {% if instruction.is_bold %}
-      <li class="instructions" style="font-size: 110%;"> <b>{{ instruction.description }}</b> </li>
+      <li class="instructions bold-instr"> <b>{{ instruction.description }}</b> </li>
       {% else %}
       <li class="instructions">{{ instruction.description }}</li>
       {% endif %}
