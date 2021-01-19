@@ -81,7 +81,7 @@ def edit_foodplan(request, foodplan_id):
         form = RecipeTypeFilterBox(initial={'tags': filter_by})
     else: # Get all recipies in db
         form = RecipeTypeFilterBox()
-        recipies_query = Recipies.objects.all()
+        recipies_query = Recipies.objects.all().order_by('?') # shuffle/random order
     # add or delete foodplan from active foodplan
     if request.method == 'POST':
         if request.POST.get('delete') is not None:
@@ -100,9 +100,6 @@ def edit_foodplan(request, foodplan_id):
     for recipe in foodplan_quaryset:
         foodplan.append({'recipe_id': recipe.recipe_id, 'quantity': recipe.quantity})
         foodplan_recipies.append(recipe.recipe_id)
-
-    # Randomize recipies order
-    #shuffle(recipies_query)
 
     context = {'all_recipies': recipies_query, 'foodplan_recipies':foodplan_recipies, 'foodplan_id': foodplan_id, 'form': form}
     return render(request, 'foodplans/edit_foodplan.html', context)
