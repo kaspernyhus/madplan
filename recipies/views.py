@@ -60,6 +60,9 @@ def show_recipe(request, recipe_id):
             })
     
     recipe_instructions = RecipeInstructions.objects.all().filter(recipe_id=recipe_id)
+    
+    for inst in recipe_instructions:
+        print(inst.is_bold)
 
     context = {'recipe': recipe, 'ingredients': ingredients, 'instructions': recipe_instructions}
     return render(request, 'recipies/recipe.html', context)
@@ -78,9 +81,6 @@ def new_recipe(request):
 
 def edit_recipe(request, recipe_id):
     if request.method == 'POST':
-        print(request.POST)
-        
-
         if request.POST.getlist('delete_ingredient'):
             RecipeIngredient_id = request.POST.getlist('delete_ingredient')
             RecipeIngredient_id = int(RecipeIngredient_id[0])
@@ -142,16 +142,26 @@ def edit_recipe(request, recipe_id):
             instructions = request.POST.getlist('textarea_instructions')
             new_instruction = request.POST.getlist('new_instruction')
             step = 0
-            # Update existing
+            # Update existing instructions
             for i, rec_inst_object in enumerate(recipe_instructions_query):
                 rec_inst_object.description = instructions[i]
                 rec_inst_object.save()
                 step = i
+            # Add new instruction
             if new_instruction[0] is not '':
                 next_step = step+1
                 new_line = RecipeInstructions(recipe_id=recipe_id, step=next_step, description=new_instruction[0])
                 new_line.save()
-            # Update changes date for recipe
+            # Edit is_bold
+            is_bold = request.POST.getlist('isbold')
+            is_bold = [int(i) for i in is_bold] 
+            for rec_inst_object in recipe_instructions_query:
+                if rec_inst_object.id in is_bold:
+                    rec_inst_object.is_bold = True
+                else:
+                    rec_inst_object.is_bold = False
+                rec_inst_object.save()
+            # Update changed date for recipe
             recipe = Recipies.objects.get(pk=recipe_id)
             recipe.date = timezone.now()
             recipe.save()

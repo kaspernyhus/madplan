@@ -93,8 +93,12 @@
         {% csrf_token %}
         {% for instruction in instructions %}
           <textarea class="center instr-text" name="textarea_instructions" form="instructions">{{instruction.description}}</textarea>
+          <b>bold</b> tekst
+          <input type="checkbox" name="isbold" value="{{instruction.id}}" {% if instruction.is_bold %} checked {% endif %} form="instructions">
         {% endfor %}
           <textarea class="center instr-text" name="new_instruction" form="instructions"></textarea>
+          <b>bold</b> tekst
+          <input type="checkbox" value="new_isbold" form="instructions" name="new_isbold">
         <div class="center">
         <button type="submit" name="edit_instructions">Gem</button>
       </div>

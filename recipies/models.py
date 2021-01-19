@@ -75,5 +75,6 @@ class RecipeInstructions(models.Model):
   recipe = models.ForeignKey(Recipies, on_delete=models.CASCADE)
   step = models.IntegerField(default=1, blank=False)
   description = models.CharField(max_length=2000)
+  is_bold = models.BooleanField(default=False)
 
 
