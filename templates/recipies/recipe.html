@@ -21,6 +21,13 @@
     <table class="center">
     <tbody class="table-body">
     {% for ingredient in ingredients %}
+    {% if ingredient.heading %}
+    <tr style="background-color:hsl(214, 100%, 90%)">
+      <th>
+        <span class="bold-instr">{{ingredient.heading}}</span>
+      </th>
+    </tr>
+    {% else %}
     <tr>
       <td>
         <span>{{ingredient.name}}</span>
@@ -34,8 +41,8 @@
       <td>
         <span>{{ingredient.amount}} {{ingredient.unit}}</span>
       </td>
-      
     </tr>
+    {% endif %}
     {% endfor %}
     </tbody>
     </table>

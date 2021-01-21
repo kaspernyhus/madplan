@@ -49,6 +49,7 @@ def show_recipe(request, recipe_id):
 
     # Get recipe ingredients
     recipe_ingredients = RecipeIngredients.objects.all().filter(recipe_id=recipe_id)
+    recipe_headers = RecipeIngredientsHeading.objects.all().filter(recipe_id=recipe_id)
     ingredients = []
     for ingredient in recipe_ingredients:
         ingredients.append({
@@ -58,11 +59,12 @@ def show_recipe(request, recipe_id):
             'amount': ingredient.amount,
             'recipe_ingredient_description': ingredient.description
             })
-    
+    # Insert recipe ingredient headers
+    recipe_headers = RecipeIngredientsHeading.objects.all().filter(recipe_id=recipe_id)
+    for offset, rec_head in enumerate(recipe_headers):
+        ingredients.insert(rec_head.place+offset, {'heading':rec_head.heading})
+
     recipe_instructions = RecipeInstructions.objects.all().filter(recipe_id=recipe_id)
-    
-    for inst in recipe_instructions:
-        print(inst.is_bold)
 
     context = {'recipe': recipe, 'ingredients': ingredients, 'instructions': recipe_instructions}
     return render(request, 'recipies/recipe.html', context)
@@ -81,6 +83,7 @@ def new_recipe(request):
 
 def edit_recipe(request, recipe_id):
     if request.method == 'POST':
+        print(request.POST)
         if request.POST.getlist('delete_ingredient'):
             RecipeIngredient_id = request.POST.getlist('delete_ingredient')
             RecipeIngredient_id = int(RecipeIngredient_id[0])
@@ -126,6 +129,16 @@ def edit_recipe(request, recipe_id):
             recipe = Recipies.objects.get(pk=recipe_id)
             recipe.date = timezone.now()
             recipe.save()
+        elif request.POST.get('delete_heading'):
+            rec_ing_head_id = request.POST.get('delete_heading')
+            recipe_heading = RecipeIngredientsHeading.objects.get(pk=rec_ing_head_id)
+            recipe_heading.delete()
+        elif request.POST.get('heading'):
+            heading = request.POST.get('heading')
+            ingredients_num = request.POST.getlist('ingredient_id')
+            place = len(ingredients_num)
+            add_heading = RecipeIngredientsHeading(recipe_id=recipe_id, heading=heading, place=place)
+            add_heading.save()
         elif request.POST.getlist('edit_quantities'):
             ingredient_ids = request.POST.getlist('ingredient_id')
             quantities = request.POST.getlist('qty')
@@ -150,7 +163,6 @@ def edit_recipe(request, recipe_id):
             # Add new instruction
             if new_instruction[0] is not '':
                 new_isbold = request.POST.getlist('new_isbold')
-                print(new_isbold)
                 if not new_isbold:
                     new_isbold = False
                 else:
@@ -208,6 +220,10 @@ def edit_recipe(request, recipe_id):
             'amount': ingredient.amount,
             'recipe_ingredient_description': ingredient.description
             })
+    # Insert recipe ingredient headers
+    recipe_headers = RecipeIngredientsHeading.objects.all().filter(recipe_id=recipe_id)
+    for offset, rec_head in enumerate(recipe_headers):
+        recipe_ingredients.insert(rec_head.place+offset, {'heading':rec_head})
     # Get recipe instructions
     recipe_instructions = RecipeInstructions.objects.all().filter(recipe_id=recipe_id)
     # Get a list of all avaiable ingredients

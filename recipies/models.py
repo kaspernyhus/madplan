@@ -69,6 +69,14 @@ class RecipeIngredients(models.Model):
     return self.measurement_unit.unit_name
 
 
+class RecipeIngredientsHeading(models.Model):
+  class Meta:
+    verbose_name = 'Recipe Ingredient Heading'
+  recipe = models.ForeignKey(Recipies, on_delete=models.CASCADE)
+  heading = models.CharField(max_length=300, blank=True, null=True)
+  place = models.IntegerField(default=1)
+
+
 class RecipeInstructions(models.Model):
   class Meta:
     verbose_name = 'Recipe instruction'

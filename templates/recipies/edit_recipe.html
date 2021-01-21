@@ -28,6 +28,14 @@
     <form method="POST">
       {% csrf_token %}
       {% for recipe_ingredient in recipe_ingredients %}
+      {% if recipe_ingredient.heading %}
+      <tr style="background-color:hsl(214, 100%, 90%)">
+        <th>
+          <span class="bold-instr">{{ recipe_ingredient.heading.heading }}</span>
+          <button type="submit" class="delete_cross" id="delete_heading" name="delete_heading" value="{{recipe_ingredient.heading.id}}">x</button>
+        </th>
+      </tr>
+      {% else %}
       <tr>
         <td>
           <span>{{ recipe_ingredient.name }}</span>
@@ -46,9 +54,13 @@
           <button type="submit" class="delete_cross" id="delete_ingredient" name="delete_ingredient" value="{{recipe_ingredient.id}}">x</button>
         </td>
       </tr>
+      {% endif %}
       {% endfor %}
     </tbody>
   </table>
+  <div class="center">
+    <input type="text" id="heading" name="heading" value="" size="35" placeholder="Indsæt overskrift">
+  </div>
   <div class="center">
     <button type="submit" name="edit_quantities">Gem</button>
   </div>
