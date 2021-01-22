@@ -22,11 +22,11 @@
     <tbody class="table-body">
     {% for ingredient in ingredients %}
     {% if ingredient.heading %}
-    <tr style="background-color:hsl(214, 100%, 90%)">
-      <th>
+    </tbody>
+    <th style="background-color:hsl(214, 100%, 90%)">
         <span class="bold-instr">{{ingredient.heading}}</span>
-      </th>
-    </tr>
+    </th>
+    <tbody class="table-body">
     {% else %}
     <tr>
       <td>
