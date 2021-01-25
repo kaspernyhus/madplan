@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import *
-from todo.models import Task
+from todo.models import Shoppinglist, Task
 from recipies.models import Recipies
 from recipies.forms import RecipeTypeFilterBox
 from django.views.generic import DeleteView
@@ -47,7 +47,14 @@ def view_foodplan(request, foodplan_id):
     # Foodplan status
     status = FoodplanStatus.objects.get(foodplan_id=foodplan_id)
 
-    context = {'recipies': recipies, 'created_date': foodplan[0].date, 'foodplan_id': foodplan_id, 'status': status }
+    # Shoppinglist id
+    try:
+        shoppinglist_id_quary = Shoppinglist.objects.all().filter(list_source='foodplan', source_id=foodplan_id)
+        shoppinglist_id = shoppinglist_id_quary[0].id
+    except:
+        shoppinglist_id = 1
+
+    context = {'recipies': recipies, 'created_date': foodplan[0].date, 'foodplan_id': foodplan_id, 'status': status, 'shoppinglist_id': shoppinglist_id }
     return render(request, 'foodplans/foodplan.html', context)
 
 

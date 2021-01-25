@@ -4,6 +4,7 @@ from recipies.models import RecipeIngredients, Recipies
 from .models import Shoppinglist, Task
 from .forms import TaskForm
 from unit_conversion.unit_conversion import convert_amount
+from datetime import datetime
 
 
 def index(request):
@@ -11,9 +12,9 @@ def index(request):
   shoppinglists = []
   for shoppinglist in shoppinglists_quary:
     if shoppinglist.list_source == 'foodplan':
-      source_name = 'foodplan'
+      foodplan_quary = Foodplans.objects.all().filter(foodplan_id=shoppinglist.source_id)
+      source_name = 'Madplan ' + foodplan_quary[0].date.strftime("%d/%m/%Y")
     elif shoppinglist.list_source == 'recipe':
-      print(shoppinglist.source_id)
       recipe_quary = Recipies.objects.get(pk=shoppinglist.source_id)
       source_name = recipe_quary.name
     else:
