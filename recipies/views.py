@@ -41,11 +41,23 @@ def show_recipies(request):
     return render(request, 'recipies/index.html', context)
 
 
-def show_recipe(request, recipe_id):
+def show_recipe(request, recipe_id, qty_multiplier=1.0):
+    # Qty multiplier
+    if request.method == 'GET':
+        if request.GET.getlist('qtymultiplier'):
+            qty_multiplier = request.GET.getlist('qtymultiplier')
+            qty_multiplier = float(qty_multiplier[0])
     # Get recipe data
     recipe_data = Recipies.objects.all().filter(pk=recipe_id)
     for data in recipe_data:
-        recipe = {'id': data.id, 'name': data.name, 'date': data.date, 'description': data.description, 'photo_thumbnail': data.photo_thumbnail}
+        recipe = {
+            'id': data.id, 
+            'name': data.name, 
+            'date': data.date, 
+            'description': data.description, 
+            'photo_thumbnail': data.photo_thumbnail,
+            'qty_multiply': qty_multiplier
+            }
 
     # Get recipe ingredients
     recipe_ingredients = RecipeIngredients.objects.all().filter(recipe_id=recipe_id)
@@ -56,7 +68,7 @@ def show_recipe(request, recipe_id):
             'name': ingredient.get_ingredient_name(), 
             'description': ingredient.get_ingredient_description(),
             'unit': ingredient.get_unit_name(), 
-            'amount': ingredient.amount,
+            'amount': ingredient.amount * qty_multiplier,
             'recipe_ingredient_description': ingredient.description
             })
     # Insert recipe ingredient headers
@@ -178,7 +190,6 @@ def edit_recipe(request, recipe_id):
                 else:
                     rec_inst_object.is_bold = False
                 rec_inst_object.save()
-            
             # Update changed date for recipe
             recipe = Recipies.objects.get(pk=recipe_id)
             recipe.date = timezone.now()

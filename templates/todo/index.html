@@ -7,14 +7,17 @@
     <table class="center">
     <tbody class="table-body">
         <th>
-            Indkøbsliste for madplan oprettet:
+            Indkøbsliste oprettet:
         </th>
-        {% for foodplan in foodplans %}
+        {% for shoppinglist in shoppinglists %}
         <tr>
             <td>
-                <a href="{% url 'view_shoppinglist' foodplan.foodplan_id %}">
-                    <span>{{foodplan.date|date:'l d/m/Y' }}</span>
+                <a href="{% url 'view_shoppinglist' shoppinglist.quary.id %}">
+                    <span>{{shoppinglist.quary.created|date:'l d/m/Y' }}</span>
                 </a>
+            </td>
+            <td>
+                {{ shoppinglist.source_name }}
             </td>
 
         </tr>

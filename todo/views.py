@@ -1,26 +1,30 @@
 from django.shortcuts import render, redirect
 from foodplan.models import Foodplans, FoodplanStatus
-from recipies.models import RecipeIngredients
-from .models import Task
+from recipies.models import RecipeIngredients, Recipies
+from .models import Shoppinglist, Task
 from .forms import TaskForm
 from unit_conversion.unit_conversion import convert_amount
 
 
 def index(request):
-  all_foodplans = Foodplans.objects.all().order_by('-date')
-  # select most recent foodplan entry per foodplan (remove duplicates)
-  foodplans = []
-  seen_ids = []
-  for foodplan in all_foodplans:
-      if foodplan.foodplan_id not in seen_ids:
-          seen_ids.append(foodplan.foodplan_id)
-          foodplans.append(foodplan)
-  
-  context = {'foodplans': foodplans}
+  shoppinglists_quary = Shoppinglist.objects.all().order_by('-created')
+  shoppinglists = []
+  for shoppinglist in shoppinglists_quary:
+    if shoppinglist.list_source == 'foodplan':
+      source_name = 'foodplan'
+    elif shoppinglist.list_source == 'recipe':
+      print(shoppinglist.source_id)
+      recipe_quary = Recipies.objects.get(pk=shoppinglist.source_id)
+      source_name = recipe_quary.name
+    else:
+      source_name = 'None'
+    shoppinglists.append({'quary': shoppinglist, 'source_name': source_name})
+
+  context = {'shoppinglists': shoppinglists}
   return render(request, 'todo/index.html', context)
 
 
-def view_shoppinglist(request, foodplan_id):
+def view_shoppinglist(request, shoppinglist_id):
   if request.method == 'POST':
     if request.POST.getlist('delete_task'):
         task_id = request.POST.getlist('delete_task')
@@ -28,13 +32,14 @@ def view_shoppinglist(request, foodplan_id):
         task = Task.objects.get(pk=task_id)
         task.delete()
     else:
+      # add item to shoppinglist
       form = TaskForm(request.POST)
       if form.is_valid:
         form_tosave = form.save(commit=False)
-        form_tosave.foodplan = foodplan_id
+        form_tosave.shoppinglist_id = shoppinglist_id
         form_tosave.save()
   
-  tasks_quary = Task.objects.filter(foodplan=foodplan_id).order_by('ingredient_category__shop_order')
+  tasks_quary = Task.objects.filter(shoppinglist=shoppinglist_id).order_by('ingredient_category__shop_order')
   form = TaskForm()
 
   # ingredient categories in shoppinglist
@@ -54,27 +59,49 @@ def check_task(request, task_id):
   else:
     task.complete = True
     task.save()
-  return redirect('/todo/foodplan/'+str(task.foodplan))
+  return redirect('/todo/'+str(task.shoppinglist_id))
 
 
-def create_shoppinglist(request, foodplan_id):
-  foodplan_recipies = Foodplans.objects.filter(foodplan_id=foodplan_id)
+def create_shoppinglist(request, id, source):
+  # Create shoppinglist entry
+  new_shoppinglist = Shoppinglist(list_source=source, source_id=id)
+  new_shoppinglist.save()
   ingredient_list = []
-  for recipe in foodplan_recipies:
-    recipe_ingredients = RecipeIngredients.objects.filter(recipe_id=recipe.recipe_id)
+  if source == 'foodplan':
+    # Mark foodplan as compete (disables editing)
+    status = FoodplanStatus(pk=id)
+    status.complete = True
+    status.save()
+    
+    foodplan_recipies = Foodplans.objects.filter(foodplan_id=id)
+    for recipe in foodplan_recipies:
+      recipe_ingredients = RecipeIngredients.objects.filter(recipe_id=recipe.recipe_id)
+      for ingredient in recipe_ingredients:
+        ingredient_list.append({
+          'id': ingredient.ingredient_id,
+          'name': ingredient.get_ingredient_name(),
+          'ingredient_description': ingredient.get_ingredient_description(),
+          'ingredient_id': ingredient.ingredient_id,
+          'ingredient_category': ingredient.get_ingredient_category(),
+          'unit': ingredient.measurement_unit.id, 
+          'unit_name':ingredient.get_unit_name(), 
+          'amount': ingredient.amount,
+          'recipe_ingredient_description': ingredient.description
+          })
+  elif source == 'recipe':
+    recipe_ingredients = RecipeIngredients.objects.filter(recipe_id=id)
     for ingredient in recipe_ingredients:
-      ingredient_list.append({
-        'id': ingredient.ingredient_id,
-        'name': ingredient.get_ingredient_name(),
-        'ingredient_description': ingredient.get_ingredient_description(),
-        'ingredient_id': ingredient.ingredient_id,
-        'ingredient_category': ingredient.get_ingredient_category(),
-        'unit': ingredient.measurement_unit.id, 
-        'unit_name':ingredient.get_unit_name(), 
-        'amount': ingredient.amount,
-        'recipe_ingredient_description': ingredient.description
-        })
-
+        ingredient_list.append({
+          'id': ingredient.ingredient_id,
+          'name': ingredient.get_ingredient_name(),
+          'ingredient_description': ingredient.get_ingredient_description(),
+          'ingredient_id': ingredient.ingredient_id,
+          'ingredient_category': ingredient.get_ingredient_category(),
+          'unit': ingredient.measurement_unit.id, 
+          'unit_name':ingredient.get_unit_name(), 
+          'amount': ingredient.amount,
+          'recipe_ingredient_description': ingredient.description
+          })
   # Consolidate ingredient list
   consolidated_list = []
   for ingredient_dict in ingredient_list:
@@ -137,12 +164,7 @@ def create_shoppinglist(request, foodplan_id):
       # Make string
       shopping_text = amount + unit + ' ' + str(ingredient['name']) + ' ' + ingredient_description + ' ' + recipe_ingredient_description
       # Make db entry
-      shopping_task = Task(title=shopping_text, ingredient_category=ingredient['ingredient_category'], foodplan=foodplan_id)
+      shopping_task = Task(title=shopping_text, ingredient_category=ingredient['ingredient_category'], shoppinglist=new_shoppinglist)
       shopping_task.save()
 
-  # Mark foodplan as compete (disables editing)
-  status = FoodplanStatus(pk=foodplan_id)
-  status.complete = True
-  status.save()
-
-  return redirect('/todo/foodplan/'+str(foodplan_id))
+  return redirect('/todo/'+str(new_shoppinglist.id))
