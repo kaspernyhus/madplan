@@ -48,7 +48,7 @@
         </td>
         <td>
           <input type="number" id="qty" name="qty" value="{{ recipe_ingredient.amount|unlocalize }}" lang="us-en" min="0" max="1000" step="0.1"> {{ recipe_ingredient.unit }}
-          <input type="hidden" id="ingredient_id" name="ingredient_id" value="{{ recipe_ingredient.ingredients_id }}">
+          <input type="hidden" id="recipe_ingredient_id" name="recipe_ingredient_id" value="{{ recipe_ingredient.id }}">
         </td>
         <td>
           <button type="submit" class="delete_cross" id="delete_ingredient" name="delete_ingredient" value="{{recipe_ingredient.id}}">x</button>

@@ -83,7 +83,6 @@ def new_recipe(request):
 
 def edit_recipe(request, recipe_id):
     if request.method == 'POST':
-        print(request.POST)
         if request.POST.getlist('delete_ingredient'):
             RecipeIngredient_id = request.POST.getlist('delete_ingredient')
             RecipeIngredient_id = int(RecipeIngredient_id[0])
@@ -140,10 +139,10 @@ def edit_recipe(request, recipe_id):
             add_heading = RecipeIngredientsHeading(recipe_id=recipe_id, heading=heading, place=place)
             add_heading.save()
         elif request.POST.getlist('edit_quantities'):
-            ingredient_ids = request.POST.getlist('ingredient_id')
+            recipe_ingredients_ids = request.POST.getlist('recipe_ingredient_id')
             quantities = request.POST.getlist('qty')
-            for i, ingredient_id in enumerate(ingredient_ids):
-                ingredient = RecipeIngredients.objects.get(recipe_id=recipe_id, ingredient=ingredient_id)
+            for i, recipe_ingredient_id in enumerate(recipe_ingredients_ids):
+                ingredient = RecipeIngredients.objects.get(pk=recipe_ingredient_id)
                 ingredient.amount = quantities[i]
                 ingredient.save()
             # Update changes date for recipe
@@ -167,7 +166,6 @@ def edit_recipe(request, recipe_id):
                     new_isbold = False
                 else:
                     new_isbold = True
-                print(new_isbold)
                 next_step = step+1
                 new_line = RecipeInstructions(recipe_id=recipe_id, step=next_step, description=new_instruction[0], is_bold=new_isbold)
                 new_line.save()
