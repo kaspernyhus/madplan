@@ -19,12 +19,12 @@
         {% for foodplan in foodplans %}
         <tr>
             <td>
-                <a href="{% url 'view_foodplan' foodplan.foodplan_id %}">
+                <a href="{% url 'view_foodplan' foodplan.id %}">
                     <span>{{foodplan.date|date:'l d/m/Y' }}</span>
                 </a>
             </td>
             <td>
-                <a href="{% url 'delete_foodplan' foodplan.foodplan_id %}">
+                <a href="{% url 'delete_foodplan' foodplan.id %}">
                     <span>slet</span>
                 </a>
             </td>

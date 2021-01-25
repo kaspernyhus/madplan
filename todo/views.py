@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from foodplan.models import Foodplans, FoodplanStatus
+from foodplan.models import FoodplanRecipies, Foodplans
 from recipies.models import RecipeIngredients, Recipies
 from .models import Shoppinglist, Task
 from .forms import TaskForm
@@ -12,8 +12,8 @@ def index(request):
   shoppinglists = []
   for shoppinglist in shoppinglists_quary:
     if shoppinglist.list_source == 'foodplan':
-      foodplan_quary = Foodplans.objects.all().filter(foodplan_id=shoppinglist.source_id)
-      source_name = 'Madplan ' + foodplan_quary[0].date.strftime("%d/%m/%Y")
+      #foodplan_quary = FoodplanRecipies.objects.all().filter(foodplan_id=shoppinglist.source_id)
+      source_name = 'Madplan'
     elif shoppinglist.list_source == 'recipe':
       recipe_quary = Recipies.objects.get(pk=shoppinglist.source_id)
       source_name = recipe_quary.name
@@ -70,11 +70,11 @@ def create_shoppinglist(request, id, source):
   ingredient_list = []
   if source == 'foodplan':
     # Mark foodplan as compete (disables editing)
-    status = FoodplanStatus(pk=id)
-    status.complete = True
-    status.save()
-    
-    foodplan_recipies = Foodplans.objects.filter(foodplan_id=id)
+    foodplan = Foodplans.objects.get(pk=id)
+    foodplan.complete = True
+    foodplan.save()
+    # Get foodplan recipies
+    foodplan_recipies = FoodplanRecipies.objects.filter(foodplan_id=id)
     for recipe in foodplan_recipies:
       recipe_ingredients = RecipeIngredients.objects.filter(recipe_id=recipe.recipe_id)
       for ingredient in recipe_ingredients:
@@ -169,3 +169,19 @@ def create_shoppinglist(request, id, source):
       shopping_task.save()
 
   return redirect('/todo/'+str(new_shoppinglist.id))
+
+
+def delete_shoppinglist(request, id):
+  shoppinglist = Shoppinglist.objects.get(pk=id)
+
+  if shoppinglist.list_source == 'foodplan':
+    # re-enable compile shoppinglist
+    foodplan = Foodplans.objects.get(pk=shoppinglist.source_id)
+    foodplan.complete = False
+    foodplan.save()
+
+  shoppinglist.delete()
+
+
+
+  return redirect('/todo/')

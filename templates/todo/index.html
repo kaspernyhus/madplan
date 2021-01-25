@@ -19,6 +19,11 @@
             <td>
                 {{ shoppinglist.source_name }}
             </td>
+            <td>
+                <a href="{% url 'delete_shoppinglist' shoppinglist.quary.id %}">
+                    <span>slet</span>
+                </a>
+            </td>
 
         </tr>
         {% endfor %}
