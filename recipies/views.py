@@ -24,7 +24,12 @@ def show_recipies(request):
         form = RecipeTypeFilterBox(initial={'tags': filter_by})
     elif request.GET.get('search_box'):
         search_query = request.GET.get('search_box')
+        search_quaries = search_query.split()
         recipies_query = Recipies.objects.filter(Q(name__contains=search_query) | Q(description__contains=search_query))
+        # if search is more than one word, make a db quary pr word and OR into quaryset
+        for quary in search_quaries:
+            _recipies_query = Recipies.objects.filter(Q(name__contains=quary) | Q(description__contains=quary))
+            recipies_query |= _recipies_query
         form = RecipeTypeFilterBox()
     else:
         recipies_query = Recipies.objects.all()
