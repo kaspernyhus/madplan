@@ -146,7 +146,7 @@ def edit_recipe(request, recipe_id):
             recipe_heading.delete()
         elif request.POST.get('heading'):
             heading = request.POST.get('heading')
-            ingredients_num = request.POST.getlist('ingredient_id')
+            ingredients_num = request.POST.getlist('recipe_ingredient_id')
             place = len(ingredients_num)
             add_heading = RecipeIngredientsHeading(recipe_id=recipe_id, heading=heading, place=place)
             add_heading.save()
