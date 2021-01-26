@@ -85,13 +85,13 @@ h1, .h1 {
   background-color: rgb(251, 253, 255);
   border: 2px solid black;
   color: black;
-  padding: 16px 44px;
+  padding: 8px 22px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 135%;
   width: 100%;
-  max-width: 240px;
+  max-width: 180px;
   transition: all 170ms ease-in-out;
   cursor: pointer;
   box-sizing: border-box;

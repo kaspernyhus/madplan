@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import *
-from .forms import NewRecipeForm, RecipeTypeFilterBox, RecipeTagsForm
+from .forms import EditRecipeNameForm, NewRecipeForm, RecipeTypeFilterBox, RecipeTagsForm
 from recipies.models import Recipies, RecipeTags
 from datetime import datetime
 from django.utils import timezone
@@ -247,3 +247,19 @@ def edit_recipe(request, recipe_id):
     context = {'recipe': recipe_data, 'recipe_ingredients': recipe_ingredients, 'instructions': recipe_instructions, 'all_ingredients': all_ingredients_quary, 'units': units, 'form': form}
     return render(request, 'recipies/edit_recipe.html', context)
 
+
+def edit_recipe_name(request, recipe_id):
+    recipe = Recipies.objects.get(pk=recipe_id)
+
+    if request.method == 'POST':
+        form = EditRecipeNameForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            description = form.cleaned_data['description']
+            recipe.name = name
+            recipe.description = description
+            recipe.save()
+        return redirect('/recipies/edit/'+str(recipe_id))
+
+    form = EditRecipeNameForm(initial={'name':recipe.name, 'description': recipe.description})
+    return render(request, 'recipies/edit_name.html', {'form': form})

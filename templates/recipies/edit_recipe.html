@@ -9,6 +9,7 @@
   <span class="recipe-header">
     <a href="{% url 'show_recipe' recipe.id %}" class="header"><h1 class="header">{{ recipe.name }}</h1></a>
     <p class="subheader">{{ recipe.description }}</p>
+    <a href="{% url 'edit_recipe_name' recipe.id %}">rediger</a>
   </span>
 </div>
 

@@ -31,6 +31,25 @@ class NewRecipeForm(forms.ModelForm):
     }
 
 
+class EditRecipeNameForm(forms.ModelForm):
+  class Meta:
+    model = Recipies
+
+    fields = (
+      'name',
+      'description',
+    )
+    labels = {
+      'name': '',
+      'description': '',
+    }
+    widgets = {
+      'name': forms.TextInput(attrs={'placeholder': 'Overskrift..', 'size': 30}),
+      'description': forms.Textarea(
+          attrs={'cols':30, 'rows': 3, 'placeholder': 'Beskrivelse..'}),
+    }
+
+
 class RecipeTypeFilterBox(forms.ModelForm):
   class Meta:
     model = Recipies
