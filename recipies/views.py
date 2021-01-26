@@ -5,6 +5,7 @@ from recipies.models import Recipies, RecipeTags
 from datetime import datetime
 from django.utils import timezone
 from random import shuffle
+from django.db.models import Q
 
 
 def show_recipies(request):
@@ -21,6 +22,10 @@ def show_recipies(request):
         filter_by = request.GET.get('tags')
         recipies_query = Recipies.objects.filter(tags=filter_by)
         form = RecipeTypeFilterBox(initial={'tags': filter_by})
+    elif request.GET.get('search_box'):
+        search_query = request.GET.get('search_box')
+        recipies_query = Recipies.objects.filter(Q(name__contains=search_query) | Q(description__contains=search_query))
+        form = RecipeTypeFilterBox()
     else:
         recipies_query = Recipies.objects.all()
         form = RecipeTypeFilterBox()
