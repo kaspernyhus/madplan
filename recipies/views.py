@@ -25,7 +25,15 @@ def show_recipies(request):
     elif request.GET.get('search_box'):
         search_query = request.GET.get('search_box')
         search_quaries = search_query.split()
+        # Search recipies name and description
         recipies_query = Recipies.objects.filter(Q(name__contains=search_query) | Q(description__contains=search_query))
+        # Search for recipies with ingredient names
+        ingredient_name_ids = Ingredients.objects.filter(name__contains=search_query)
+        for ingredient_name_id in ingredient_name_ids:
+            ingredients_query = RecipeIngredients.objects.filter(ingredient_id=ingredient_name_id)
+            for recipe_ingredient in ingredients_query:
+                _recipies_query = Recipies.objects.filter(pk=recipe_ingredient.recipe_id)
+                recipies_query |= _recipies_query
         # if search is more than one word, make a db quary pr word and OR into quaryset
         for quary in search_quaries:
             _recipies_query = Recipies.objects.filter(Q(name__contains=quary) | Q(description__contains=quary))
