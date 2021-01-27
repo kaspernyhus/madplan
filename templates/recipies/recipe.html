@@ -26,7 +26,7 @@
           <input type="number" class="qty-multiplier" value="{{ qty_multiplier|unlocalize }}" lang="us-en" name="qtymultiplier" id="qtymultiplier" min="0" max="10" step="0.5">
           <label id="qty_multiplier">portioner</label>
         </form>
-          <a href="{% url 'create_shoppinglist' recipe.id 'recipe' %}" class="sml-button">Opret indkøbsseddel</a>
+          <a href="{% url 'create_shoppinglist' recipe.id 'recipe' qty_multiplier %}" class="sml-button">Opret indkøbsseddel</a>
       </div>
     </div>
 

@@ -19,21 +19,22 @@ def view_foodplan(request, foodplan_id):
     if request.method == 'POST':
         if request.POST.getlist('delete_recipe'):
             recipe_id = request.POST.getlist('delete_recipe')
-            foodplan = Foodplans.objects.get(foodplan_id=foodplan_id, recipe_id=recipe_id[0])
+            foodplan = Foodplans.objects.get(pk=foodplan_id)
             foodplan.delete()
         elif request.POST.getlist('edit_quantity'):
-            recipe_ids = request.POST.getlist('recipe_id')
+            foodplanrecipies_ids = request.POST.getlist('foodplanrecipies_id')
             quantities = request.POST.getlist('qty')
-            for i, recipe_id in enumerate(recipe_ids):
-                foodplan = Foodplans.objects.get(foodplan_id=foodplan_id, recipe_id=recipe_id)
+            for i, foodplanrecipies_id in enumerate(foodplanrecipies_ids):
+                foodplan = FoodplanRecipies.objects.get(pk=foodplanrecipies_id)
                 foodplan.quantity = quantities[i]
                 foodplan.save()
+
     # Get the recipies currently in active foodplan
     foodplan = FoodplanRecipies.objects.all().filter(foodplan_id=foodplan_id)
     recipies = []
     for recipe in foodplan:
         recipe_obj = Recipies.objects.get(pk=recipe.recipe_id)
-        recipies.append({'recipe_obj': recipe_obj, 'quantity': recipe.quantity})
+        recipies.append({'recipe_obj': recipe_obj, 'foodplan_obj': recipe})
     if not recipies: # if there is no more recipies in current foodplan
         return redirect('/foodplans/')
     # Foodplan entry

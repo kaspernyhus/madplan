@@ -63,7 +63,12 @@ def check_task(request, task_id):
   return redirect('/todo/'+str(task.shoppinglist_id))
 
 
-def create_shoppinglist(request, id, source):
+def create_shoppinglist(request, id, source, qty=1.0):
+  print('----------------------')
+  print(qty, type(qty))
+  
+  print('----------------------')
+
   # Create shoppinglist entry
   new_shoppinglist = Shoppinglist(list_source=source, source_id=id)
   new_shoppinglist.save()
@@ -86,10 +91,11 @@ def create_shoppinglist(request, id, source):
           'ingredient_category': ingredient.get_ingredient_category(),
           'unit': ingredient.measurement_unit.id, 
           'unit_name':ingredient.get_unit_name(), 
-          'amount': ingredient.amount,
+          'amount': ingredient.amount * recipe.quantity,
           'recipe_ingredient_description': ingredient.description
           })
   elif source == 'recipe':
+    qty = float(qty)
     recipe_ingredients = RecipeIngredients.objects.filter(recipe_id=id)
     for ingredient in recipe_ingredients:
         ingredient_list.append({
@@ -100,7 +106,7 @@ def create_shoppinglist(request, id, source):
           'ingredient_category': ingredient.get_ingredient_category(),
           'unit': ingredient.measurement_unit.id, 
           'unit_name':ingredient.get_unit_name(), 
-          'amount': ingredient.amount,
+          'amount': ingredient.amount * qty,
           'recipe_ingredient_description': ingredient.description
           })
   # Consolidate ingredient list

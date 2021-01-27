@@ -59,16 +59,6 @@ def show_recipe(request, recipe_id, qty_multiplier=1.0):
             qty_multiplier = float(qty_multiplier[0])
     # Get recipe data
     recipe = Recipies.objects.get(pk=recipe_id)
-    # for data in recipe_data:
-    #     recipe = {
-    #         'id': data.id, 
-    #         'name': data.name, 
-    #         'date': data.date, 
-    #         'description': data.description, 
-    #         'photo_thumbnail': data.photo_thumbnail,
-    #         'qty_multiply': qty_multiplier
-    #         }
-
     # Get recipe ingredients
     recipe_ingredients = RecipeIngredients.objects.all().filter(recipe_id=recipe_id)
     recipe_headers = RecipeIngredientsHeading.objects.all().filter(recipe_id=recipe_id)
@@ -213,21 +203,8 @@ def edit_recipe(request, recipe_id):
             recipe.prep_time = prep_time
             recipe.URL = new_URL
             recipe.save()
-
-    
     # Get recipe data
     recipe_data = Recipies.objects.get(pk=recipe_id)
-    # recipe_data = []
-    # for data in recipe_data_quary:
-    #     recipe_data = {
-    #         'id': data.id, 
-    #         'name': data.name, 
-    #         'date': data.date, 
-    #         'description': data.description, 
-    #         'photo_thumbnail': data.photo_thumbnail, 
-    #         'tags': data.tags,
-    #         'prep_time': data.prep_time
-    #         }
     # Get info on the ingredients in the recipe
     recipe_ingredients_quary = RecipeIngredients.objects.all().filter(recipe_id=recipe_id)
     recipe_ingredients = []

@@ -14,7 +14,7 @@
 
 {% if not complete %}
 <h4 class="header">
-    <a href="{% url 'create_shoppinglist' foodplan_id 'foodplan' %}">
+    <a href="{% url 'create_shoppinglist' foodplan_id 'foodplan' '1' %}">
     <span>
        Opret indkøbsliste
         <p class="sub-text">madplanen kan ikke længere redigeres</p>
@@ -32,15 +32,15 @@
         <tr>
             <td>
                 <a href="{% url 'show_recipe' recipe.recipe_obj.id %}">
-                    <span>{{recipe.recipe_obj.name}}</span>
+                    <span>{{ recipe.recipe_obj.name }}</span>
                 </a>
             </td>
             <td>
-                <input type="number" id="qty" value="{{recipe.quantity}}" name="qty" min="1" max="5">
-                <input type="hidden" id="recipe_id" name="recipe_id" value="{{recipe.recipe_obj.id}}">
+                <input type="number" id="qty" value="{{ recipe.foodplan_obj.quantity }}" name="qty" min="1" max="5">
+                <input type="hidden" id="foodplanrecipies_id" name="foodplanrecipies_id" value="{{ recipe.foodplan_obj.id }}">
             </td>
             <td>
-                <button type="submit" class="delete_cross" name="delete_recipe" value="{{recipe.recipe_obj.id}}">x</button>
+                <button type="submit" class="delete_cross" name="delete_recipe" value="{{ recipe.foodplan_obj.id }}">x</button>
             </td>
         </tr>
         {% endfor %}  
