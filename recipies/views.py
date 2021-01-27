@@ -58,16 +58,16 @@ def show_recipe(request, recipe_id, qty_multiplier=1.0):
             qty_multiplier = request.GET.getlist('qtymultiplier')
             qty_multiplier = float(qty_multiplier[0])
     # Get recipe data
-    recipe_data = Recipies.objects.all().filter(pk=recipe_id)
-    for data in recipe_data:
-        recipe = {
-            'id': data.id, 
-            'name': data.name, 
-            'date': data.date, 
-            'description': data.description, 
-            'photo_thumbnail': data.photo_thumbnail,
-            'qty_multiply': qty_multiplier
-            }
+    recipe = Recipies.objects.get(pk=recipe_id)
+    # for data in recipe_data:
+    #     recipe = {
+    #         'id': data.id, 
+    #         'name': data.name, 
+    #         'date': data.date, 
+    #         'description': data.description, 
+    #         'photo_thumbnail': data.photo_thumbnail,
+    #         'qty_multiply': qty_multiplier
+    #         }
 
     # Get recipe ingredients
     recipe_ingredients = RecipeIngredients.objects.all().filter(recipe_id=recipe_id)
@@ -207,25 +207,27 @@ def edit_recipe(request, recipe_id):
         elif request.POST.getlist('edit_tags'):
             tags = request.POST.getlist('tags')
             prep_time = request.POST.get('prep_time')
+            new_URL = request.POST.get('URL')
             recipe = Recipies.objects.get(pk=recipe_id)
             recipe.tags.set(tags)
             recipe.prep_time = prep_time
+            recipe.URL = new_URL
             recipe.save()
 
     
     # Get recipe data
-    recipe_data_quary = Recipies.objects.all().filter(pk=recipe_id)
-    recipe_data = []
-    for data in recipe_data_quary:
-        recipe_data = {
-            'id': data.id, 
-            'name': data.name, 
-            'date': data.date, 
-            'description': data.description, 
-            'photo_thumbnail': data.photo_thumbnail, 
-            'tags': data.tags,
-            'prep_time': data.prep_time
-            }
+    recipe_data = Recipies.objects.get(pk=recipe_id)
+    # recipe_data = []
+    # for data in recipe_data_quary:
+    #     recipe_data = {
+    #         'id': data.id, 
+    #         'name': data.name, 
+    #         'date': data.date, 
+    #         'description': data.description, 
+    #         'photo_thumbnail': data.photo_thumbnail, 
+    #         'tags': data.tags,
+    #         'prep_time': data.prep_time
+    #         }
     # Get info on the ingredients in the recipe
     recipe_ingredients_quary = RecipeIngredients.objects.all().filter(recipe_id=recipe_id)
     recipe_ingredients = []
@@ -252,7 +254,7 @@ def edit_recipe(request, recipe_id):
     # Tags form
     tags_query = RecipeTags.objects.all().filter(recipies=recipe_id)
     tags = [object.id for object in tags_query]
-    form = RecipeTagsForm(initial={'tags':tags, 'prep_time': recipe_data['prep_time']})
+    form = RecipeTagsForm(initial={'tags':tags, 'prep_time': recipe_data.prep_time, 'URL': recipe_data.URL})
 
     context = {'recipe': recipe_data, 'recipe_ingredients': recipe_ingredients, 'instructions': recipe_instructions, 'all_ingredients': all_ingredients_quary, 'units': units, 'form': form}
     return render(request, 'recipies/edit_recipe.html', context)

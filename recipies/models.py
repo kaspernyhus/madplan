@@ -33,6 +33,7 @@ class Recipies(models.Model):
   photo_thumbnail = models.ImageField(upload_to='photos/thumbnails/', blank=True)
   tags = models.ManyToManyField(RecipeTags)
   prep_time = models.CharField(max_length=6, blank=True, null=True)
+  URL = models.URLField(max_length=200, blank=True, null=True)
 
   def __str__(self):
     return self.name

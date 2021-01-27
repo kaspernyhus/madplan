@@ -71,7 +71,13 @@
       
       {% endfor %}
     </ul>
+    <div class="center">
+      {% if recipe.URL %}
+        <a href="{{ recipe.URL }}" target="_blank">{{ recipe.URL }}</a>
+      {% endif %}
+    </div>
   </div>
+
 
   <br>
   <a href="{% url 'edit_recipe' recipe.id %}" class="center">Rediger opskrift</a>

@@ -16,12 +16,14 @@ class NewRecipeForm(forms.ModelForm):
       'description',
       'recipe_type',
       'tags',
+      'URL',
       'photo_thumbnail',
     )
     labels = {
       'name': '',
       'description': '',
       'recipe_type': 'Type',
+      'URL': 'Website',
       'photo_thumbnail': '',
     }
     widgets = {
@@ -76,11 +78,13 @@ class RecipeTagsForm(forms.ModelForm):
 
     fields = (
       'tags',
-      'prep_time'
+      'prep_time',
+      'URL'
     )
     labels = {
       'tags': '',
-      'prep_time': ''
+      'prep_time': '',
+      'URL': 'Website'
     }
     widgets = {
       'prep_time': forms.TextInput(attrs={'size': 6}),
