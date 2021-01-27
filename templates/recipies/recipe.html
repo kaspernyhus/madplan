@@ -23,7 +23,7 @@
     <div class="center">
       <div class="flex">
         <form method="GET" name="qtymultiplier" action="{% url 'show_recipe' recipe.id %}">
-          <input type="number" class="qty-multiplier" value="{{ recipe.qty_multiply|unlocalize }}" lang="us-en" name="qtymultiplier" id="qtymultiplier" min="0" max="10" step="0.5">
+          <input type="number" class="qty-multiplier" value="{{ qty_multiplier|unlocalize }}" lang="us-en" name="qtymultiplier" id="qtymultiplier" min="0" max="10" step="0.5">
           <label id="qty_multiplier">portioner</label>
         </form>
           <a href="{% url 'create_shoppinglist' recipe.id 'recipe' %}" class="sml-button">Opret indkøbsseddel</a>

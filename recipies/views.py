@@ -88,7 +88,7 @@ def show_recipe(request, recipe_id, qty_multiplier=1.0):
 
     recipe_instructions = RecipeInstructions.objects.all().filter(recipe_id=recipe_id)
 
-    context = {'recipe': recipe, 'ingredients': ingredients, 'instructions': recipe_instructions}
+    context = {'recipe': recipe, 'ingredients': ingredients, 'instructions': recipe_instructions, 'qty_multiplier': qty_multiplier}
     return render(request, 'recipies/recipe.html', context)
 
 
