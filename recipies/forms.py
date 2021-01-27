@@ -40,15 +40,18 @@ class EditRecipeNameForm(forms.ModelForm):
     fields = (
       'name',
       'description',
+      'prep_time',
     )
     labels = {
       'name': '',
       'description': '',
+      'prep_time': '',
     }
     widgets = {
       'name': forms.TextInput(attrs={'placeholder': 'Overskrift..', 'size': 30}),
       'description': forms.Textarea(
           attrs={'cols':30, 'rows': 3, 'placeholder': 'Beskrivelse..'}),
+      'prep_time': forms.TextInput(attrs={'placeholder': '0:00', 'size': 6}),
     }
 
 
@@ -78,14 +81,10 @@ class RecipeTagsForm(forms.ModelForm):
 
     fields = (
       'tags',
-      'prep_time',
       'URL'
     )
     labels = {
       'tags': '',
-      'prep_time': '',
       'URL': 'Website'
     }
-    widgets = {
-      'prep_time': forms.TextInput(attrs={'size': 6}),
-    }
+  

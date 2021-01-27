@@ -204,11 +204,9 @@ def edit_recipe(request, recipe_id):
             recipe.save()
         elif request.POST.getlist('edit_tags'):
             tags = request.POST.getlist('tags')
-            prep_time = request.POST.get('prep_time')
             new_URL = request.POST.get('URL')
             recipe = Recipies.objects.get(pk=recipe_id)
             recipe.tags.set(tags)
-            recipe.prep_time = prep_time
             recipe.URL = new_URL
             recipe.save()
     # Get recipe data
@@ -253,10 +251,18 @@ def edit_recipe_name(request, recipe_id):
         if form.is_valid():
             name = form.cleaned_data['name']
             description = form.cleaned_data['description']
+            prep_time = form.cleaned_data['prep_time']
             recipe.name = name
             recipe.description = description
+            recipe.prep_time = prep_time
             recipe.save()
         return redirect('/recipies/edit/'+str(recipe_id))
 
-    form = EditRecipeNameForm(initial={'name':recipe.name, 'description': recipe.description})
+    form = EditRecipeNameForm(initial={'name':recipe.name, 'description': recipe.description, 'prep_time': recipe.prep_time})
     return render(request, 'recipies/edit_name.html', {'form': form})
+
+
+def delete_recipe(request, recipe_id):
+    recipe = Recipies.objects.get(pk=recipe_id)
+    recipe.delete()
+    return redirect('/')
