@@ -60,7 +60,7 @@
         <span>{% if ingredient.recipe_ingredient_description %} {{ingredient.recipe_ingredient_description}} {% endif %}</span>
       </td>
       <td>
-        <span>{{ingredient.amount}} {{ingredient.unit}}</span>
+        <span>{{ ingredient.amount|floatformat:2 }} {{ingredient.unit}}</span>
       </td>
     </tr>
     {% endif %}
