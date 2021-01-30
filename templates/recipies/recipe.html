@@ -40,44 +40,43 @@
     </div>
 
     <table class="center">
-    <tbody class="table-body">
-    {% for ingredient in ingredients %}
-    {% if ingredient.heading %}
-    </tbody>
-    <th style="background-color:hsl(214, 100%, 90%)">
-        <span class="bold-instr">{{ingredient.heading}}</span>
-    </th>
-    <tbody class="table-body">
-    {% else %}
-    <tr>
-      <td>
-        <span>{{ingredient.name}}</span>
-      </td>
-      <td>
-        <span>{% if ingredient.description %} {{ingredient.description}} {% endif %}</span>
-      </td>
-      <td>
-        <span>{% if ingredient.recipe_ingredient_description %} {{ingredient.recipe_ingredient_description}} {% endif %}</span>
-      </td>
-      <td>
-        <span>{{ ingredient.amount|floatformat:2 }} {{ingredient.unit}}</span>
-      </td>
-    </tr>
-    {% endif %}
-    {% endfor %}
-    </tbody>
+      <tbody class="table-body">
+      {% for ingredient in ingredients %}
+        {% if ingredient.heading %}
+          </tbody>
+            <th style="background-color:hsl(214, 100%, 90%)">
+              <span class="bold-instr">{{ingredient.heading}}</span>
+            </th>
+          <tbody class="table-body">
+        {% else %}
+          <tr>
+            <td>
+              <span>{{ingredient.name}}</span>
+            </td>
+            <td>
+              <span>{% if ingredient.description %} {{ingredient.description}} {% endif %}</span>
+            </td>
+            <td>
+              <span>{% if ingredient.recipe_ingredient_description %} {{ingredient.recipe_ingredient_description}} {% endif %}</span>
+            </td>
+            <td>
+              <span>{{ ingredient.amount|floatformat:2 }} {{ingredient.unit}}</span>
+            </td>
+          </tr>
+        {% endif %}
+      {% endfor %}
+      </tbody>
     </table>
   </div>
 
   <div id="Block2" class="center container">
     <ul class="center no-margin-top">
       {% for instruction in instructions %}
-      {% if instruction.is_bold %}
-      <li class="instructions bold-instr"> <b>{{ instruction.description }}</b> </li>
-      {% else %}
-      <li class="instructions">{{ instruction.description }}</li>
-      {% endif %}
-      
+        {% if instruction.is_bold %}
+          <li class="instructions bold-instr"> <b>{{ instruction.description }}</b> </li>
+        {% else %}
+          <li class="instructions">{{ instruction.description }}</li>
+        {% endif %}
       {% endfor %}
     </ul>
     <div class="center">
@@ -88,10 +87,55 @@
   </div>
 
 
-  <br>
-  <a href="{% url 'edit_recipe' recipe.id %}" class="center">Rediger opskrift</a>
-  <p class="small-text">Ændret {{recipe.date|date:'d/m/Y'}}</p>
+  <!-- iPad layout -->
+  <div id="Block3" class="ipad-view">
+    <div class="ipad-layout-left">
+      <table class="">
+        <tbody class="table-body">
+        {% for ingredient in ingredients %}
+          {% if ingredient.heading %}
+            </tbody>
+              <th style="background-color:hsl(214, 100%, 90%)">
+                <span class="bold-instr">{{ingredient.heading}}</span>
+              </th>
+            <tbody class="">
+          {% else %}
+            <tr class="no-color-change">
+              <td class="td-ipad">
+                <span>{{ ingredient.amount|floatformat:2 }} {{ingredient.unit}} {{ingredient.name}}{% if ingredient.description %}, {{ingredient.description}} {% endif %} {% if ingredient.recipe_ingredient_description %} {{ingredient.recipe_ingredient_description}} {% endif %}</span>
+              </td>
+            </tr>
+          {% endif %}
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
 
+    <div class="ipad-layout-right">
+      <ul class="center no-margin-top">
+        {% for instruction in instructions %}
+          {% if instruction.is_bold %}
+            <li class="instructions bold-instr"> <b>{{ instruction.description }}</b> </li>
+          {% else %}
+            <li class="instructions">{{ instruction.description }}</li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+
+      
+    </div>
+  </div>
+
+
+  <div class="center">
+    <br>
+    <button class="sml-button" id="but3" onclick="showBlock3()">bog-layout</button>
+  </div>
+  <br>
+  <div class="center" id="edit">
+    <a href="{% url 'edit_recipe' recipe.id %}" class="center">Rediger opskrift</a>
+    <p class="small-text">Ændret {{recipe.date|date:'d/m/Y'}}</p>
+  </div>
 </div>
 
 
@@ -99,26 +143,55 @@
   function showBlock1() {
     var block1 = document.getElementById("Block1");
     var block2 = document.getElementById("Block2");
+    var block3 = document.getElementById("Block3");
+    var blockedit = document.getElementById("edit");
     var but1 = document.getElementById("but1")
     var but2 = document.getElementById("but2")
+    var but3 = document.getElementById("but3")
     but1.classList.add('active');
     but2.classList.remove('active');
+    but3.style.display = "block";
     block1.style.display = "block";
     block2.style.display = "none";
+    block3.style.display = "none";
+    blockedit.style.display = "flex"
   }
   window.onload = showBlock1;
 </script>
-
 <script>
   function showBlock2() {
     var block1 = document.getElementById("Block1");
     var block2 = document.getElementById("Block2");
+    var block3 = document.getElementById("Block3");
+    var blockedit = document.getElementById("edit");
     var but1 = document.getElementById("but1")
     var but2 = document.getElementById("but2")
+    var but3 = document.getElementById("but3")
     but1.classList.remove('active');
     but2.classList.add('active');
+    but3.style.display = "block";
     block1.style.display = "none";
     block2.style.display = "block";
+    block3.style.display = "none";
+    blockedit.style.display = "flex"
+  }
+</script>
+<script>
+  function showBlock3() {
+    var block1 = document.getElementById("Block1");
+    var block2 = document.getElementById("Block2");
+    var block3 = document.getElementById("Block3");
+    var blockedit = document.getElementById("edit");
+    var but1 = document.getElementById("but1")
+    var but2 = document.getElementById("but2")
+    var but3 = document.getElementById("but3")
+    but1.classList.remove('active');
+    but2.classList.remove('active');
+    but3.style.display = "none";
+    block1.style.display = "none";
+    block2.style.display = "none";
+    block3.style.display = "block";
+    blockedit.style.display = "block"
   }
 </script>
 {% endblock %}

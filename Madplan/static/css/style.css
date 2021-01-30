@@ -252,6 +252,10 @@ tr:nth-child(even) {
   background-color:  #bfdbff;
 }
 
+table tr.no-color-change {
+  background: hsl(214, 100%, 90%)
+}
+
 .recipe-info {
   height: 120px;
   background-size: 100%;
@@ -547,3 +551,33 @@ li.dropdown {
   margin-block-start: 0em;
 }
 
+.ipad-view {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 30px;
+}
+
+.ipad-layout-left {
+  float: left;
+  width: 30%;
+  padding: 10px;
+  padding-top: 0px;
+  margin-top: 20px;
+  border-right: 1px solid black;
+}
+
+.ipad-layout-right {
+  float: left;
+  width: 70%;
+  padding: 10px;
+  padding-top: 0px;
+  margin-top: 20px;
+}
+
+.td-ipad {
+  padding: 0px;
+}
+
+.bottom {
+  
+}
