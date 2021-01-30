@@ -72,11 +72,16 @@ def show_recipe(request, recipe_id, qty_multiplier=1.0):
     recipe_headers = RecipeIngredientsHeading.objects.all().filter(recipe_id=recipe_id)
     ingredients = []
     for ingredient in recipe_ingredients:
+        amount = ingredient.amount * qty_multiplier
+        if amount.is_integer():
+            amount = int(amount)
+        else:
+            amount = round(amount, 2)
         ingredients.append({
             'name': ingredient.get_ingredient_name(), 
             'description': ingredient.get_ingredient_description(),
             'unit': ingredient.get_unit_name(), 
-            'amount': ingredient.amount * qty_multiplier,
+            'amount': amount,
             'recipe_ingredient_description': ingredient.description
             })
     # Insert recipe ingredient headers

@@ -9,6 +9,7 @@ body {
   padding-bottom: 30px;
   max-width: 576px;
 }
+
 .container-5px {
   padding-left: 5px;
   padding-right: 5px;
@@ -457,6 +458,15 @@ p {
 .instructions {
   padding-bottom: 10px;
   width: 100%;
+}
+
+.ingredients {
+  padding-bottom: 0px;
+  width: 100%;
+}
+
+.amount {
+  width: 89px;
 }
 
 .bold-instr {

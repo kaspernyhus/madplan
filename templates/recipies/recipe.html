@@ -28,7 +28,7 @@
     <button class="nav-but" id="but2" onclick="showBlock2()">Fremgangsmåde</button>
   </div>
 
-  <div id="Block1" class="center container">
+  <div id="Block1" class="center container" style="max-width: 460px;">
     <div class="center">
       <div class="flex">
         <form method="GET" name="qtymultiplier" action="{% url 'show_recipe' recipe.id %}">
@@ -51,16 +51,10 @@
         {% else %}
           <tr>
             <td>
-              <span>{{ingredient.name}}</span>
+              <span>{{ ingredient.name }}{% if ingredient.description %}, {{ ingredient.description }} {% endif %}{% if ingredient.recipe_ingredient_description %} {{ingredient.recipe_ingredient_description}} {% endif %}</span>
             </td>
-            <td>
-              <span>{% if ingredient.description %} {{ingredient.description}} {% endif %}</span>
-            </td>
-            <td>
-              <span>{% if ingredient.recipe_ingredient_description %} {{ingredient.recipe_ingredient_description}} {% endif %}</span>
-            </td>
-            <td>
-              <span>{{ ingredient.amount|floatformat:2 }} {{ingredient.unit}}</span>
+            <td class="amount">
+              <span>{{ ingredient.amount }} {{ingredient.unit}}</span>
             </td>
           </tr>
         {% endif %}
@@ -90,46 +84,34 @@
   <!-- iPad layout -->
   <div id="Block3" class="ipad-view">
     <div class="ipad-layout-left">
-      <table>
-        <tbody class="table-body">
+      <ul class="center no-margin-top">
         {% for ingredient in ingredients %}
           {% if ingredient.heading %}
-            </tbody>
-              <th style="background-color:hsl(214, 100%, 90%)">
-                <span class="bold-instr">{{ingredient.heading}}</span>
-              </th>
-            <tbody class="">
+            <li class="instructions bold-instr"><b>{{ ingredient.heading }}</b></li>
           {% else %}
-            <tr class="no-color-change">
-              <td class="td-ipad">
-                <span>{{ ingredient.amount|floatformat:2 }} {{ingredient.unit}} {{ingredient.name}}{% if ingredient.description %}, {{ingredient.description}} {% endif %} {% if ingredient.recipe_ingredient_description %} {{ingredient.recipe_ingredient_description}} {% endif %}</span>
-              </td>
-            </tr>
+            <li class="ingredients">{{ ingredient.amount }} {{ingredient.unit}} {{ingredient.name}}{% if ingredient.description %}, {{ingredient.description}} {% endif %} {% if ingredient.recipe_ingredient_description %} {{ingredient.recipe_ingredient_description}} {% endif %}</li>
           {% endif %}
         {% endfor %}
-        </tbody>
-      </table>
+      </ul>
     </div>
 
     <div class="ipad-layout-right">
       <ul class="center no-margin-top">
         {% for instruction in instructions %}
           {% if instruction.is_bold %}
-            <li class="instructions bold-instr"> <b>{{ instruction.description }}</b> </li>
+            <li class="instructions bold-instr"><b>{{ instruction.description }}</b></li>
           {% else %}
             <li class="instructions">{{ instruction.description }}</li>
           {% endif %}
         {% endfor %}
       </ul>
-
-      
     </div>
   </div>
 
 
   <div class="center">
     <br>
-    <button class="sml-button" id="but3" onclick="showBlock3()">bog-layout</button>
+    <button class="sml-button" id="but3" onclick="showBlock3()">skift layout</button>
   </div>
   <br>
   <div class="center" id="edit">
