@@ -1,9 +1,10 @@
 from django import forms
+from django.db import models
 from django.db.models import fields
 from django.db.models.fields import files
 from django.db.models.query import QuerySet
 from django.forms import widgets
-from .models import Recipies, RecipeTypes
+from .models import Addons, Recipies, RecipeTypes
 from ingredients.models import Ingredients
 
 
@@ -81,10 +82,15 @@ class RecipeTagsForm(forms.ModelForm):
 
     fields = (
       'tags',
-      'URL'
+      'URL',
+      'add_ons',
     )
     labels = {
       'tags': '',
-      'URL': 'Website'
+      'URL': 'Website',
+      'add_ons': 'Tillad andet tilbehør',
     }
   
+
+class AddAddonsForm(forms.Form):
+  add_on = forms.ChoiceField(choices=[(recipe.id, recipe.name) for recipe in Recipies.objects.all() if recipe.recipe_type_id == 2], label='')

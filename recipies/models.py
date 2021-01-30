@@ -34,6 +34,7 @@ class Recipies(models.Model):
   tags = models.ManyToManyField(RecipeTags)
   prep_time = models.CharField(max_length=6, blank=True, null=True)
   URL = models.URLField(max_length=200, blank=True, null=True)
+  add_ons = models.BooleanField(blank=False, null=False, default=0)
 
   def __str__(self):
     return self.name
@@ -87,3 +88,8 @@ class RecipeInstructions(models.Model):
   is_bold = models.BooleanField(default=False)
 
 
+class Addons(models.Model):
+  class Meta:
+    verbose_name = 'Recipe Add-ons'
+  recipe = models.ForeignKey(Recipies, on_delete=models.CASCADE, related_name="recipe")
+  add_on = models.ForeignKey(Recipies, on_delete=models.CASCADE, related_name="add_on")

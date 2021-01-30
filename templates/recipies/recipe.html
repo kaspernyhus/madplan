@@ -39,6 +39,7 @@
       </div>
     </div>
 
+
     <table class="center">
       <tbody class="table-body">
       {% for ingredient in ingredients %}
@@ -107,6 +108,56 @@
       </ul>
     </div>
   </div>
+
+
+  <div class="center container" style="max-width: 460px;">
+  {% if recipe.add_ons %}
+    {% if add_ons %}
+      <div class="center">
+        <p class="bold-instr"><b>Tilbehør</b></p>
+      </div>
+    {% endif %}
+    {% for add_on in add_ons %}
+      <table class="center">
+        <thead>
+          <th>
+            <td>
+              <a href="{% url 'show_recipe' add_on.recipe.id %}"> <b> {{ add_on.recipe }}</b> </a>
+            </td>
+            <td>
+              <form method="POST">
+                {% csrf_token %}
+                <button type="submit" class="delete_cross" id="delete_add_on" name="delete_add_on" value="{{ add_on.add_on.id }}">x</button>
+              </form>
+            </td>
+          </th>
+        </thead>
+        <tbody class="table-body">
+          {% for ingredient in add_on.recipe_ingredients %}
+            <tr>
+              <td>
+                <span>{{ingredient.ingredient.name}}{% if ingredient.ingredient.description %}, {{ingredient.ingredient.description}} {% endif %} {% if ingredient.ingredient.recipe_ingredient_description %} {{ingredient.ingredient.recipe_ingredient_description}} {% endif %}</span>
+              </td>
+              <td class="amount">
+                <span>{{ ingredient.amount }} {{ingredient.ingredient.unit}} </span>
+              </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+    {% endfor %}
+  </div>
+
+    <b class="center">Vælg andet tilbehør</b>
+    <div class="center container">
+      <form method="POST" class="">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" name="add_ons" value="tilføj">
+      </form>
+    </div>
+  {% endif %}
+
 
 
   <div class="center">
