@@ -12,15 +12,25 @@
         {% for shoppinglist in shoppinglists %}
         <tr>
             <td>
-                <a href="{% url 'view_shoppinglist' shoppinglist.quary.id %}">
-                    <span>{{shoppinglist.quary.created|date:'l d/m/Y' }}</span>
+                <a href="{% url 'view_shoppinglist' shoppinglist.id %}">
+                    {% if shoppinglist.completed %}
+                    <strike><span>{{ shoppinglist.created|date:'l d/m/Y' }}</span></strike>
+                    {% else %}
+                    <span>{{ shoppinglist.created|date:'l d/m/Y' }}</span>
+                    {% endif %}
                 </a>
             </td>
             <td>
-                {{ shoppinglist.source_name }}
+                <a href="{% url 'change_name' shoppinglist.id %}">
+                    {% if shoppinglist.completed %}
+                    <strike><span>{{ shoppinglist.name }}</span></strike>
+                    {% else %}
+                    <span>{{ shoppinglist.name }}</span>
+                    {% endif %}
+                </a>
             </td>
             <td>
-                <a href="{% url 'delete_shoppinglist' shoppinglist.quary.id %}">
+                <a href="{% url 'delete_shoppinglist' shoppinglist.id %}">
                     <span>slet</span>
                 </a>
             </td>

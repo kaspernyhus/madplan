@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<br>
+<div class="center container">
+  <form method="POST" class="">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" name="edit_name" value="gem">
+</form>
+</div>
+{% endblock %}

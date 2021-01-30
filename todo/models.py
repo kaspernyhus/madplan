@@ -9,6 +9,7 @@ class Shoppinglist(models.Model):
   list_source = CharField(max_length=50, blank=False, default=None)
   source_id = IntegerField(blank=True, null=True)
   completed = models.BooleanField(default=False)
+  name = CharField(max_length=200, blank=True, null=True, default=None)
 
 
 class Task(models.Model):

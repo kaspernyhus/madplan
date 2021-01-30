@@ -2,27 +2,42 @@ from django.shortcuts import render, redirect
 from foodplan.models import FoodplanRecipies, Foodplans
 from recipies.models import RecipeIngredients, Recipies
 from .models import Shoppinglist, Task
-from .forms import TaskForm
+from .forms import ChangeNameForm, TaskForm
 from unit_conversion.unit_conversion import convert_amount
 from datetime import datetime
 
 
 def index(request):
-  shoppinglists_quary = Shoppinglist.objects.all().order_by('-created')
-  shoppinglists = []
-  for shoppinglist in shoppinglists_quary:
-    if shoppinglist.list_source == 'foodplan':
-      #foodplan_quary = FoodplanRecipies.objects.all().filter(foodplan_id=shoppinglist.source_id)
-      source_name = 'Madplan'
-    elif shoppinglist.list_source == 'recipe':
-      recipe_quary = Recipies.objects.get(pk=shoppinglist.source_id)
-      source_name = recipe_quary.name
-    else:
-      source_name = 'None'
-    shoppinglists.append({'quary': shoppinglist, 'source_name': source_name})
+  shoppinglists = Shoppinglist.objects.all().order_by('-created')
+  # Check if shoppinglist is complete
+  for shoppinglist in shoppinglists:
+    tasks = Task.objects.all().filter(shoppinglist_id=shoppinglist.id)
+    for task in tasks:
+      if not task.complete:
+        shoppinglist.completed = False
+        shoppinglist.save()
+        break
+      else:
+        shoppinglist = Shoppinglist.objects.get(pk=task.shoppinglist_id)
+        shoppinglist.completed = True
+        shoppinglist.save()
 
   context = {'shoppinglists': shoppinglists}
   return render(request, 'todo/index.html', context)
+
+
+def change_name(request, shoppinglist_id):
+  shoppinglist = Shoppinglist.objects.get(pk=shoppinglist_id)
+  if request.method == 'POST':
+    form = ChangeNameForm(request.POST)
+    if form.is_valid():
+      shoppinglist.name = form.cleaned_data['name']
+      shoppinglist.save()
+      return redirect('/todo/')
+  else:
+    form = ChangeNameForm(initial={'name': shoppinglist.name})
+
+  return render(request, 'todo/changename.html', context={'form': form})
 
 
 def view_shoppinglist(request, shoppinglist_id):
@@ -64,16 +79,13 @@ def check_task(request, task_id):
 
 
 def create_shoppinglist(request, id, source, qty=1.0):
-  print('----------------------')
-  print(qty, type(qty))
-  
-  print('----------------------')
-
   # Create shoppinglist entry
   new_shoppinglist = Shoppinglist(list_source=source, source_id=id)
   new_shoppinglist.save()
   ingredient_list = []
   if source == 'foodplan':
+    new_shoppinglist.name = 'Madplan'
+    new_shoppinglist.save()
     # Mark foodplan as compete (disables editing)
     foodplan = Foodplans.objects.get(pk=id)
     foodplan.complete = True
@@ -95,6 +107,11 @@ def create_shoppinglist(request, id, source, qty=1.0):
           'recipe_ingredient_description': ingredient.description
           })
   elif source == 'recipe':
+    recipe = Recipies.objects.get(pk=id)
+    # save shoppinglist name
+    new_shoppinglist.name = recipe.name
+    new_shoppinglist.save()
+    #
     qty = float(qty)
     recipe_ingredients = RecipeIngredients.objects.filter(recipe_id=id)
     for ingredient in recipe_ingredients:
@@ -187,7 +204,5 @@ def delete_shoppinglist(request, id):
     foodplan.save()
 
   shoppinglist.delete()
-
-
 
   return redirect('/todo/')
