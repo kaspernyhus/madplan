@@ -20,7 +20,7 @@ def show_recipies(request):
         form = RecipeTypeFilterBox(initial={'recipe_type': filter_by})
     elif request.GET.get('tags'):
         filter_by = request.GET.get('tags')
-        recipies_query = Recipies.objects.filter(tags=filter_by).exclude(recipe_type=2) # exclude 'Tilbehør'
+        recipies_query = Recipies.objects.filter(tags=filter_by).exclude(Q(recipe_type=2)|Q(recipe_type=9)) # exclude 'Tilbehør', 'Andet'
         form = RecipeTypeFilterBox(initial={'tags': filter_by})
     elif request.GET.get('search_box'):
         search_query = request.GET.get('search_box')
@@ -40,7 +40,7 @@ def show_recipies(request):
             recipies_query |= _recipies_query
         form = RecipeTypeFilterBox()
     else:
-        recipies_query = Recipies.objects.all().exclude(recipe_type=2) # exclude 'Tilbehør'
+        recipies_query = Recipies.objects.all().exclude(Q(recipe_type=2)|Q(recipe_type=9)) # exclude 'Tilbehør', 'Andet'
         form = RecipeTypeFilterBox()
     recipies = []
     for recipe in recipies_query:
