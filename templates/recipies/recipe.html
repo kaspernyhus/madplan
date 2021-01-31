@@ -45,7 +45,7 @@
       {% for ingredient in ingredients %}
         {% if ingredient.heading %}
           </tbody>
-            <th style="background-color:hsl(214, 100%, 90%)">
+            <th class="bg-color">
               <span class="bold-instr">{{ingredient.heading}}</span>
             </th>
           <tbody class="table-body">
@@ -85,7 +85,7 @@
   <!-- iPad layout -->
   <div id="Block3" class="ipad-view">
     <div class="ipad-layout-left">
-      <ul class="center no-margin-top">
+      <ul class="center">
         {% for ingredient in ingredients %}
           {% if ingredient.heading %}
             <li class="instructions bold-instr"><b>{{ ingredient.heading }}</b></li>
@@ -100,9 +100,9 @@
       <ul class="center no-margin-top">
         {% for instruction in instructions %}
           {% if instruction.is_bold %}
-            <li class="instructions bold-instr"><b>{{ instruction.description }}</b></li>
+            <li class="ipad-instructions bold-instr"><b>{{ instruction.description }}</b></li>
           {% else %}
-            <li class="instructions">{{ instruction.description }}</li>
+            <li class="ipad-instructions">{{ instruction.description }}</li>
           {% endif %}
         {% endfor %}
       </ul>

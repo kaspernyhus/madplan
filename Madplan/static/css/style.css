@@ -1,5 +1,20 @@
+:root {
+  --background: hsl(215, 100%, 96%);
+  --little-darker: #d8e9fd;
+  --darker: #6eaaf8;      /* navbar */
+  --more-dark: #468ae2;
+  --darkest: #3e68b8;
+  --lighter: rgb(251, 253, 255);
+  --light-transparent: rgba(255, 255, 255, 0.8);
+  --darktext: black;
+  --lighttext:  white;
+  --bottonhover: var(--more-dark);
+  --borders: black;
+  --lighterborders: #343a40;  
+}
+
 body {
-    background: hsl(214, 100%, 90%);
+    background: var(--background);
     font-family: Avenir;
    }
 
@@ -82,10 +97,9 @@ h1, .h1 {
 .button {
   box-shadow: 0px 6px 0px rgba(0, 0, 0, 0.01), 0px 6px 5px rgba(0, 0, 0, 0.02), 0px 2px 20px rgba(0, 0, 0, 0.1);
   border-radius: 4px; 
-  
-  background-color: rgb(251, 253, 255);
-  border: 2px solid black;
-  color: black;
+  background-color: var(--lighter);
+  border: 2px solid var(--borders);
+  color: var(--darktext);
   padding: 8px 22px;
   text-align: center;
   text-decoration: none;
@@ -111,19 +125,19 @@ h1, .h1 {
 }
 
 .button:hover {
-  background-color: #4c6faf;
-  color: white;
+  background-color: var(--bottonhover);
+  color: var(--lighttext);
   text-decoration: none;
 }
 
 .sml-button {
-  background-color: rgb(251, 253, 255);
-  border: 1px solid black;
+  background-color: var(--lighter);
+  border: 1px solid var(--borders);
   padding: 2px;
   padding-left: 8px;
   padding-right: 8px;
   border-radius: 4px; 
-  color: black; 
+  color: var(--darktext); 
   text-align: center;
   text-decoration: none;
   line-height: 21px;
@@ -138,18 +152,13 @@ h1, .h1 {
 
 
 .xsml-button {
-  background-color: rgb(251, 253, 255);
-  border: 1px solid black;
-  
+  background-color: var(--lighter);
+  border: 1px solid var(--borders);
   border-radius: 4px; 
-  
-  color: black;
-  
+  color: var(--darktext);
   text-align: center;
   text-decoration: none;
-  line-height: 23px; /* <- changed this */
-  
-  
+  line-height: 21px;
   font-size: 70%;
   width: 46px;
   height: 26px;
@@ -170,14 +179,12 @@ h1, .h1 {
   margin-left: 10px;
 }
 
-.var-button {
+/* .var-button {
   background: #F1FDF1;
   border: 2px solid rgba(13, 91, 35, 0.33);
   box-shadow: 0px 6px 0px rgba(0, 0, 0, 0.01), 0px 6px 5px rgba(0, 0, 0, 0.02), 0px 2px 20px rgba(0, 0, 0, 0.1);
   border-radius: 4px; 
-  
   color: black;
-  
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -189,27 +196,16 @@ h1, .h1 {
   cursor: pointer;
   box-sizing: border-box;
   position: relative;
-}
+} */
 
 
-.form_button {
-  background-color: rgb(208, 253, 210);
-  border: 2px solid black;
-  color: black;
-  padding: 16px 44px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 135%;
-  margin: 4px 2px;
-  -webkit-transition-duration: 0.4s; /* Safari */
-  transition-duration: 0.4s;
-  cursor: pointer;
-}
-
-.form_button:hover {
+/* .form_button:hover {
   background-color: #4CAF50;
   color: white;
+} */
+
+.bg-color {
+  background-color: var(--background);
 }
 
 .checkbox {
@@ -252,11 +248,11 @@ td, th {
 }
 
 tr:nth-child(even) {
-  background-color:  #bfdbff;
+  background-color:  var(--little-darker);
 }
 
 table tr.no-color-change {
-  background: hsl(214, 100%, 90%)
+  background: var(--background);
 }
 
 .recipe-info {
@@ -271,10 +267,10 @@ table tr.no-color-change {
 
 
 .recipe-label {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: var(--light-transparent);
   padding: 14px;
   padding-bottom: 2px;
-  border: 2px solid #343a40;
+  border: 2px solid var(--lighterborders);
   border-radius: 8px;
   display: inline-block;
   width: 240px;
@@ -284,10 +280,10 @@ table tr.no-color-change {
 
 
 .sml-recipe-label {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: var(--light-transparent);
   /* padding: 14px; */
   /* padding-bottom: 5px; */
-  border: 2px solid #343a40;
+  border: 2px solid var(--lighterborders);
   border-radius: 8px;
   display: inline-block;
   width: 190px;
@@ -298,10 +294,10 @@ table tr.no-color-change {
 }
 
 .recipe-header {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: var(--light-transparent);
   padding: 14px;
   padding-bottom: 2px;
-  border: 2px solid #343a40;
+  border: 2px solid var(--lighterborders);
   border-radius: 8px;
   display: inline-block;
   width: 335px;
@@ -319,8 +315,8 @@ table tr.no-color-change {
 
 
 .grouplabel {
-  background: #4c6faf;
-  color: white;
+  background: var(--darkest);
+  color: var(--lighttext);
   text-align: center;
 }
 
@@ -340,7 +336,7 @@ table tr.no-color-change {
 
 
 .header_link {
-  color: black;
+  color: var(--darktext);
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -364,14 +360,14 @@ p {
 
 .center-nav {
   overflow: hidden;
-  background-color:  #8abdff;
+  background-color: var(--darker);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .nav-but {
-  background-color:  #8abdff;
+  background-color: var(--darker);
   border: none;
   padding: 5px 12px;
   text-align: center;
@@ -382,7 +378,7 @@ p {
 }
 
 .active {
-  background-color: #4c77af;
+  background-color: var(--more-dark);
 }
 
 
@@ -390,7 +386,7 @@ p {
   /* position: absolute; */
   left: 0px;
   height: 50px;
-  background-color: rgb(126, 170, 252);
+  background-color: var(--darker);
   width: 100%;
   display: flex;
   justify-content: center;
@@ -410,56 +406,31 @@ p {
   font-size: 17px;
   padding: 14px 16px;
   display: block;
-  color: #000000;
+  color: var(--darktext);
   text-align: center;
 }
 
 
 #nav a:hover {
-  background-color: rgb(191, 206, 255);
-  color: black;
+  background-color: var(--little-darker);
+  color: var(--darktext);
 }
 
 #nav a.active {
-  background-color: #4c77af;
-  color: white;
+  background-color: var(--darkest);
+  color: var(--lighttext);
 }
 
-.input {
-  /* position: absolute; */
-  width: 300px;
-  height: 48px;
-  left: 0px;
-  top: 22px;
-
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(25, 53, 31, 0.2);
-  box-sizing: border-box;
-  border-radius: 4px;
-
-  font-size: 120%;
-  padding-left: 20px;
-}
-
-.text-input {
-  /* position: absolute; */
-  width: 300px;
-  height: 48px;
-  left: 0px;
-  top: 22px;
-
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(25, 53, 31, 0.2);
-  box-sizing: border-box;
-  border-radius: 4px;
-
-  font-size: 100%;
-  padding-left: 20px;
-}
 
 .instructions {
   padding-bottom: 10px;
   width: 100%;
+}
+
+.ipad-instructions {
+  padding-bottom: 10px;
+  width: 100%;
+  font-size: 120%;
 }
 
 .ingredients {
