@@ -231,6 +231,8 @@ def edit_recipe(request, recipe_id):
         elif request.POST.getlist('edit_tags'):
             form = RecipeTagsForm(request.POST)
             if form.is_valid():
+                recipe_type = request.POST.get('recipe_type')
+                recipe_type_obj = RecipeTypes.objects.get(pk=recipe_type)
                 tags = request.POST.getlist('tags')
                 new_URL = request.POST.get('URL')
                 allow_add_ons = form.cleaned_data['add_ons']
@@ -238,6 +240,7 @@ def edit_recipe(request, recipe_id):
                 recipe.tags.set(tags)
                 recipe.URL = new_URL
                 recipe.add_ons = allow_add_ons
+                recipe.recipe_type = recipe_type_obj
                 recipe.save()
     # Get recipe data
     recipe_data = Recipies.objects.get(pk=recipe_id)
@@ -267,7 +270,7 @@ def edit_recipe(request, recipe_id):
     # Tags form
     tags_query = RecipeTags.objects.all().filter(recipies=recipe_id)
     tags = [object.id for object in tags_query]
-    form = RecipeTagsForm(initial={'tags':tags, 'prep_time': recipe_data.prep_time, 'URL': recipe_data.URL, 'add_ons': recipe_data.add_ons})
+    form = RecipeTagsForm(initial={'recipe_type': recipe_data.recipe_type, 'tags':tags, 'prep_time': recipe_data.prep_time, 'URL': recipe_data.URL, 'add_ons': recipe_data.add_ons})
 
     context = {'recipe': recipe_data, 'recipe_ingredients': recipe_ingredients, 'instructions': recipe_instructions, 'all_ingredients': all_ingredients_quary, 'units': units, 'form': form}
     return render(request, 'recipies/edit_recipe.html', context)

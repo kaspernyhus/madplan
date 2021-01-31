@@ -82,14 +82,16 @@ class RecipeTagsForm(forms.ModelForm):
     model = Recipies
 
     fields = (
+      'recipe_type',
       'tags',
-      'URL',
       'add_ons',
+      'URL',
     )
     labels = {
+      'recipe_type': '',
       'tags': '',
+      'add_ons': 'Tillad ekstra tilbehør',
       'URL': 'Website',
-      'add_ons': 'Tillad andet tilbehør',
     }
   
 
