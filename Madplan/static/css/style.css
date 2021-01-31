@@ -123,23 +123,17 @@ h1, .h1 {
   padding-left: 8px;
   padding-right: 8px;
   border-radius: 4px; 
-  
   color: black; 
-  
   text-align: center;
   text-decoration: none;
-  line-height: 23px; /* <- changed this */
-  
-  
+  line-height: 21px;
   font-size: 70%;
-  /* width: 46px; */
   height: 26px;
   max-width: 360px;
   transition: all 170ms ease-in-out;
   cursor: pointer;
   box-sizing: border-box;
   position: relative;
-  margin-left: 10px;
 }
 
 
@@ -169,6 +163,11 @@ h1, .h1 {
 
 .flex {
   display: flex;
+}
+
+
+.margin-left {
+  margin-left: 10px;
 }
 
 .var-button {
@@ -237,6 +236,7 @@ table {
 
 .qty-multiplier {
   width: 45px;
+  font-size: 85%;
 }
 
 .hide-ov {

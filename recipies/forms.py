@@ -94,5 +94,5 @@ class RecipeTagsForm(forms.ModelForm):
   
 
 class AddAddonsForm(forms.Form):
-  add_on = forms.ModelChoiceField(queryset=Recipies.objects.filter(Q(recipe_type_id=2)|Q(recipe_type_id=5)))
+  add_on = forms.ModelChoiceField(queryset=Recipies.objects.filter(Q(recipe_type_id=2)|Q(recipe_type_id=5)), label='')
   

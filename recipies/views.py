@@ -70,9 +70,8 @@ def show_recipe(request, recipe_id, qty_multiplier=1.0):
         form = AddAddonsForm(request.POST)
         if form.is_valid():
             add_on_id = form.cleaned_data['add_on']
-            add_on_recipe = Recipies.objects.get(pk=add_on_id)
             recipe = Recipies.objects.get(pk=recipe_id)
-            adding = Addons(recipe=recipe, add_on=add_on_recipe)
+            adding = Addons(recipe=recipe, add_on=add_on_id)
             adding.save()
     # Qty multiplier
     if request.method == 'GET':
@@ -94,7 +93,7 @@ def show_recipe(request, recipe_id, qty_multiplier=1.0):
         ingredients.append({
             'name': ingredient.get_ingredient_name(), 
             'description': ingredient.get_ingredient_description(),
-            'unit': ingredient.get_unit_name(), 
+            'unit': ingredient.measurement_unit, 
             'amount': amount,
             'recipe_ingredient_description': ingredient.description
             })
@@ -107,10 +106,10 @@ def show_recipe(request, recipe_id, qty_multiplier=1.0):
     form = AddAddonsForm()
     add_on_recipies = []
     if recipe.add_ons:
-        add_ons = Addons.objects.all().filter(recipe=recipe.id)
+        add_ons = Addons.objects.filter(recipe=recipe.id)
         for add_on in add_ons:
             add_on_recipe = Recipies.objects.get(pk=add_on.add_on_id)
-            add_on_recipe_ingredients = RecipeIngredients.objects.all().filter(recipe_id=add_on_recipe.id)
+            add_on_recipe_ingredients = RecipeIngredients.objects.filter(recipe_id=add_on_recipe.id)
             add_on_recipies.append({'add_on': add_on, 'recipe': add_on_recipe, 'recipe_ingredients': add_on_recipe_ingredients})
 
     context = {'recipe': recipe, 'add_ons': add_on_recipies, 'ingredients': ingredients, 'instructions': recipe_instructions, 'qty_multiplier': qty_multiplier, 'form': form}
