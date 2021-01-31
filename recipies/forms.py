@@ -6,6 +6,7 @@ from django.db.models.query import QuerySet
 from django.forms import widgets
 from .models import Addons, Recipies, RecipeTypes
 from ingredients.models import Ingredients
+from django.db.models import Q
 
 
 class NewRecipeForm(forms.ModelForm):
@@ -93,4 +94,5 @@ class RecipeTagsForm(forms.ModelForm):
   
 
 class AddAddonsForm(forms.Form):
-  add_on = forms.ChoiceField(choices=[(recipe.id, recipe.name) for recipe in Recipies.objects.all() if recipe.recipe_type_id == 2], label='')
+  add_on = forms.ModelChoiceField(queryset=Recipies.objects.filter(Q(recipe_type_id=2)|Q(recipe_type_id=5)))
+  
