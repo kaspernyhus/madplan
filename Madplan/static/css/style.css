@@ -6,17 +6,19 @@
   --darkest: #3e68b8;
   --lighter: rgb(251, 253, 255);
   --light-transparent: rgba(255, 255, 255, 0.8);
-  --darktext: black;
+  --darktext: #333;
   --lighttext:  white;
   --grayedtext: rgb(172, 172, 172);
   --bottonhover: var(--more-dark);
   --borders: black;
-  --lighterborders: #343a40;  
+  --lighterborders: #343a40;
+  --recipe-bg: #f7e1e1; 
 }
 
 body {
     background: var(--background);
-    font-family: Open Sans;
+    font-family: 'Open Sans',sans-serif;
+    font-size: 16px;
     font-weight: 400;
    }
 
@@ -430,9 +432,15 @@ p {
 }
 
 .ipad-instructions {
-  padding-bottom: 10px;
+  padding-bottom: 20px;
   width: 100%;
-  font-size: 108%;
+  font-size: 100%;
+}
+
+.ipad-heading {
+  padding-bottom: 4px;
+  width: 100%;
+  font-size: 110%;
 }
 
 .ingredients {
@@ -445,8 +453,10 @@ p {
 }
 
 .bold-instr {
+  font-weight: 600;
+  font-size: 18px;
   padding-top: 14px;
-  font-size: 120%;
+  
 }
 
 .no-margin-top {
@@ -538,8 +548,8 @@ li.dropdown {
 
 .ipad-view {
   overflow: auto;
-  background-color: var(--lighter);
-  margin: 20px;
+  background-color: var(--recipe-bg);
+  margin: 30px;
   padding-left: 15px;
   padding-right: 15px;
   padding-bottom: 30px;
