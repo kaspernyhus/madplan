@@ -432,7 +432,7 @@ p {
 .ipad-instructions {
   padding-bottom: 10px;
   width: 100%;
-  font-size: 120%;
+  font-size: 108%;
 }
 
 .ingredients {
@@ -446,7 +446,7 @@ p {
 
 .bold-instr {
   padding-top: 14px;
-  font-size: 110%;
+  font-size: 120%;
 }
 
 .no-margin-top {
@@ -537,6 +537,9 @@ li.dropdown {
 }
 
 .ipad-view {
+  overflow: auto;
+  background-color: var(--lighter);
+  margin: 20px;
   padding-left: 15px;
   padding-right: 15px;
   padding-bottom: 30px;

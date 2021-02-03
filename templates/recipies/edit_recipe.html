@@ -40,7 +40,7 @@
       {% for recipe_ingredient in recipe_ingredients %}
       {% if recipe_ingredient.heading %}
       <tr style="background-color:hsl(214, 100%, 90%)">
-        <th>
+        <th class="bg-color">
           <span class="bold-instr">{{ recipe_ingredient.heading.heading }}</span>
           <button type="submit" class="delete_cross" id="delete_heading" name="delete_heading" value="{{recipe_ingredient.heading.id}}">x</button>
         </th>
@@ -48,13 +48,7 @@
       {% else %}
       <tr>
         <td>
-          <span>{{ recipe_ingredient.name }}</span>
-        </td>
-        <td>
-          <span>{% if recipe_ingredient.description %} {{ recipe_ingredient.description }} {% endif %}</span>
-        </td>
-        <td>
-          <span>{% if recipe_ingredient.recipe_ingredient_description %} {{ recipe_ingredient.recipe_ingredient_description }} {% endif %}</span>
+          <span>{{ recipe_ingredient.name }}{% if recipe_ingredient.description %}, {{ recipe_ingredient.description }} {% endif %}{% if recipe_ingredient.recipe_ingredient_description %}, {{ recipe_ingredient.recipe_ingredient_description }} {% endif %}</span>
         </td>
         <td>
           <input type="number" id="qty" name="qty" value="{{ recipe_ingredient.amount|unlocalize }}" lang="us-en" min="0" max="1000" step="0.1"> {{ recipe_ingredient.unit }}
@@ -115,11 +109,11 @@
         {% csrf_token %}
         {% for instruction in instructions %}
           <textarea class="center instr-text" name="textarea_instructions" form="instructions">{{instruction.description}}</textarea>
-          <b>bold</b> tekst
+          <b>fed</b> tekst
           <input type="checkbox" name="isbold" value="{{instruction.id}}" {% if instruction.is_bold %} checked {% endif %} form="instructions">
         {% endfor %}
           <textarea class="center instr-text" name="new_instruction" form="instructions"></textarea>
-          <b>bold</b> tekst
+          <b>fed</b> tekst
           <input type="checkbox" value="new_isbold" form="instructions" name="new_isbold">
         <div class="center">
         <button type="submit" name="edit_instructions">Gem</button>
