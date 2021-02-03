@@ -96,3 +96,4 @@ class Addons(models.Model):
     verbose_name = 'Recipe Add-ons'
   recipe = models.ForeignKey(Recipies, on_delete=models.CASCADE, related_name="recipe")
   add_on = models.ForeignKey(Recipies, on_delete=models.CASCADE, related_name="add_on")
+  active = models.BooleanField(default=1)

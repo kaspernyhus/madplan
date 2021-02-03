@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from .models import *
-from .forms import AddAddonsForm, EditRecipeNameForm, NewRecipeForm, RecipeTypeFilterBox, RecipeTagsForm
+from .forms import AddonActiveForm, AddAddonsForm, EditRecipeNameForm, NewRecipeForm, RecipeTypeFilterBox, RecipeTagsForm
 from recipies.models import Recipies, RecipeTags
 from datetime import datetime
 from django.utils import timezone
 from random import shuffle
 from django.db.models import Q
+from django.forms.formsets import formset_factory
 
 
 def show_recipies(request):
@@ -61,6 +62,10 @@ def show_recipies(request):
 
 def show_recipe(request, recipe_id, qty_multiplier=1.0):
     if request.method == 'POST':
+        # print('--------------------')
+        # print(request.POST)
+        # print('--------------------')
+        
         # Delete add_on recipe
         if request.POST.get('delete_add_on'):
             add_on_id = request.POST.get('delete_add_on')
@@ -73,6 +78,17 @@ def show_recipe(request, recipe_id, qty_multiplier=1.0):
             recipe = Recipies.objects.get(pk=recipe_id)
             adding = Addons(recipe=recipe, add_on=add_on_id)
             adding.save()
+        # Add_on active state change
+        if request.POST.get('add-on-active-changed'):
+            add_on_active_changed = request.POST.get('add-on-active-changed')
+            add_on_active = request.POST.getlist('add-on-active')
+            add_on = Addons.objects.get(pk=add_on_active_changed)
+            if add_on_active_changed in add_on_active:
+                add_on.active = True
+                add_on.save()
+            else:
+                add_on.active = False
+                add_on.save()
     # Qty multiplier
     if request.method == 'GET':
         if request.GET.getlist('qtymultiplier'):
@@ -98,10 +114,10 @@ def show_recipe(request, recipe_id, qty_multiplier=1.0):
             'recipe_ingredient_description': ingredient.description
             })
     # Insert recipe ingredient headers
-    recipe_headers = RecipeIngredientsHeading.objects.all().filter(recipe_id=recipe_id)
+    recipe_headers = RecipeIngredientsHeading.objects.filter(recipe_id=recipe_id)
     for offset, rec_head in enumerate(recipe_headers):
         ingredients.insert(rec_head.place+offset, {'heading':rec_head.heading})
-    recipe_instructions = RecipeInstructions.objects.all().filter(recipe_id=recipe_id)
+    recipe_instructions = RecipeInstructions.objects.filter(recipe_id=recipe_id)
     # Get Add-ons
     form = AddAddonsForm()
     add_on_recipies = []
@@ -110,7 +126,7 @@ def show_recipe(request, recipe_id, qty_multiplier=1.0):
         for add_on in add_ons:
             add_on_recipe = Recipies.objects.get(pk=add_on.add_on_id)
             add_on_recipe_ingredients = RecipeIngredients.objects.filter(recipe_id=add_on_recipe.id)
-            add_on_recipies.append({'add_on': add_on, 'recipe': add_on_recipe, 'recipe_ingredients': add_on_recipe_ingredients})
+            add_on_recipies.append({'add_on': add_on, 'recipe': add_on_recipe, 'recipe_ingredients': add_on_recipe_ingredients, 'form': AddonActiveForm(initial={'add_on_active': add_on.active})})
 
     context = {'recipe': recipe, 'add_ons': add_on_recipies, 'ingredients': ingredients, 'instructions': recipe_instructions, 'qty_multiplier': qty_multiplier, 'form': form}
     return render(request, 'recipies/recipe.html', context)

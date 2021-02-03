@@ -8,6 +8,7 @@
   --light-transparent: rgba(255, 255, 255, 0.8);
   --darktext: black;
   --lighttext:  white;
+  --grayedtext: rgb(172, 172, 172);
   --bottonhover: var(--more-dark);
   --borders: black;
   --lighterborders: #343a40;  
@@ -15,7 +16,8 @@
 
 body {
     background: var(--background);
-    font-family: Avenir;
+    font-family: Open Sans;
+    font-weight: 400;
    }
 
 .container {
@@ -559,4 +561,73 @@ li.dropdown {
 
 .td-ipad {
   padding: 0px;
+}
+
+.grayedout {
+  color: var(--grayedtext);
+}
+
+.checkbox-container {
+  display: flex;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: -6px;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.checkbox-container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.checkbox-container input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkbox-container .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
 }

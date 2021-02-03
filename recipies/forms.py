@@ -97,4 +97,7 @@ class RecipeTagsForm(forms.ModelForm):
 
 class AddAddonsForm(forms.Form):
   add_on = forms.ModelChoiceField(queryset=Recipies.objects.filter(Q(recipe_type_id=2)|Q(recipe_type_id=5)), label='')
-  
+
+
+class AddonActiveForm(forms.Form):
+  add_on_active = forms.BooleanField(widget=forms.CheckboxInput(), required=False, label='') # attrs={'onclick':'this.form.submit();'}
