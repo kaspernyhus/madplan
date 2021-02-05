@@ -62,6 +62,64 @@
       {% endfor %}
       </tbody>
     </table>
+    
+    <div class="center container" style="max-width: 460px;">
+      {% if recipe.add_ons %}
+        {% for add_on in add_ons %}
+          <table class="center">
+            <thead>
+              <th>
+                <form method="POST">
+                  {% csrf_token %}
+                    <input type="checkbox" name="add-on-active" value="{{ add_on.add_on.id }}" {% if add_on.add_on.active %} checked {% endif %} onclick="this.form.submit();">
+                    <input type="hidden" name="add-on-active-changed" value="{{ add_on.add_on.id }}">
+                </form>
+              </th>
+              <th>
+                <div class="flex">
+                  <form method="POST" name="add-on-qtymultiplier" action="{% url 'show_recipe' recipe.id %}">
+                    {% csrf_token %}
+                    <input type="number" class="qty-multiplier" value="{{ add_on.add_on.qty_multiplier|unlocalize }}" lang="us-en" name="add-on-qtymultiplier" id="add-on-qtymultiplier" min="0.1" max="10" step="0.1">
+                    <input type="hidden" name="add-on-qtymultiplier_id" value="{{add_on.add_on.id}}">
+                    <label id="add-on-qtymultiplier"></label>
+                  </form>
+                </div>
+              </th>
+              <th>
+                <a href="{% url 'show_recipe' add_on.recipe.id %}"> <b class="{% if not add_on.add_on.active %} grayedout {% endif %}"> {{ add_on.recipe }}</b> </a>
+              </th>
+              <th>
+                <form method="POST" id="delete_add_on">
+                  {% csrf_token %}
+                  <button type="submit" class="delete_cross" id="delete_add_on" name="delete_add_on" value="{{ add_on.add_on.id }}">x</button>
+                </form>
+              </th>
+            </thead>
+            <tbody class="table-body">
+              {% for ingredient in add_on.recipe_ingredients %}
+                <tr>
+                  <td>
+                    <span class="{% if not add_on.add_on.active %} grayedout {% endif %}">{{ingredient.ingredient.name}}{% if ingredient.ingredient.description %}, {{ingredient.ingredient.description}} {% endif %} {% if ingredient.ingredient.recipe_ingredient_description %} {{ingredient.ingredient.recipe_ingredient_description}} {% endif %}</span>
+                  </td>
+                  <td class="amount">
+                    <span class="{% if not add_on.add_on.active %} grayedout {% endif %}">{{ ingredient.amount }} {{ingredient.measurement_unit}} </span>
+                  </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+        {% endfor %}
+      </div>
+    
+      <div class="center container">
+        <b class="center">Vælg andet tilbehør</b>
+        <form method="POST" class="flex">
+          {% csrf_token %}
+          {{form.as_p}}
+          <input type="submit" class="margin-left sml-button" name="add_ons" value="tilføj">
+        </form>
+      </div>
+      {% endif %}
   </div>
 
   <div id="Block2" class="center container">
@@ -94,6 +152,17 @@
               <li class="ingredients">{{ ingredient.amount }} {{ingredient.unit}} {{ingredient.name}}{% if ingredient.description %}, {{ingredient.description}} {% endif %} {% if ingredient.recipe_ingredient_description %} {{ingredient.recipe_ingredient_description}} {% endif %}</li>
             {% endif %}
           {% endfor %}
+
+          {% if recipe.add_ons %}
+            {% for add_on in add_ons %}
+              {% if add_on.add_on.active %}
+                <li class="ipad-heading bold-instr"><b>{{ add_on.recipe }}</b></li>
+                {% for ingredient in add_on.recipe_ingredients %}
+                  <li class="ingredients">{{ ingredient.amount }} {{ingredient.measurement_unit}} {{ingredient.ingredient.name}}{% if ingredient.ingredient.description %}, {{ingredient.ingredient.description}} {% endif %} {% if ingredient.ingredient.recipe_ingredient_description %} {{ingredient.ingredient.recipe_ingredient_description}} {% endif %}</li>
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
         </ul>
       </div>
 
@@ -112,61 +181,14 @@
   </div>
 
 
-  <div class="center container" style="max-width: 460px;">
-  {% if recipe.add_ons %}
-    {% for add_on in add_ons %}
-      <table class="center">
-        <thead>
-          <th>
-            <td>
-              <form method="POST">
-                {% csrf_token %}
-                  <input type="checkbox" name="add-on-active" value="{{ add_on.add_on.id }}" {% if add_on.add_on.active %} checked {% endif %} onclick="this.form.submit();">
-                  <input type="hidden" name="add-on-active-changed" value="{{ add_on.add_on.id }}">
-              </form>
-            </td>
-            <td>
-              <a href="{% url 'show_recipe' add_on.recipe.id %}"> <b class="{% if not add_on.add_on.active %} grayedout {% endif %}"> {{ add_on.recipe }}</b> </a>
-            </td>
-            <td>
-              <form method="POST" id="delete_add_on">
-                {% csrf_token %}
-                <button type="submit" class="delete_cross" id="delete_add_on" name="delete_add_on" value="{{ add_on.add_on.id }}">x</button>
-              </form>
-            </td>
-          </th>
-        </thead>
-        <tbody class="table-body">
-          {% for ingredient in add_on.recipe_ingredients %}
-            <tr>
-              <td>
-                <span class="{% if not add_on.add_on.active %} grayedout {% endif %}">{{ingredient.ingredient.name}}{% if ingredient.ingredient.description %}, {{ingredient.ingredient.description}} {% endif %} {% if ingredient.ingredient.recipe_ingredient_description %} {{ingredient.ingredient.recipe_ingredient_description}} {% endif %}</span>
-              </td>
-              <td class="amount">
-                <span class="{% if not add_on.add_on.active %} grayedout {% endif %}">{{ ingredient.amount }} {{ingredient.measurement_unit}} </span>
-              </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-      </table>
-    {% endfor %}
-  </div>
-
-    <b class="center">Vælg andet tilbehør</b>
-    <div class="center container">
-      <form method="POST" class="flex">
-        {% csrf_token %}
-        {{form.as_p}}
-        <input type="submit" class="margin-left sml-button" name="add_ons" value="tilføj">
-      </form>
-    </div>
-  {% endif %}
-
-
 
   <div class="center">
     <button class="sml-button" id="but3" onclick="showBlock3()">skift layout</button>
   </div>
+  <div class="center">
+    <button class="sml-button" id="but4" onclick="showBlock1()">skift layout</button>
+  </div>
+
   <div class="center" id="edit">
     <a href="{% url 'edit_recipe' recipe.id %}" class="center">Rediger opskrift</a>
     <p class="small-text center">Ændret {{recipe.date|date:'d/m/Y'}}</p>
@@ -183,9 +205,11 @@
     var but1 = document.getElementById("but1")
     var but2 = document.getElementById("but2")
     var but3 = document.getElementById("but3")
+    var but4 = document.getElementById("but4")
     but1.classList.add('active');
     but2.classList.remove('active');
     but3.style.display = "block";
+    but4.style.display = "none";
     block1.style.display = "block";
     block2.style.display = "none";
     block3.style.display = "none";
@@ -202,9 +226,11 @@
     var but1 = document.getElementById("but1")
     var but2 = document.getElementById("but2")
     var but3 = document.getElementById("but3")
+    var but4 = document.getElementById("but4")
     but1.classList.remove('active');
     but2.classList.add('active');
     but3.style.display = "block";
+    but4.style.display = "none";
     block1.style.display = "none";
     block2.style.display = "block";
     block3.style.display = "none";
@@ -220,9 +246,11 @@
     var but1 = document.getElementById("but1")
     var but2 = document.getElementById("but2")
     var but3 = document.getElementById("but3")
+    var but4 = document.getElementById("but4")
     but1.classList.remove('active');
     but2.classList.remove('active');
     but3.style.display = "none";
+    but4.style.display = "block";
     block1.style.display = "none";
     block2.style.display = "none";
     block3.style.display = "block";

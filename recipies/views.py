@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import *
-from .forms import AddonActiveForm, AddAddonsForm, EditRecipeNameForm, NewRecipeForm, RecipeTypeFilterBox, RecipeTagsForm
+from .forms import AddAddonsForm, AddonActiveForm, EditRecipeNameForm, NewRecipeForm, RecipeTypeFilterBox, RecipeTagsForm
 from recipies.models import Recipies, RecipeTags
 from datetime import datetime
 from django.utils import timezone
@@ -62,38 +62,45 @@ def show_recipies(request):
 
 def show_recipe(request, recipe_id, qty_multiplier=1.0):
     if request.method == 'POST':
-        # print('--------------------')
-        # print(request.POST)
-        # print('--------------------')
-        
+        print('--------------------')
+        print(request.POST)
+        print('--------------------')
         # Delete add_on recipe
         if request.POST.get('delete_add_on'):
             add_on_id = request.POST.get('delete_add_on')
-            add_on = Addons.objects.get(pk=add_on_id)
+            add_on = AddOns.objects.get(pk=add_on_id)
             add_on.delete()
         # Add add-on recipies
         form = AddAddonsForm(request.POST)
         if form.is_valid():
             add_on_id = form.cleaned_data['add_on']
             recipe = Recipies.objects.get(pk=recipe_id)
-            adding = Addons(recipe=recipe, add_on=add_on_id)
+            adding = AddOns(recipe=recipe, add_on=add_on_id)
             adding.save()
         # Add_on active state change
         if request.POST.get('add-on-active-changed'):
             add_on_active_changed = request.POST.get('add-on-active-changed')
             add_on_active = request.POST.getlist('add-on-active')
-            add_on = Addons.objects.get(pk=add_on_active_changed)
+            add_on = AddOns.objects.get(pk=add_on_active_changed)
             if add_on_active_changed in add_on_active:
                 add_on.active = True
                 add_on.save()
             else:
                 add_on.active = False
                 add_on.save()
+        if request.POST.get('add-on-qtymultiplier'):
+            add_on_qty = request.POST.get('add-on-qtymultiplier')
+            add_on_id = request.POST.get('add-on-qtymultiplier_id')
+            add_on = AddOns.objects.get(pk=add_on_id)
+            add_on.qty_multiplier = add_on_qty
+            add_on.save()
+
     # Qty multiplier
     if request.method == 'GET':
         if request.GET.getlist('qtymultiplier'):
             qty_multiplier = request.GET.getlist('qtymultiplier')
             qty_multiplier = float(qty_multiplier[0])
+        
     # Get recipe data
     recipe = Recipies.objects.get(pk=recipe_id)
     # Get recipe ingredients
@@ -122,7 +129,7 @@ def show_recipe(request, recipe_id, qty_multiplier=1.0):
     form = AddAddonsForm()
     add_on_recipies = []
     if recipe.add_ons:
-        add_ons = Addons.objects.filter(recipe=recipe.id)
+        add_ons = AddOns.objects.filter(recipe=recipe.id)
         for add_on in add_ons:
             add_on_recipe = Recipies.objects.get(pk=add_on.add_on_id)
             add_on_recipe_ingredients = RecipeIngredients.objects.filter(recipe_id=add_on_recipe.id)
@@ -144,6 +151,9 @@ def new_recipe(request):
 
 
 def edit_recipe(request, recipe_id):
+    # print('--------------------')
+    # print(request.POST)
+    # print('--------------------')
     if request.method == 'POST':
         if request.POST.getlist('delete_ingredient'):
             RecipeIngredient_id = request.POST.getlist('delete_ingredient')
@@ -154,7 +164,7 @@ def edit_recipe(request, recipe_id):
             recipe = Recipies.objects.get(pk=recipe_id)
             recipe.date = timezone.now()
             recipe.save()
-        elif request.POST.getlist('add_ingredient'):
+        if request.POST.getlist('add_ingredient'):
             # Get str value from html datalist and split to get id to be able to search db
             ingredient_id_POST = request.POST.getlist('ingredient')
             ingredient_id_name = ingredient_id_POST[0].split(':') # seperate by ':'
@@ -190,17 +200,17 @@ def edit_recipe(request, recipe_id):
             recipe = Recipies.objects.get(pk=recipe_id)
             recipe.date = timezone.now()
             recipe.save()
-        elif request.POST.get('delete_heading'):
+        if request.POST.get('delete_heading'):
             rec_ing_head_id = request.POST.get('delete_heading')
             recipe_heading = RecipeIngredientsHeading.objects.get(pk=rec_ing_head_id)
             recipe_heading.delete()
-        elif request.POST.get('heading'):
+        if request.POST.get('heading'):
             heading = request.POST.get('heading')
             ingredients_num = request.POST.getlist('recipe_ingredient_id')
             place = len(ingredients_num)
             add_heading = RecipeIngredientsHeading(recipe_id=recipe_id, heading=heading, place=place)
             add_heading.save()
-        elif request.POST.getlist('edit_quantities'):
+        if request.POST.getlist('edit_quantities'):
             recipe_ingredients_ids = request.POST.getlist('recipe_ingredient_id')
             quantities = request.POST.getlist('qty')
             for i, recipe_ingredient_id in enumerate(recipe_ingredients_ids):
@@ -211,7 +221,7 @@ def edit_recipe(request, recipe_id):
             recipe = Recipies.objects.get(pk=recipe_id)
             recipe.date = timezone.now()
             recipe.save()
-        elif request.POST.getlist('edit_instructions'):
+        if request.POST.getlist('edit_instructions'):
             recipe_instructions_query = RecipeInstructions.objects.all().filter(recipe_id=recipe_id)
             instructions = request.POST.getlist('textarea_instructions')
             new_instruction = request.POST.getlist('new_instruction')
@@ -244,7 +254,7 @@ def edit_recipe(request, recipe_id):
             recipe = Recipies.objects.get(pk=recipe_id)
             recipe.date = timezone.now()
             recipe.save()
-        elif request.POST.getlist('edit_tags'):
+        if request.POST.getlist('edit_tags'):
             form = RecipeTagsForm(request.POST)
             if form.is_valid():
                 recipe_type = request.POST.get('recipe_type')
@@ -252,12 +262,16 @@ def edit_recipe(request, recipe_id):
                 tags = request.POST.getlist('tags')
                 new_URL = request.POST.get('URL')
                 allow_add_ons = form.cleaned_data['add_ons']
+                preferred_add_ons = form.cleaned_data['preferred_add_ons']
                 recipe = Recipies.objects.get(pk=recipe_id)
                 recipe.tags.set(tags)
                 recipe.URL = new_URL
                 recipe.add_ons = allow_add_ons
                 recipe.recipe_type = recipe_type_obj
+                recipe.preferred_add_ons.set(preferred_add_ons)
                 recipe.save()
+                
+
     # Get recipe data
     recipe_data = Recipies.objects.get(pk=recipe_id)
     # Get info on the ingredients in the recipe
@@ -286,9 +300,23 @@ def edit_recipe(request, recipe_id):
     # Tags form
     tags_query = RecipeTags.objects.all().filter(recipies=recipe_id)
     tags = [object.id for object in tags_query]
-    form = RecipeTagsForm(initial={'recipe_type': recipe_data.recipe_type, 'tags':tags, 'prep_time': recipe_data.prep_time, 'URL': recipe_data.URL, 'add_ons': recipe_data.add_ons})
+    preferred_query = Recipies.objects.filter(preferred_add_ons=recipe_id)
+    preferred = [object.id for object in preferred_query]
+    form = RecipeTagsForm(preferred_field=recipe_data.add_ons, initial={'recipe_type': recipe_data.recipe_type, 
+                                                                        'tags':tags, 
+                                                                        'URL': recipe_data.URL, 
+                                                                        'add_ons': recipe_data.add_ons,
+                                                                        'preferred_add_ons': preferred
+                                                                        })
+    # pref_addon_form = PrefferedAddonsForm()
 
-    context = {'recipe': recipe_data, 'recipe_ingredients': recipe_ingredients, 'instructions': recipe_instructions, 'all_ingredients': all_ingredients_quary, 'units': units, 'form': form}
+    context =  {'recipe': recipe_data, 
+                'recipe_ingredients': recipe_ingredients, 
+                'instructions': recipe_instructions, 
+                'all_ingredients': all_ingredients_quary, 
+                'units': units, 
+                'form': form}
+
     return render(request, 'recipies/edit_recipe.html', context)
 
 

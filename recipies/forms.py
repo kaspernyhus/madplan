@@ -4,7 +4,7 @@ from django.db.models import fields
 from django.db.models.fields import files
 from django.db.models.query import QuerySet
 from django.forms import widgets
-from .models import Addons, Recipies, RecipeTypes
+from .models import AddOns, Recipies, RecipeTypes
 from ingredients.models import Ingredients
 from django.db.models import Q
 
@@ -78,6 +78,14 @@ class RecipeTypeFilterBox(forms.ModelForm):
 
 
 class RecipeTagsForm(forms.ModelForm):
+  def __init__(self, *args, **kwargs):
+    preferred = kwargs.pop('preferred_field', None)
+    super(RecipeTagsForm, self).__init__(*args, **kwargs)
+    if preferred == False:
+      self.fields.pop('preferred_add_ons')
+
+  preferred_add_ons = forms.ModelMultipleChoiceField(required=False, queryset=Recipies.objects.filter(Q(recipe_type_id=2)|Q(recipe_type_id=5)), label='Farvoritter')
+  
   class Meta:
     model = Recipies
 
@@ -85,15 +93,17 @@ class RecipeTagsForm(forms.ModelForm):
       'recipe_type',
       'tags',
       'add_ons',
+      'preferred_add_ons',
       'URL',
     )
     labels = {
       'recipe_type': '',
       'tags': '',
       'add_ons': 'Tillad ekstra tilbehør',
+      'preferred_add_ons': '',
       'URL': 'Website',
     }
-  
+
 
 class AddAddonsForm(forms.Form):
   add_on = forms.ModelChoiceField(queryset=Recipies.objects.filter(Q(recipe_type_id=2)|Q(recipe_type_id=5)), label='')
