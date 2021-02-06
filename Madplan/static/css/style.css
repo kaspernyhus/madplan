@@ -558,6 +558,8 @@ li.dropdown {
 .ipad-layout-left {
   float: left;
   width: 30%;
+  height: 100vh;
+  overflow: scroll;
   padding: 10px;
   padding-top: 0px;
   margin-top: 20px;
@@ -567,9 +569,15 @@ li.dropdown {
 .ipad-layout-right {
   float: left;
   width: 70%;
+  height: 100vh;
+  overflow: scroll;
   padding: 10px;
   padding-top: 0px;
   margin-top: 20px;
+}
+
+.ipad-layout-content {
+  padding-bottom: 500px;
 }
 
 .td-ipad {

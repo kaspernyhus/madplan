@@ -145,38 +145,42 @@
   <div id="Block3" class="ipad-view">
     <div class="">
       <div class="ipad-layout-left">
-        <ul class="center">
-          {% for ingredient in ingredients %}
-            {% if ingredient.heading %}
-              <li class="ipad-heading bold-instr"><b>{{ ingredient.heading }}</b></li>
-            {% else %}
-              <li class="ingredients">{{ ingredient.amount }} {{ingredient.unit}} {{ingredient.name}}{% if ingredient.description %}, {{ingredient.description}} {% endif %} {% if ingredient.recipe_ingredient_description %} {{ingredient.recipe_ingredient_description}} {% endif %}</li>
-            {% endif %}
-          {% endfor %}
-
-          {% if recipe.add_ons %}
-            {% for add_on in add_ons %}
-              {% if add_on.add_on.active %}
-                <li class="ipad-heading bold-instr"><b>{{ add_on.recipe }}</b></li>
-                {% for ingredient in add_on.recipe_ingredients %}
-                  <li class="ingredients">{{ ingredient.amount }} {{ingredient.measurement_unit}} {{ingredient.ingredient.name}}{% if ingredient.ingredient.description %}, {{ingredient.ingredient.description}} {% endif %} {% if ingredient.ingredient.recipe_ingredient_description %} {{ingredient.ingredient.recipe_ingredient_description}} {% endif %}</li>
-                {% endfor %}
+        <div class="ipad-layout-content">
+          <ul class="center">
+            {% for ingredient in ingredients %}
+              {% if ingredient.heading %}
+                <li class="ipad-heading bold-instr"><b>{{ ingredient.heading }}</b></li>
+              {% else %}
+                <li class="ingredients">{{ ingredient.amount }} {{ingredient.unit}} {{ingredient.name}}{% if ingredient.description %}, {{ingredient.description}} {% endif %} {% if ingredient.recipe_ingredient_description %} {{ingredient.recipe_ingredient_description}} {% endif %}</li>
               {% endif %}
             {% endfor %}
-          {% endif %}
-        </ul>
+        
+            {% if recipe.add_ons %}
+              {% for add_on in add_ons %}
+                {% if add_on.add_on.active %}
+                  <li class="ipad-heading bold-instr"><b>{{ add_on.recipe }}</b></li>
+                  {% for ingredient in add_on.recipe_ingredients %}
+                    <li class="ingredients">{{ ingredient.amount }} {{ingredient.measurement_unit}} {{ingredient.ingredient.name}}{% if ingredient.ingredient.description %}, {{ingredient.ingredient.description}} {% endif %} {% if ingredient.ingredient.recipe_ingredient_description %} {{ingredient.ingredient.recipe_ingredient_description}} {% endif %}</li>
+                  {% endfor %}
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+          </ul>
+        </div>
       </div>
 
       <div class="ipad-layout-right">
-        <ul class="center no-margin-top">
-          {% for instruction in instructions %}
-            {% if instruction.is_bold %}
-              <li class="ipad-heading bold-instr"><b>{{ instruction.description }}</b></li>
-            {% else %}
-              <li class="ipad-instructions">{{ instruction.description }}</li>
-            {% endif %}
-          {% endfor %}
-        </ul>
+        <div class="ipad-layout-content">
+          <ul class="center no-margin-top">
+            {% for instruction in instructions %}
+              {% if instruction.is_bold %}
+                <li class="ipad-heading bold-instr"><b>{{ instruction.description }}</b></li>
+              {% else %}
+                <li class="ipad-instructions">{{ instruction.description }}</li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
       </div>
     </div>
   </div>
