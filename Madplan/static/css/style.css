@@ -1,17 +1,17 @@
 :root {
-  --background: hsl(215, 100%, 96%);
-  --little-darker: #d8e9fd;
-  --darker: #6eaaf8;      /* navbar */
-  --more-dark: #468ae2;
-  --darkest: #3e68b8;
-  --lighter: rgb(251, 253, 255);
+  --background: hsl(0, 0%, 95%);
+  --little-darker: #f0e9e9;
+  --darker: #D5A798;      /* navbar */
+  --more-dark: #A98279;
+  --darkest: #705D62;
+  --lighter: rgb(255, 251, 251);
   --light-transparent: rgba(255, 255, 255, 0.8);
   --darktext: #333;
   --lighttext:  white;
   --grayedtext: rgb(172, 172, 172);
   --bottonhover: var(--more-dark);
   --borders: black;
-  --lighterborders: #343a40;
+  --lighterborders: #403434;
   --recipe-bg: #f7e1e1; 
 }
 
@@ -549,7 +549,7 @@ li.dropdown {
 .ipad-view {
   overflow: auto;
   background-color: var(--recipe-bg);
-  margin: 30px;
+  margin: 30px 65px;
   padding-left: 15px;
   padding-right: 15px;
   padding-bottom: 30px;

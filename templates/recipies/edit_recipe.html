@@ -136,6 +136,24 @@
     </form>
   </div>
 
+  {% if recipe.add_ons %}
+  <div class="center container">
+    <b class="center">Vælg andet tilbehør</b>
+    <form method="POST" class="flex">
+      {% csrf_token %}
+      {{form.as_p}}
+      <input type="submit" class="margin-left sml-button" name="add_ons" value="tilføj">
+    </form>
+  </div>
+  {% for add_on in add_ons %}
+  {{add_on}}
+  <form method="POST" id="delete_add_on">
+    {% csrf_token %}
+    <button type="submit" class="delete_cross" id="delete_add_on" name="delete_add_on" value="{{ add_on.add_on.id }}">x</button>
+  </form>
+  {% endfor %}
+  {% endif %}
+
   
   <br>
   ----------------------------------
