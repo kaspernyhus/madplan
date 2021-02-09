@@ -48,7 +48,7 @@
       {% else %}
       <tr>
         <td>
-          <span>{{ recipe_ingredient.name }}{% if recipe_ingredient.description %}, {{ recipe_ingredient.description }} {% endif %}{% if recipe_ingredient.recipe_ingredient_description %}, {{ recipe_ingredient.recipe_ingredient_description }} {% endif %}</span>
+          <a href="{% url 'edit_recipe_ingredient' recipe_ingredient.id %}"><span>{{ recipe_ingredient.name }}{% if recipe_ingredient.description %}, {{ recipe_ingredient.description }} {% endif %}{% if recipe_ingredient.recipe_ingredient_description %}, {{ recipe_ingredient.recipe_ingredient_description }} {% endif %}</span></a>
         </td>
         <td>
           <input type="number" id="qty" name="qty" value="{{ recipe_ingredient.amount|unlocalize }}" lang="us-en" min="0" max="1000" step="0.1"> {{ recipe_ingredient.unit }}
