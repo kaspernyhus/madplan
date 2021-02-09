@@ -346,9 +346,10 @@ def edit_reciep_ingredient(request, recipe_ingredient_id):
             recipe_ingredient.measurement_unit = form.cleaned_data['measurement_unit']
             recipe_ingredient.save()
             return redirect('/recipies/'+str(recipe_ingredient.recipe_id))
-    edit_ingredient_form = EditRecipeIngredientForm(initial={'ingredient': recipe_ingredient.ingredient_id,'description': recipe_ingredient.description, 'amount': recipe_ingredient.amount, 'measurement_unit': recipe_ingredient.measurement_unit})
-    print(recipe_ingredient.measurement_unit)
-    print(edit_ingredient_form)
+    edit_ingredient_form = EditRecipeIngredientForm(initial={'ingredient': recipe_ingredient.ingredient_id,
+                                                             'description': recipe_ingredient.description, 
+                                                             'amount': recipe_ingredient.amount, 
+                                                             'measurement_unit': recipe_ingredient.measurement_unit})
     return render(request, 'recipies/edit_recipe_ingredient.html', {'form': edit_ingredient_form})
 
 
