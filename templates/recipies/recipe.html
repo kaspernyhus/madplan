@@ -52,7 +52,7 @@
         {% else %}
           <tr>
             <td>
-              <span>{{ ingredient.name }}{% if ingredient.description %}, {{ ingredient.description }} {% endif %}{% if ingredient.recipe_ingredient_description %} {{ingredient.recipe_ingredient_description}} {% endif %}</span>
+              <span>{{ ingredient.name }}{% if ingredient.description %}, {{ ingredient.description }} {% endif %}{% if ingredient.recipe_ingredient_description %}, {{ingredient.recipe_ingredient_description}} {% endif %}</span>
             </td>
             <td class="amount">
               <span>{{ ingredient.amount }} {{ingredient.unit}}</span>
