@@ -4,7 +4,7 @@ from django.db.models import fields
 from django.db.models.fields import files
 from django.db.models.query import QuerySet
 from django.forms import widgets
-from .models import AddOns, Recipies, RecipeTypes
+from .models import AddOns, RecipeIngredients, Recipies, RecipeTypes
 from ingredients.models import Ingredients
 from django.db.models import Q
 
@@ -103,6 +103,20 @@ class RecipeTagsForm(forms.ModelForm):
       'preferred_add_ons': '',
       'URL': 'Website',
     }
+
+
+class EditRecipeIngredientForm(forms.ModelForm):
+
+  class Meta:
+    model = RecipeIngredients
+
+    fields = (
+      'ingredient',
+      'description',
+      'amount',
+      'measurement_unit',
+    )
+
 
 
 class AddAddonsForm(forms.Form):

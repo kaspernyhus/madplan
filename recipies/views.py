@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import *
-from .forms import AddAddonsForm, AddonActiveForm, EditRecipeNameForm, NewRecipeForm, RecipeTypeFilterBox, RecipeTagsForm
+from .forms import AddAddonsForm, AddonActiveForm, EditRecipeIngredientForm, EditRecipeNameForm, NewRecipeForm, RecipeTypeFilterBox, RecipeTagsForm
 from recipies.models import Recipies, RecipeTags
 from datetime import datetime
 from django.utils import timezone
@@ -114,6 +114,7 @@ def show_recipe(request, recipe_id, qty_multiplier=1.0):
         else:
             amount = round(amount, 2)
         ingredients.append({
+            'id': ingredient.id,
             'name': ingredient.get_ingredient_name(), 
             'description': ingredient.get_ingredient_description(),
             'unit': ingredient.measurement_unit, 
@@ -270,8 +271,6 @@ def edit_recipe(request, recipe_id):
                 recipe.recipe_type = recipe_type_obj
                 recipe.preferred_add_ons.set(preferred_add_ons)
                 recipe.save()
-                
-
     # Get recipe data
     recipe_data = Recipies.objects.get(pk=recipe_id)
     # Get info on the ingredients in the recipe
@@ -308,8 +307,6 @@ def edit_recipe(request, recipe_id):
                                                                         'add_ons': recipe_data.add_ons,
                                                                         'preferred_add_ons': preferred
                                                                         })
-    # pref_addon_form = PrefferedAddonsForm()
-
     context =  {'recipe': recipe_data, 
                 'recipe_ingredients': recipe_ingredients, 
                 'instructions': recipe_instructions, 
@@ -336,6 +333,23 @@ def edit_recipe_name(request, recipe_id):
 
     form = EditRecipeNameForm(initial={'name':recipe.name, 'description': recipe.description, 'prep_time': recipe.prep_time})
     return render(request, 'recipies/edit_name.html', {'form': form})
+
+
+def edit_reciep_ingredient(request, recipe_ingredient_id):
+    recipe_ingredient = RecipeIngredients.objects.get(pk=recipe_ingredient_id)
+    if request.method == 'POST':
+        form = EditRecipeIngredientForm(request.POST)
+        if form.is_valid():
+            recipe_ingredient.ingredient = form.cleaned_data['ingredient']
+            recipe_ingredient.description = form.cleaned_data['description']
+            recipe_ingredient.amount = form.cleaned_data['amount']
+            recipe_ingredient.measurement_unit = form.cleaned_data['measurement_unit']
+            recipe_ingredient.save()
+            return redirect('/recipies/'+str(recipe_ingredient.recipe_id))
+    edit_ingredient_form = EditRecipeIngredientForm(initial={'ingredient': recipe_ingredient.ingredient_id,'description': recipe_ingredient.description, 'amount': recipe_ingredient.amount, 'measurement_unit': recipe_ingredient.measurement_unit})
+    print(recipe_ingredient.measurement_unit)
+    print(edit_ingredient_form)
+    return render(request, 'recipies/edit_recipe_ingredient.html', {'form': edit_ingredient_form})
 
 
 def delete_recipe(request, recipe_id):

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<h1 class="header">Rediger ingrediens</h1>
+
+<div class="center">
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">gem</button>
+  </form>
+</div>
+
+{% endblock %}
