@@ -94,7 +94,7 @@
               {% for ingredient in add_on.recipe_ingredients %}
                 <tr>
                   <td>
-                    <span class="{% if not add_on.add_on.active %} grayedout {% endif %}">{{ingredient.ingredient.name}}{% if ingredient.ingredient.description %}, {{ingredient.ingredient.description}} {% endif %} {% if ingredient.ingredient.recipe_ingredient_description %} {{ingredient.ingredient.recipe_ingredient_description}} {% endif %}</span>
+                    <span class="{% if not add_on.add_on.active %} grayedout {% endif %}">{{ingredient.ingredient.name}}{% if ingredient.ingredient.description %}, {{ingredient.ingredient.description}} {% endif %} {% if ingredient.ingredient.recipe_ingredient_description %}, {{ingredient.ingredient.recipe_ingredient_description}} {% endif %}</span>
                   </td>
                   <td class="amount">
                     <span class="{% if not add_on.add_on.active %} grayedout {% endif %}">{{ ingredient.amount }} {{ingredient.measurement_unit}} </span>
