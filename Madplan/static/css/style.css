@@ -456,7 +456,6 @@ p {
   font-weight: 600;
   font-size: 18px;
   padding-top: 14px;
-  
 }
 
 .no-margin-top {
@@ -471,7 +470,7 @@ p {
 
 ul {
   list-style-type: none;
-  margin: 8px;
+  margin: 0px;
   padding: 0;
   overflow: hidden; 
 }

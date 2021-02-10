@@ -65,6 +65,9 @@
     
     <div class="center container" style="max-width: 460px;">
       {% if recipe.add_ons %}
+        <div class="center">
+          <span class="bold-instr">Tilbehør</span>
+        </div>
         {% for add_on in add_ons %}
           <table class="center">
             <thead>
@@ -79,6 +82,7 @@
               <th>
                 <a href="{% url 'show_recipe' add_on.recipe.id %}"> <b class="{% if not add_on.add_on.active %} grayedout {% endif %}"> {{ add_on.recipe }}</b> </a>
               </th>
+              {% if add_on.add_on.active %}
               <th>
                 <div class="flex">
                   <form method="POST" name="add-on-qtymultiplier" action="{% url 'show_recipe' recipe.id %}">
@@ -89,17 +93,20 @@
                   </form>
                 </div>
               </th>
+              {% endif %}
             </thead>
             <tbody class="table-body">
               {% for ingredient in add_on.recipe_ingredients %}
+                {% if add_on.add_on.active %}
                 <tr>
                   <td>
-                    <span class="{% if not add_on.add_on.active %} grayedout {% endif %}">{{ingredient.ingredient.name}}{% if ingredient.ingredient.description %}, {{ingredient.ingredient.description}} {% endif %} {% if ingredient.ingredient.recipe_ingredient_description %}, {{ingredient.ingredient.recipe_ingredient_description}} {% endif %}</span>
+                    <span class="">{{ingredient.ingredient.name}}{% if ingredient.ingredient.description %}, {{ingredient.ingredient.description}} {% endif %} {% if ingredient.ingredient.recipe_ingredient_description %}, {{ingredient.ingredient.recipe_ingredient_description}} {% endif %}</span>
                   </td>
                   <td class="amount">
-                    <span class="{% if not add_on.add_on.active %} grayedout {% endif %}">{{ ingredient.amount }} {{ingredient.measurement_unit}} </span>
+                    <span class="">{{ ingredient.amount }} {{ingredient.measurement_unit}}</span>
                   </td>
                 </tr>
+                {% endif %}
                 {% endfor %}
             </tbody>
           </table>
@@ -115,7 +122,7 @@
     <ul class="center no-margin-top">
       {% for instruction in instructions %}
         {% if instruction.is_bold %}
-          <li class="instructions bold-instr"> <b>{{ instruction.description }}</b> </li>
+          <li class="instructions bold-instr">{{ instruction.description }}</li>
         {% else %}
           <li class="instructions">{{ instruction.description }}</li>
         {% endif %}
@@ -137,7 +144,7 @@
           <ul class="center">
             {% for ingredient in ingredients %}
               {% if ingredient.heading %}
-                <li class="ipad-heading bold-instr"><b>{{ ingredient.heading }}</b></li>
+                <li class="ipad-heading bold-instr">{{ ingredient.heading }}</li>
               {% else %}
                 <li class="ingredients">{{ ingredient.amount }} {{ingredient.unit}} {{ingredient.name}}{% if ingredient.description %}, {{ingredient.description}} {% endif %} {% if ingredient.recipe_ingredient_description %} {{ingredient.recipe_ingredient_description}} {% endif %}</li>
               {% endif %}
@@ -146,7 +153,7 @@
             {% if recipe.add_ons %}
               {% for add_on in add_ons %}
                 {% if add_on.add_on.active %}
-                  <li class="ipad-heading bold-instr"><b>{{ add_on.recipe }}</b></li>
+                  <li class="ipad-heading bold-instr">{{ add_on.recipe }}</li>
                   {% for ingredient in add_on.recipe_ingredients %}
                     <li class="ingredients">{{ ingredient.amount }} {{ingredient.measurement_unit}} {{ingredient.ingredient.name}}{% if ingredient.ingredient.description %}, {{ingredient.ingredient.description}} {% endif %} {% if ingredient.ingredient.recipe_ingredient_description %} {{ingredient.ingredient.recipe_ingredient_description}} {% endif %}</li>
                   {% endfor %}
@@ -162,7 +169,7 @@
           <ul class="center no-margin-top">
             {% for instruction in instructions %}
               {% if instruction.is_bold %}
-                <li class="ipad-heading bold-instr"><b>{{ instruction.description }}</b></li>
+                <li class="ipad-heading bold-instr">{{ instruction.description }}</li>
               {% else %}
                 <li class="ipad-instructions">{{ instruction.description }}</li>
               {% endif %}
