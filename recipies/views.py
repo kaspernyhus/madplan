@@ -62,21 +62,9 @@ def show_recipies(request):
 
 def show_recipe(request, recipe_id, qty_multiplier=1.0):
     if request.method == 'POST':
-        print('--------------------')
-        print(request.POST)
-        print('--------------------')
-        # Delete add_on recipe
-        if request.POST.get('delete_add_on'):
-            add_on_id = request.POST.get('delete_add_on')
-            add_on = AddOns.objects.get(pk=add_on_id)
-            add_on.delete()
-        # Add add-on recipies
-        form = AddAddonsForm(request.POST)
-        if form.is_valid():
-            add_on_id = form.cleaned_data['add_on']
-            recipe = Recipies.objects.get(pk=recipe_id)
-            adding = AddOns(recipe=recipe, add_on=add_on_id)
-            adding.save()
+        # print('--------------------')
+        # print(request.POST)
+        # print('--------------------')
         # Add_on active state change
         if request.POST.get('add-on-active-changed'):
             add_on_active_changed = request.POST.get('add-on-active-changed')
@@ -127,16 +115,16 @@ def show_recipe(request, recipe_id, qty_multiplier=1.0):
         ingredients.insert(rec_head.place+offset, {'heading':rec_head.heading})
     recipe_instructions = RecipeInstructions.objects.filter(recipe_id=recipe_id)
     # Get Add-ons
-    form = AddAddonsForm()
+    # form = AddAddonsForm()
     add_on_recipies = []
     if recipe.add_ons:
         add_ons = AddOns.objects.filter(recipe=recipe.id)
         for add_on in add_ons:
             add_on_recipe = Recipies.objects.get(pk=add_on.add_on_id)
             add_on_recipe_ingredients = RecipeIngredients.objects.filter(recipe_id=add_on_recipe.id)
-            add_on_recipies.append({'add_on': add_on, 'recipe': add_on_recipe, 'recipe_ingredients': add_on_recipe_ingredients, 'form': AddonActiveForm(initial={'add_on_active': add_on.active})})
+            add_on_recipies.append({'add_on': add_on, 'recipe': add_on_recipe, 'recipe_ingredients': add_on_recipe_ingredients})
 
-    context = {'recipe': recipe, 'add_ons': add_on_recipies, 'ingredients': ingredients, 'instructions': recipe_instructions, 'qty_multiplier': qty_multiplier, 'form': form}
+    context = {'recipe': recipe, 'add_ons': add_on_recipies, 'ingredients': ingredients, 'instructions': recipe_instructions, 'qty_multiplier': qty_multiplier}
     return render(request, 'recipies/recipe.html', context)
 
 
@@ -262,15 +250,35 @@ def edit_recipe(request, recipe_id):
                 recipe_type_obj = RecipeTypes.objects.get(pk=recipe_type)
                 tags = request.POST.getlist('tags')
                 new_URL = request.POST.get('URL')
-                allow_add_ons = form.cleaned_data['add_ons']
-                preferred_add_ons = form.cleaned_data['preferred_add_ons']
                 recipe = Recipies.objects.get(pk=recipe_id)
                 recipe.tags.set(tags)
                 recipe.URL = new_URL
-                recipe.add_ons = allow_add_ons
                 recipe.recipe_type = recipe_type_obj
-                recipe.preferred_add_ons.set(preferred_add_ons)
                 recipe.save()
+        # Delete add_on recipe
+        if request.POST.getlist('delete_add_on'):
+            add_on_id = request.POST.get('delete_add_on')
+            add_on = AddOns.objects.get(pk=add_on_id)
+            add_on.delete()
+        # Activate add_ons
+        if request.POST.getlist('add-ons-active-changed'):
+            recipe = Recipies.objects.get(pk=recipe_id)
+            active = request.POST.get('add-ons-active')
+            print(active)
+            if active == 'on':
+                recipe.add_ons = True
+                recipe.save()
+            else:
+                recipe.add_ons = False
+                recipe.save()
+        # Add add-on recipies
+        if request.POST.get('add_ons'):
+            addon_form = AddAddonsForm(request.POST)
+            if addon_form.is_valid():
+                add_on_id = addon_form.cleaned_data['add_on']
+                recipe = Recipies.objects.get(pk=recipe_id)
+                adding = AddOns(recipe=recipe, add_on=add_on_id)
+                adding.save()
     # Get recipe data
     recipe_data = Recipies.objects.get(pk=recipe_id)
     # Get info on the ingredients in the recipe
@@ -301,18 +309,30 @@ def edit_recipe(request, recipe_id):
     tags = [object.id for object in tags_query]
     preferred_query = Recipies.objects.filter(preferred_add_ons=recipe_id)
     preferred = [object.id for object in preferred_query]
-    form = RecipeTagsForm(preferred_field=recipe_data.add_ons, initial={'recipe_type': recipe_data.recipe_type, 
-                                                                        'tags':tags, 
-                                                                        'URL': recipe_data.URL, 
-                                                                        'add_ons': recipe_data.add_ons,
-                                                                        'preferred_add_ons': preferred
-                                                                        })
+    form = RecipeTagsForm(initial={'recipe_type': recipe_data.recipe_type, 
+                                    'tags':tags, 
+                                    'URL': recipe_data.URL
+                                    })
+    # Addons
+    add_on_recipies = []
+    add_ons = AddOns.objects.filter(recipe=recipe_data.id)
+    for add_on in add_ons:
+        add_on_recipe = Recipies.objects.get(pk=add_on.add_on_id)
+        add_on_recipe_ingredients = RecipeIngredients.objects.filter(recipe_id=add_on_recipe.id)
+        add_on_recipies.append({'add_on': add_on, 'recipe': add_on_recipe, 'recipe_ingredients': add_on_recipe_ingredients})
+    addon_form = AddAddonsForm()
+    addon_active_form = AddonActiveForm()
+
     context =  {'recipe': recipe_data, 
                 'recipe_ingredients': recipe_ingredients, 
                 'instructions': recipe_instructions, 
                 'all_ingredients': all_ingredients_quary, 
                 'units': units, 
-                'form': form}
+                'form': form,
+                'add_ons': add_on_recipies,
+                'addon_form': addon_form,
+                'addon_active_form': addon_active_form
+                }
 
     return render(request, 'recipies/edit_recipe.html', context)
 

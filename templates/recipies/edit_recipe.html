@@ -39,7 +39,7 @@
       {% csrf_token %}
       {% for recipe_ingredient in recipe_ingredients %}
       {% if recipe_ingredient.heading %}
-      <tr style="background-color:hsl(214, 100%, 90%)">
+      <tr>
         <th class="bg-color">
           <span class="bold-instr">{{ recipe_ingredient.heading.heading }}</span>
           <button type="submit" class="delete_cross" id="delete_heading" name="delete_heading" value="{{recipe_ingredient.heading.id}}">x</button>
@@ -136,30 +136,46 @@
     </form>
   </div>
 
-  {% if recipe.add_ons %}
   <div class="center container">
-    <b class="center">Vælg andet tilbehør</b>
+    <h5 class="header">Ekstra tilbehør</h5>
+    <form method="POST">
+      {% csrf_token %}
+        <label id="add-on-active">Aktiver</label>
+        <input type="checkbox" name="add-ons-active" id="add-on-active" {% if recipe.add_ons %} checked {% endif %} onclick="this.form.submit();">
+        <input type="hidden" name="add-ons-active-changed">
+    </form>
+    {% if recipe.add_ons %}
+    <b class="center">Tilføj tilbehør</b>
+    <table class="center">
+      {% for add_on in add_ons %}
+        <tr>
+          <td>
+            {{ add_on.recipe }}
+          </td>
+          <td>
+            <form method="POST" id="delete_add_on">
+              {% csrf_token %}
+              <button type="submit" class="delete_cross" id="delete_add_on" name="delete_add_on" value="{{ add_on.add_on.id }}">x</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
     <form method="POST" class="flex">
       {% csrf_token %}
-      {{form.as_p}}
+      {{addon_form.as_p}}
       <input type="submit" class="margin-left sml-button" name="add_ons" value="tilføj">
     </form>
+    {% endif %}
   </div>
-  {% for add_on in add_ons %}
-  {{add_on}}
-  <form method="POST" id="delete_add_on">
-    {% csrf_token %}
-    <button type="submit" class="delete_cross" id="delete_add_on" name="delete_add_on" value="{{ add_on.add_on.id }}">x</button>
-  </form>
-  {% endfor %}
-  {% endif %}
+  
 
   
   <br>
   ----------------------------------
   <div class="center">
     <span>
-      <a href="{% url 'delete_recipe' recipe.id %}" class="sml-button" style="background-color: rgba(255, 0, 0, 0.411);">Slet opskrift</a>
+      <a href="{% url 'delete_recipe' recipe.id %}" class="sml-button" style="background-color: rgba(255, 0, 0, 0.452);">Slet opskrift</a>
     </span>
   </div>
 

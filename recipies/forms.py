@@ -78,35 +78,22 @@ class RecipeTypeFilterBox(forms.ModelForm):
 
 
 class RecipeTagsForm(forms.ModelForm):
-  def __init__(self, *args, **kwargs):
-    preferred = kwargs.pop('preferred_field', None)
-    super(RecipeTagsForm, self).__init__(*args, **kwargs)
-    if preferred == False:
-      self.fields.pop('preferred_add_ons')
-
-  preferred_add_ons = forms.ModelMultipleChoiceField(required=False, queryset=Recipies.objects.filter(Q(recipe_type_id=2)|Q(recipe_type_id=5)), label='Farvoritter')
-  
   class Meta:
     model = Recipies
 
     fields = (
       'recipe_type',
       'tags',
-      'add_ons',
-      'preferred_add_ons',
       'URL',
     )
     labels = {
       'recipe_type': '',
       'tags': '',
-      'add_ons': 'Tillad ekstra tilbehør',
-      'preferred_add_ons': '',
       'URL': 'Website',
     }
 
 
 class EditRecipeIngredientForm(forms.ModelForm):
-
   class Meta:
     model = RecipeIngredients
 
@@ -123,5 +110,22 @@ class AddAddonsForm(forms.Form):
   add_on = forms.ModelChoiceField(queryset=Recipies.objects.filter(Q(recipe_type_id=2)|Q(recipe_type_id=5)), label='')
 
 
+# class AddonActiveForm(forms.ModelForm):
+#   class Meta:
+#     model = Recipies
+
+#     fields = (
+#       'add_ons',
+#     )
+
+#     labels = {
+#       'add_ons': 'Aktiver',
+#     }
+
+#     widgets = {
+#       'add_ons': forms.CheckboxInput(attrs={'onclick':'this.form.submit();'})
+#     }
+
+
 class AddonActiveForm(forms.Form):
-  add_on_active = forms.BooleanField(widget=forms.CheckboxInput(), required=False, label='') # attrs={'onclick':'this.form.submit();'}
+  add_on_active = forms.BooleanField(widget=forms.CheckboxInput(attrs={'onclick':'this.form.submit();'}), required=False, label='Aktiver') # attrs={'onclick':'this.form.submit();'}
