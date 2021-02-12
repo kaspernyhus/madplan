@@ -82,13 +82,11 @@ def show_recipe(request, recipe_id, qty_multiplier=1.0):
             add_on = AddOns.objects.get(pk=add_on_id)
             add_on.qty_multiplier = add_on_qty
             add_on.save()
-
     # Qty multiplier
     if request.method == 'GET':
         if request.GET.getlist('qtymultiplier'):
             qty_multiplier = request.GET.getlist('qtymultiplier')
             qty_multiplier = float(qty_multiplier[0])
-        
     # Get recipe data
     recipe = Recipies.objects.get(pk=recipe_id)
     # Get recipe ingredients
@@ -115,13 +113,27 @@ def show_recipe(request, recipe_id, qty_multiplier=1.0):
         ingredients.insert(rec_head.place+offset, {'heading':rec_head.heading})
     recipe_instructions = RecipeInstructions.objects.filter(recipe_id=recipe_id)
     # Get Add-ons
-    # form = AddAddonsForm()
     add_on_recipies = []
     if recipe.add_ons:
         add_ons = AddOns.objects.filter(recipe=recipe.id)
         for add_on in add_ons:
+            add_on_recipe_ingredients = []
             add_on_recipe = Recipies.objects.get(pk=add_on.add_on_id)
-            add_on_recipe_ingredients = RecipeIngredients.objects.filter(recipe_id=add_on_recipe.id)
+            add_on_recipe_ingredients_query = RecipeIngredients.objects.filter(recipe_id=add_on_recipe.id)
+            for ingredient in add_on_recipe_ingredients_query:
+                amount = ingredient.amount * add_on.qty_multiplier
+                if amount.is_integer():
+                    amount = int(amount)
+                else:
+                    amount = round(amount, 2)
+                add_on_recipe_ingredients.append({
+                    'id': ingredient.id,
+                    'name': ingredient.get_ingredient_name(), 
+                    'description': ingredient.get_ingredient_description(),
+                    'unit': ingredient.measurement_unit, 
+                    'amount': amount,
+                    'recipe_ingredient_description': ingredient.description
+                    })
             add_on_recipies.append({'add_on': add_on, 'recipe': add_on_recipe, 'recipe_ingredients': add_on_recipe_ingredients})
 
     context = {'recipe': recipe, 'add_ons': add_on_recipies, 'ingredients': ingredients, 'instructions': recipe_instructions, 'qty_multiplier': qty_multiplier}

@@ -100,14 +100,14 @@
                 {% if add_on.add_on.active %}
                 <tr>
                   <td>
-                    <span class="">{{ingredient.ingredient.name}}{% if ingredient.ingredient.description %}, {{ingredient.ingredient.description}} {% endif %} {% if ingredient.ingredient.recipe_ingredient_description %}, {{ingredient.ingredient.recipe_ingredient_description}} {% endif %}</span>
+                    <span class="">{{ingredient.name}}{% if ingredient.description %}, {{ingredient.description}} {% endif %} {% if ingredient.recipe_ingredient_description %}, {{ingredient.recipe_ingredient_description}} {% endif %}</span>
                   </td>
                   <td class="amount">
-                    <span class="">{{ ingredient.amount }} {{ingredient.measurement_unit}}</span>
+                    <span class="">{{ ingredient.amount }} {{ingredient.unit}}</span>
                   </td>
                 </tr>
                 {% endif %}
-                {% endfor %}
+              {% endfor %}
             </tbody>
           </table>
         {% endfor %}

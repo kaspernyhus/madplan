@@ -54,10 +54,8 @@ def view_shoppinglist(request, shoppinglist_id):
         form_tosave = form.save(commit=False)
         form_tosave.shoppinglist_id = shoppinglist_id
         form_tosave.save()
-  
   tasks_quary = Task.objects.filter(shoppinglist=shoppinglist_id).order_by('ingredient_category__shop_order')
   form = TaskForm()
-
   # ingredient categories in shoppinglist
   categories = []
   [categories.append(task.ingredient_category) for task in tasks_quary if task.ingredient_category not in categories]
@@ -139,9 +137,9 @@ def create_shoppinglist(request, id, source, qty=1.0):
             'ingredient_description': ingredient.get_ingredient_description(),
             'ingredient_id': ingredient.ingredient_id,
             'ingredient_category': ingredient.get_ingredient_category(),
-            'unit': ingredient.measurement_unit.id, 
+            'unit': ingredient.measurement_unit.id,
             'unit_name':ingredient.get_unit_name(), 
-            'amount': ingredient.amount * qty,
+            'amount': ingredient.amount * add_on.qty_multiplier,
             'recipe_ingredient_description': ingredient.description
             })
   # Consolidate ingredient list
