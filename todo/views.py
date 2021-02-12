@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from foodplan.models import FoodplanRecipies, Foodplans
-from recipies.models import RecipeIngredients, Recipies
+from recipies.models import AddOns, RecipeIngredients, Recipies
 from .models import Shoppinglist, Task
 from .forms import ChangeNameForm, TaskForm
 from unit_conversion.unit_conversion import convert_amount
@@ -126,6 +126,24 @@ def create_shoppinglist(request, id, source, qty=1.0):
           'amount': ingredient.amount * qty,
           'recipe_ingredient_description': ingredient.description
           })
+    # if recipe has add ons
+    if recipe.add_ons:
+      add_ons = AddOns.objects.filter(recipe_id=recipe.id)
+      for add_on in add_ons:
+        if add_on.active:
+          add_on_recipe_ing = RecipeIngredients.objects.filter(recipe_id=add_on.add_on_id)
+          for ingredient in add_on_recipe_ing:
+            ingredient_list.append({
+            'id': ingredient.ingredient_id,
+            'name': ingredient.get_ingredient_name(),
+            'ingredient_description': ingredient.get_ingredient_description(),
+            'ingredient_id': ingredient.ingredient_id,
+            'ingredient_category': ingredient.get_ingredient_category(),
+            'unit': ingredient.measurement_unit.id, 
+            'unit_name':ingredient.get_unit_name(), 
+            'amount': ingredient.amount * qty,
+            'recipe_ingredient_description': ingredient.description
+            })
   # Consolidate ingredient list
   consolidated_list = []
   for ingredient_dict in ingredient_list:

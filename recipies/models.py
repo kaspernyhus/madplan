@@ -62,6 +62,9 @@ class RecipeIngredients(models.Model):
   measurement_unit = models.ForeignKey(MeasurementUnits, on_delete=models.DO_NOTHING, blank=False, default=1)
   amount = models.FloatField(default=1, blank=False)
 
+  def __str__(self):
+    return self.ingredient.name
+
   def get_ingredient_name(self):
     return self.ingredient.name
   
