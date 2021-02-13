@@ -111,10 +111,8 @@
             </tbody>
           </table>
         {% endfor %}
-      </div>
-    
-      
       {% endif %}
+    </div>
   </div>
 </div>
 
@@ -127,6 +125,17 @@
           <li class="instructions">{{ instruction.description }}</li>
         {% endif %}
       {% endfor %}
+
+      {% if recipe.add_ons %}
+        {% for add_on in add_ons %}
+          {% if add_on.add_on.active %}
+            <li class="instructions bold-instr">{{add_on.add_on.add_on}}</li>
+            {% for instruction in add_on.recipe_instructions %}
+              <li class="instructions">{{ instruction.description }}</li>
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
     </ul>
     <div class="center">
       {% if recipe.URL %}
@@ -155,7 +164,7 @@
                 {% if add_on.add_on.active %}
                   <li class="ipad-heading bold-instr">{{ add_on.recipe }}</li>
                   {% for ingredient in add_on.recipe_ingredients %}
-                    <li class="ingredients">{{ ingredient.amount }} {{ingredient.measurement_unit}} {{ingredient.ingredient.name}}{% if ingredient.ingredient.description %}, {{ingredient.ingredient.description}} {% endif %} {% if ingredient.ingredient.recipe_ingredient_description %} {{ingredient.ingredient.recipe_ingredient_description}} {% endif %}</li>
+                    <li class="ingredients">{{ ingredient.amount }} {{ingredient.unit}} {{ingredient.name}}{% if ingredient.description %}, {{ingredient.description}} {% endif %} {% if ingredient.recipe_ingredient_description %} {{ingredient.recipe_ingredient_description}} {% endif %}</li>
                   {% endfor %}
                 {% endif %}
               {% endfor %}
@@ -174,6 +183,16 @@
                 <li class="ipad-instructions">{{ instruction.description }}</li>
               {% endif %}
             {% endfor %}
+            {% if recipe.add_ons %}
+              {% for add_on in add_ons %}
+                {% if add_on.add_on.active %}
+                  <li class="ipad-heading bold-instr">{{add_on.add_on.add_on}}</li>
+                  {% for instruction in add_on.recipe_instructions %}
+                    <li class="ipad-instructions">{{ instruction.description }}</li>
+                  {% endfor %}
+                {% endif %}
+              {% endfor %}
+            {% endif %}
           </ul>
         </div>
       </div>

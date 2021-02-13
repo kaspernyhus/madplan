@@ -120,6 +120,7 @@ def show_recipe(request, recipe_id, qty_multiplier=1.0):
             add_on_recipe_ingredients = []
             add_on_recipe = Recipies.objects.get(pk=add_on.add_on_id)
             add_on_recipe_ingredients_query = RecipeIngredients.objects.filter(recipe_id=add_on_recipe.id)
+            add_on_recipe_instructions = RecipeInstructions.objects.filter(recipe_id=add_on_recipe.id)
             for ingredient in add_on_recipe_ingredients_query:
                 amount = ingredient.amount * add_on.qty_multiplier
                 if amount.is_integer():
@@ -134,7 +135,7 @@ def show_recipe(request, recipe_id, qty_multiplier=1.0):
                     'amount': amount,
                     'recipe_ingredient_description': ingredient.description
                     })
-            add_on_recipies.append({'add_on': add_on, 'recipe': add_on_recipe, 'recipe_ingredients': add_on_recipe_ingredients})
+            add_on_recipies.append({'add_on': add_on, 'recipe': add_on_recipe, 'recipe_ingredients': add_on_recipe_ingredients, 'recipe_instructions': add_on_recipe_instructions})
 
     context = {'recipe': recipe, 'add_ons': add_on_recipies, 'ingredients': ingredients, 'instructions': recipe_instructions, 'qty_multiplier': qty_multiplier}
     return render(request, 'recipies/recipe.html', context)
