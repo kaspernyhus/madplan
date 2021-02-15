@@ -385,6 +385,14 @@ p {
   background-color: var(--more-dark);
 }
 
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+  background-color: rgb(236, 236, 236);
+  color: var(--grayedtext);
+  border-color: var(--grayedtext);
+}
+
 
 #nav {
   /* position: absolute; */
