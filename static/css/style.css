@@ -1,12 +1,39 @@
+:root {
+  --background: hsl(0, 0%, 95%);
+  --little-darker: #f0e9e9;
+  --darker: #D5A798;      /* navbar */
+  --more-dark: #A98279;
+  --darkest: #705D62;
+  --lighter: rgb(255, 251, 251);
+  --light-transparent: rgba(255, 255, 255, 0.8);
+  --darktext: #333;
+  --lighttext:  white;
+  --grayedtext: rgb(172, 172, 172);
+  --bottonhover: var(--more-dark);
+  --borders: black;
+  --lighterborders: #403434;
+  --recipe-bg: #f7e1e1; 
+}
+
 body {
-    background: #96c3fd;
-    font-family: Avenir;
+    background: var(--background);
+    font-family: 'Open Sans',sans-serif;
+    font-size: 16px;
+    font-weight: 400;
    }
 
 .container {
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 15px;
+  padding-right: 15px;
   padding-bottom: 30px;
+  max-width: 576px;
+}
+
+.container-5px {
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  max-width: 576px;
 }
 
 .W300px {
@@ -15,12 +42,29 @@ body {
 
 .header {
   text-align: center;
+  text-decoration: none;
   margin-block-end: 0.2em;
+  padding-top: 10px;
 }
+
 
 .subheader {
   text-align: center;
   margin-block-end: 0.2em;
+}
+
+
+.sub-text {
+  font-size: 12px;
+  font-weight: 100;
+}
+
+
+.recipe-top {
+  padding: 15px;
+  background-size: 100%;
+  text-align: center;
+  background-position: 0px -40px;
 }
 
 .small-text {
@@ -51,27 +95,22 @@ h1, .h1 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 16px;
+  padding: 6px;
 }
 
-
-
 .button {
-  background: #F1FDF1;
-  
   box-shadow: 0px 6px 0px rgba(0, 0, 0, 0.01), 0px 6px 5px rgba(0, 0, 0, 0.02), 0px 2px 20px rgba(0, 0, 0, 0.1);
   border-radius: 4px; 
-  
-  /* background-color: rgb(208, 253, 210); */
-  /* border: 2px solid black; */
-  color: black;
-  padding: 16px 44px;
+  background-color: var(--lighter);
+  border: 2px solid var(--borders);
+  color: var(--darktext);
+  padding: 8px 22px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 135%;
   width: 100%;
-  max-width: 360px;
+  max-width: 180px;
   transition: all 170ms ease-in-out;
   cursor: pointer;
   box-sizing: border-box;
@@ -90,26 +129,24 @@ h1, .h1 {
 }
 
 .button:hover {
-  background-color: #4c6faf;
-  color: white;
+  background-color: var(--bottonhover);
+  color: var(--lighttext);
+  text-decoration: none;
 }
 
-
 .sml-button {
-  background: #F1FDF1;
-  border: 2px solid rgba(13, 91, 35, 0.33);
-  box-shadow: 0px 6px 0px rgba(0, 0, 0, 0.01), 0px 6px 5px rgba(0, 0, 0, 0.02), 0px 2px 20px rgba(0, 0, 0, 0.1);
+  background-color: var(--lighter);
+  border: 1px solid var(--borders);
+  padding: 2px;
+  padding-left: 8px;
+  padding-right: 8px;
   border-radius: 4px; 
-  
-  /* background-color: rgb(208, 253, 210); */
-  /* border: 2px solid black; */
-  color: black;
-  /* padding: 16px 44px; */
+  color: var(--darktext); 
   text-align: center;
   text-decoration: none;
-  display: inline-block;
-  font-size: 135%;
-  width: 70%;
+  line-height: 21px;
+  font-size: 70%;
+  height: 26px;
   max-width: 360px;
   transition: all 170ms ease-in-out;
   cursor: pointer;
@@ -119,36 +156,39 @@ h1, .h1 {
 
 
 .xsml-button {
-  background: #F1FDF1;
-  border: 2px solid rgba(13, 91, 35, 0.33);
-  box-shadow: 0px 6px 0px rgba(0, 0, 0, 0.01), 0px 6px 5px rgba(0, 0, 0, 0.02), 0px 2px 20px rgba(0, 0, 0, 0.1);
+  background-color: var(--lighter);
+  border: 1px solid var(--borders);
   border-radius: 4px; 
-  
-  /* background-color: rgb(208, 253, 210); */
-  /* border: 2px solid black; */
-  color: black;
-  
+  color: var(--darktext);
   text-align: center;
   text-decoration: none;
-  display: inline-block;
-  font-size: 60%;
-  
+  line-height: 21px;
+  font-size: 70%;
+  width: 46px;
+  height: 26px;
   max-width: 360px;
   transition: all 170ms ease-in-out;
   cursor: pointer;
   box-sizing: border-box;
   position: relative;
+  margin-left: 10px;
+}
+
+.flex {
+  display: flex;
 }
 
 
-.var-button {
+.margin-left {
+  margin-left: 10px;
+}
+
+/* .var-button {
   background: #F1FDF1;
   border: 2px solid rgba(13, 91, 35, 0.33);
   box-shadow: 0px 6px 0px rgba(0, 0, 0, 0.01), 0px 6px 5px rgba(0, 0, 0, 0.02), 0px 2px 20px rgba(0, 0, 0, 0.1);
   border-radius: 4px; 
-  
   color: black;
-  
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -160,27 +200,16 @@ h1, .h1 {
   cursor: pointer;
   box-sizing: border-box;
   position: relative;
-}
+} */
 
 
-.form_button {
-  background-color: rgb(208, 253, 210);
-  border: 2px solid black;
-  color: black;
-  padding: 16px 44px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 135%;
-  margin: 4px 2px;
-  -webkit-transition-duration: 0.4s; /* Safari */
-  transition-duration: 0.4s;
-  cursor: pointer;
-}
-
-.form_button:hover {
+/* .form_button:hover {
   background-color: #4CAF50;
   color: white;
+} */
+
+.bg-color {
+  background-color: var(--background);
 }
 
 .checkbox {
@@ -190,9 +219,24 @@ h1, .h1 {
 
 table {
   table-layout: fixed;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0 5px;
   width: 100%;
-  
+}
+
+
+.table-body {
+  width: 100%;
+  display: table;
+}
+
+.sml-number-input {
+  width: 50px;
+}
+
+.qty-multiplier {
+  width: 45px;
+  font-size: 85%;
 }
 
 .hide-ov {
@@ -203,16 +247,100 @@ table {
 
 td, th {
   border: none;
-  text-align: left;
-  padding: 8px;
+  /* text-align: center; */
+  padding: 5px;
 }
 
 tr:nth-child(even) {
-  background-color:  #8abdff;
+  background-color:  var(--little-darker);
 }
 
+table tr.no-color-change {
+  background: var(--background);
+}
+
+.recipe-info {
+  height: 120px;
+  background-size: 100%;
+}
+
+.recipe-foodplan {
+  height: 60px;
+  background-size: 100%;
+}
+
+
+.recipe-label {
+  background-color: var(--light-transparent);
+  padding: 14px;
+  padding-bottom: 2px;
+  border: 2px solid var(--lighterborders);
+  border-radius: 8px;
+  display: inline-block;
+  width: 240px;
+  height: 78px;
+}
+
+
+
+.sml-recipe-label {
+  background-color: var(--light-transparent);
+  /* padding: 14px; */
+  /* padding-bottom: 5px; */
+  border: 2px solid var(--lighterborders);
+  border-radius: 8px;
+  display: inline-block;
+  width: 190px;
+}
+
+.recipe-label-td {
+  text-align: center;
+}
+
+.recipe-header {
+  background-color: var(--light-transparent);
+  padding: 14px;
+  padding-bottom: 2px;
+  border: 2px solid var(--lighterborders);
+  border-radius: 8px;
+  display: inline-block;
+  width: 335px;
+}
+
+.sub-label {
+  font-size: 10px;
+  margin: 0;
+}
+
+.prep-time {
+  font-size: 10px;
+  margin-top: 3px;
+}
+
+
+.grouplabel {
+  background: var(--darkest);
+  color: var(--lighttext);
+  text-align: center;
+}
+
+.add-form {
+  display: inline-grid;
+}
+
+
+.filterbox {
+  display: flex;
+  height: 27px;
+}
+
+.filterbox p {
+  padding-right: 5px;
+}
+
+
 .header_link {
-  color: black;
+  color: var(--darktext);
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -236,14 +364,14 @@ p {
 
 .center-nav {
   overflow: hidden;
-  background-color:  #8abdff;
+  background-color: var(--darker);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .nav-but {
-  background-color:  #8abdff;
+  background-color: var(--darker);
   border: none;
   padding: 5px 12px;
   text-align: center;
@@ -254,7 +382,15 @@ p {
 }
 
 .active {
-  background-color: #4c77af;
+  background-color: var(--more-dark);
+}
+
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+  background-color: rgb(236, 236, 236);
+  color: var(--grayedtext);
+  border-color: var(--grayedtext);
 }
 
 
@@ -262,11 +398,11 @@ p {
   /* position: absolute; */
   left: 0px;
   height: 50px;
-  background-color: rgb(126, 170, 252);
+  background-color: var(--darker);
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
 }
 #nav ul {
   margin: 0;
@@ -282,65 +418,67 @@ p {
   font-size: 17px;
   padding: 14px 16px;
   display: block;
-  color: #000000;
+  color: var(--darktext);
   text-align: center;
 }
 
 
 #nav a:hover {
-  background-color: rgb(191, 206, 255);
-  color: black;
+  background-color: var(--little-darker);
+  color: var(--darktext);
 }
 
 #nav a.active {
-  background-color: #4c77af;
-  color: white;
+  background-color: var(--darkest);
+  color: var(--lighttext);
 }
 
-.input {
-  /* position: absolute; */
-  width: 300px;
-  height: 48px;
-  left: 0px;
-  top: 22px;
-
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(25, 53, 31, 0.2);
-  box-sizing: border-box;
-  border-radius: 4px;
-
-  font-size: 120%;
-  padding-left: 20px;
-}
-
-.text-input {
-  /* position: absolute; */
-  width: 300px;
-  height: 48px;
-  left: 0px;
-  top: 22px;
-
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(25, 53, 31, 0.2);
-  box-sizing: border-box;
-  border-radius: 4px;
-
-  font-size: 100%;
-  padding-left: 20px;
-}
 
 .instructions {
   padding-bottom: 10px;
+  width: 100%;
+}
+
+.ipad-instructions {
+  padding-bottom: 20px;
+  width: 100%;
+  font-size: 100%;
+}
+
+.ipad-heading {
+  padding-bottom: 4px;
+  width: 100%;
+  font-size: 110%;
+}
+
+.ingredients {
+  padding-bottom: 0px;
+  width: 100%;
+}
+
+.amount {
+  width: 93px;
+}
+
+.bold-instr {
+  font-weight: 600;
+  font-size: 18px;
+  padding-top: 14px;
+}
+
+.no-margin-top {
+  margin-top: 0px;
+  padding-top: 0px;
 }
 
 .instr-text {
   height: 125px;
-  width: 400px;
+  width: 360px;
 }
 
 ul {
   list-style-type: none;
-  margin: 8px;
+  margin: 0px;
   padding: 0;
   overflow: hidden; 
 }
@@ -415,3 +553,109 @@ li.dropdown {
   margin-block-start: 0em;
 }
 
+.ipad-view {
+  overflow: auto;
+  background-color: var(--recipe-bg);
+  margin: 30px 65px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 30px;
+}
+
+.ipad-layout-left {
+  float: left;
+  width: 30%;
+  height: 100vh;
+  overflow: scroll;
+  padding: 10px;
+  padding-top: 0px;
+  margin-top: 20px;
+  border-right: 1px solid black;
+}
+
+.ipad-layout-right {
+  float: left;
+  width: 70%;
+  height: 100vh;
+  overflow: scroll;
+  padding: 10px;
+  padding-top: 0px;
+  margin-top: 20px;
+}
+
+.ipad-layout-content {
+  padding-bottom: 500px;
+}
+
+.td-ipad {
+  padding: 0px;
+}
+
+.grayedout {
+  color: var(--grayedtext);
+}
+
+.checkbox-container {
+  display: flex;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: -6px;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.checkbox-container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.checkbox-container input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkbox-container .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
