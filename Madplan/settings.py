@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'foodplan.apps.FoodplanConfig',
     'recipies.apps.RecipiesConfig',
     'ingredients.apps.IngredientsConfig',
+    'emptyfridge.apps.EmptyfridgeConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

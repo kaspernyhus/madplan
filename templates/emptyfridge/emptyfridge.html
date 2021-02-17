@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block content %}
+
+<div class="center container">
+  <h4>Tøm køleskabet</h4>
+</div>
+
+<div class="center">
+  {% for ingredient in added_ingredients %}
+    <ul>
+      <li>{{ ingredient.name }}</li>
+    </ul>
+  {% endfor %}
+</div>
+
+<div class="center container">
+  <div class="center">
+    <h6>Tilføj en ingrediens</h6>
+    <form type="GET" action="." class="add-form">
+      {% csrf_token %}
+      <input type="text" list="ingredient_list" name="ingredient" placeholder="Vælg ingrediens..">
+      <datalist id="ingredient_list">
+        {% for ingredient in all_ingredients %}
+          <option value="{{ingredient.id}}: {{ ingredient.name|title }}{% if ingredient.description %}, {{ingredient.description}} {% endif %}"></option>
+        {% endfor  %}
+      </datalist>
+      
+      <div class="center">
+        <button type="submit" id="ingredient_submit">tilføj</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="center container">
+  <form method="POST">
+    {% csrf_token %}
+    <button type="submit" name="restart" value="True">forfra</button>
+  </form>
+</div>
+
+<div class="center container">
+<table>
+  <tbody>
+      {% for recipe in found_recipies %}
+      <tr class="recipe-info" style="background-image: url('/media/{{ recipe.recipe_obj.photo_thumbnail }}')">
+          <td class="recipe-label-td">
+              <a href="{% url 'show_recipe' recipe.recipe_obj.id %}">
+                  <span class="recipe-label">{{recipe.recipe_obj.name}}
+                      <p class="sub-label">{{recipe.recipe_obj.description}}</p>
+                      {% if recipe.prep_time %}
+                      <div class="prep-time">
+                          <svg height="7pt" width="7pt" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                              <path d="M347.216,301.211l-71.387-53.54V138.609c0-10.966-8.864-19.83-19.83-19.83c-10.966,0-19.83,8.864-19.83,19.83v118.978    c0,6.246,2.935,12.136,7.932,15.864l79.318,59.489c3.569,2.677,7.734,3.966,11.878,3.966c6.048,0,11.997-2.717,15.884-7.952    C357.766,320.208,355.981,307.775,347.216,301.211z"/>
+                              <path d="M256,0C114.833,0,0,114.833,0,256s114.833,256,256,256s256-114.833,256-256S397.167,0,256,0z M256,472.341    c-119.275,0-216.341-97.066-216.341-216.341S136.725,39.659,256,39.659c119.295,0,216.341,97.066,216.341,216.341    S375.275,472.341,256,472.341z"/>
+                          </svg>
+                          {{recipe.recipe_obj.prep_time}}
+                      </div>
+                      {% endif %}
+                  </span>
+              </a>
+          </td>   
+      </tr>
+      {% endfor %}
+  </tbody>
+</table>
+</div>
+  
+{% endblock %}
