@@ -1,5 +1,6 @@
 {% load static %}
 
+
 <div id="nav">
   <ul>
     <li>
@@ -11,17 +12,14 @@
     </li>
     <li>
       <a 
-      {% if '/foodplans/' == request.path %}
-        class="active"
-      {% endif %}
-      href="{% url 'view_foodplans' %}">Madplaner</a>
-    </li>
-    <li>
-      <a 
       {% if '/todo/' == request.path %}
         class="active"
       {% endif %}
       href="{% url 'todo_index' %}">Indkøbslister</a>
     </li>
+    <li>
+      {% include 'partials/dropdown.html' %}
+    </li>
   </ul>
 </div>
+
