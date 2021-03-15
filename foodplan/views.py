@@ -7,11 +7,12 @@ from django.views.generic import DeleteView
 from random import shuffle
 
 
-def view_foodplans(request):
+def index_foodplans(request):
     foodplans = Foodplans.objects.all().order_by('-date')
-    
-    context = {'foodplans': foodplans}
-    return render(request, 'foodplans/foodplans.html', context)
+    latest_foodplan = Foodplans.objects.latest('id')
+    if not latest_foodplan.complete:
+        foodplans = foodplans[1:]
+    return render(request, 'foodplans/index_foodplans.html', {'foodplans': foodplans, 'latest_foodplan': latest_foodplan})
 
 
 def view_foodplan(request, foodplan_id):
@@ -35,8 +36,6 @@ def view_foodplan(request, foodplan_id):
     for recipe in foodplan:
         recipe_obj = Recipies.objects.get(pk=recipe.recipe_id)
         recipies.append({'recipe_obj': recipe_obj, 'foodplan_obj': recipe})
-    if not recipies: # if there is no more recipies in current foodplan
-        return redirect('/foodplans/')
     # Foodplan entry
     foodplan_quary = Foodplans.objects.get(pk=foodplan_id)
     # Shoppinglist id
@@ -53,8 +52,7 @@ def view_foodplan(request, foodplan_id):
 def create_foodplan(request):
     foodplan = Foodplans()
     foodplan.save()
-
-    return redirect('/foodplans/edit/' + str(foodplan.id))
+    return redirect('/')
 
 
 def edit_foodplan(request, foodplan_id):

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<br>
+<div class="center container">
+    {% if not latest_foodplan.complete %}
+        <a href="{% url 'view_foodplan' latest_foodplan.id %}" class="sml-button">Aktiv madplan fra {{latest_foodplan.date|date:'d/m/Y'}}</a>
+    {% else %}
+    <a href="{% url 'create_foodplan' %}" class="sml-button">
+        <span>Opret en ny madplan</span>
+    </a>
+    {% endif %}
+    <br>
+    <table class="center">
+        <tbody class="table-body"></tbody>
+        <th>
+            Seneste madplaner
+        </th>
+        {% for foodplan in foodplans %}
+                <tr>
+                    <td>
+                        <a href="{% url 'view_foodplan' foodplan.id %}">Madplan fra {{foodplan.date|date:'d/m/Y'}}</a>
+                    </td>
+                    <td>
+                        <a href="{% url 'delete_foodplan' foodplan.id %}">slet</a>
+                    </td>
+                </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+    
+    
+  
+{% endblock %}
