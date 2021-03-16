@@ -6,19 +6,34 @@
 
 <br>
 <div class="center container">
-    {% if not latest_foodplan.complete %}
-        <a href="{% url 'view_foodplan' latest_foodplan.id %}" class="sml-button">Aktiv madplan fra {{latest_foodplan.date|date:'d/m/Y'}}</a>
+    {% if latest_foodplan.complete == 0 %}
+        <h5 class="center">Aktiv madplan</h5>
+        <table class="center" style="border: black;">
+            <tbody class="table-body"></tbody>
+                <tr>
+                    <td>
+                        <a href="{% url 'view_foodplan' latest_foodplan.id %}">Madplan fra {{latest_foodplan.date|date:'d/m/Y'}}</a>
+                    </td>
+                    <td>
+                        <a href="{% url 'delete_foodplan' latest_foodplan.id %}">slet</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     {% else %}
-    <a href="{% url 'create_foodplan' %}" class="sml-button">
-        <span>Opret en ny madplan</span>
-    </a>
+        <a href="{% url 'create_foodplan' %}" class="button">
+            <span>Opret en ny madplan</span>
+        </a>
     {% endif %}
     <br>
     <table class="center">
         <tbody class="table-body"></tbody>
+        {% if foodplans %}
         <th>
             Seneste madplaner
         </th>
+        {% endif %}
+        {% if foodplans %}
         {% for foodplan in foodplans %}
                 <tr>
                     <td>
@@ -29,6 +44,7 @@
                     </td>
                 </tr>
         {% endfor %}
+        {% endif %}
         </tbody>
     </table>
 </div>

@@ -1,3 +1,4 @@
+from foodplan.models import Foodplans
 from django.shortcuts import render, redirect
 from .models import *
 from .forms import AddAddonsForm, AddonActiveForm, EditRecipeIngredientForm, EditRecipeNameForm, NewRecipeForm, RecipeTypeFilterBox, RecipeTagsForm
@@ -55,16 +56,12 @@ def show_recipies(request):
             })
     # Randomize recipies order
     shuffle(recipies)
-
     context = {'recipies': recipies, 'form': form}
     return render(request, 'recipies/index.html', context)
 
 
 def show_recipe(request, recipe_id, qty_multiplier=1.0):
     if request.method == 'POST':
-        # print('--------------------')
-        # print(request.POST)
-        # print('--------------------')
         # Add_on active state change
         if request.POST.get('add-on-active-changed'):
             add_on_active_changed = request.POST.get('add-on-active-changed')
@@ -136,8 +133,18 @@ def show_recipe(request, recipe_id, qty_multiplier=1.0):
                     'recipe_ingredient_description': ingredient.description
                     })
             add_on_recipies.append({'add_on': add_on, 'recipe': add_on_recipe, 'recipe_ingredients': add_on_recipe_ingredients, 'recipe_instructions': add_on_recipe_instructions})
-
-    context = {'recipe': recipe, 'add_ons': add_on_recipies, 'ingredients': ingredients, 'instructions': recipe_instructions, 'qty_multiplier': qty_multiplier}
+    # active foodplan
+    try:
+        foodplan = Foodplans.objects.latest('id')
+    except:
+        foodplan = 0
+    context = { 'recipe': recipe, 
+                'add_ons': add_on_recipies, 
+                'ingredients': ingredients, 
+                'instructions': recipe_instructions, 
+                'qty_multiplier': qty_multiplier, 
+                'foodplan': foodplan
+                }
     return render(request, 'recipies/recipe.html', context)
 
 

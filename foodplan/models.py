@@ -14,7 +14,7 @@ class Foodplans(models.Model):
 class FoodplanRecipies(models.Model):
   foodplan = models.ForeignKey(Foodplans, on_delete=models.CASCADE, default=1)
   recipe = models.ForeignKey(Recipies, on_delete=models.DO_NOTHING, blank=True, null=True)
-  quantity = models.IntegerField(blank=False, default=1)
+  quantity = models.FloatField(blank=False, default=1.0)
   
   def __str__(self):
     return self.recipe.name

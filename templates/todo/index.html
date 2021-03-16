@@ -6,9 +6,15 @@
 <div class="center container">
     <table class="center">
     <tbody class="table-body"></tbody>
+        {% if shoppinglists %}
         <th>
             Indkøbsliste oprettet:
         </th>
+        {% else %}
+        <th>
+            Ingen indkøbslister
+        </th>
+        {% endif %}
         {% for shoppinglist in shoppinglists %}
         <tr>
             <td>

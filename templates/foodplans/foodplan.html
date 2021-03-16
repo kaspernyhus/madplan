@@ -3,11 +3,10 @@
 {% load static %}
 
 {% block content %}
-
+{% load l10n %}
 
 <h1 class="header">Madplan</h1>
-<p class="center sml-text">Ændret {{created_date|date:'d/m/Y'}}</p>
-<br>
+<p class="center sml-text">Oprettet {{created_date|date:'d/m/Y'}}</p>
 
 <div class="center container">
 
@@ -17,27 +16,30 @@
             <a href="{% url 'create_shoppinglist' foodplan_id 'foodplan' '1' %}">
             <span>
             Opret indkøbsliste
-                <p class="sub-text">madplanen kan ikke længere redigeres</p>
+                <p class="sub-text">madplanen kan så ikke længere redigeres</p>
             </span>
             </a>
         </h4>
-        <table class="center">
+        <br>
+        <table>
             <tbody>
                 <form method="POST">
                 {% csrf_token %}
                     {% for recipe in recipies %}
-                        <tr>
-                            <td>
-                                <a href="{% url 'show_recipe' recipe.recipe_obj.id %}">
-                                    <span>{{ recipe.recipe_obj.name }}</span>
+                        <tr class="recipe-info no-color-change">
+                            <td class="foodplan-recipe-label-td" style="background-image: url('/media/{{ recipe.recipe_obj.photo_thumbnail }}')">
+                                <a href="{% url 'show_recipe' recipe.foodplan_recipe.id %}">
+                                    <span class="recipe-label">{{recipe.recipe_obj.name}}
+                                        <p class="sub-label">{{recipe.recipe_obj.description}}</p>
+                                    </span>
                                 </a>
                             </td>
                             <td>
-                                <input type="number" id="qty" value="{{ recipe.foodplan_obj.quantity }}" name="qty" min="0.1" max="10" step="0.1">
-                                <input type="hidden" id="foodplanrecipies_id" name="foodplanrecipies_id" value="{{ recipe.foodplan_obj.id }}">
+                                <input type="number" class="qty-multiplier2" id="qty" value="{{ recipe.foodplan_recipe.quantity|unlocalize }}" lang="us-en" name="qty" min="0.1" max="10" step="0.1">
+                                <input type="hidden" id="foodplanrecipies_id" name="foodplanrecipies_id" value="{{ recipe.foodplan_recipe.id }}">
                             </td>
                             <td>
-                                <button type="submit" class="delete_cross" name="delete_recipe" value="{{ recipe.foodplan_obj.id }}">x</button>
+                                <button type="submit" class="delete_cross" name="delete_recipe" value="{{ recipe.foodplan_recipe.id }}">x</button>
                             </td>
                         </tr>
                     {% endfor %}

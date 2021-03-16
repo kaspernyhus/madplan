@@ -21,7 +21,6 @@ def index(request):
         shoppinglist = Shoppinglist.objects.get(pk=task.shoppinglist_id)
         shoppinglist.completed = True
         shoppinglist.save()
-
   context = {'shoppinglists': shoppinglists}
   return render(request, 'todo/index.html', context)
 
@@ -36,7 +35,6 @@ def change_name(request, shoppinglist_id):
       return redirect('/todo/')
   else:
     form = ChangeNameForm(initial={'name': shoppinglist.name})
-
   return render(request, 'todo/changename.html', context={'form': form})
 
 
@@ -172,7 +170,6 @@ def create_shoppinglist(request, id, source, qty=1.0):
               consolidated_list.append(ingredient_dict)
     else:
       consolidated_list.append(ingredient_dict)
-
   # Create shoppinglist
   for ingredient in consolidated_list:
     if ingredient['id'] == 49 or ingredient['id'] == 56: # salt
@@ -206,19 +203,15 @@ def create_shoppinglist(request, id, source, qty=1.0):
       # Make db entry
       shopping_task = Task(title=shopping_text, ingredient_category=ingredient['ingredient_category'], shoppinglist=new_shoppinglist)
       shopping_task.save()
-
   return redirect('/todo/'+str(new_shoppinglist.id))
 
 
 def delete_shoppinglist(request, id):
   shoppinglist = Shoppinglist.objects.get(pk=id)
-
   if shoppinglist.list_source == 'foodplan':
     # re-enable compile shoppinglist
     foodplan = Foodplans.objects.get(pk=shoppinglist.source_id)
     foodplan.complete = False
     foodplan.save()
-
   shoppinglist.delete()
-
   return redirect('/todo/')
