@@ -56,49 +56,6 @@ def create_foodplan(request):
     foodplan.save()
     return redirect('/foodplans/')
 
-
-# def edit_foodplan(request, foodplan_id):
-#     # Get all recipies in db
-#     form = RecipeTypeFilterBox()
-#     recipies_query = Recipies.objects.all() #.order_by('?') # shuffle/random order
-    
-#     # Get recipies based on filter boxes
-#     if request.method == 'GET':
-#         if request.GET.get('recipe_type') and request.GET.get('tags'):
-#             filter_by_type = request.GET.get('recipe_type')
-#             filter_by_tags = request.GET.get('tags')
-#             recipies_query = Recipies.objects.filter(recipe_type_id=filter_by_type, tags=filter_by_tags)
-#             form = RecipeTypeFilterBox(initial={'recipe_type': filter_by_type, 'tags': filter_by_tags})
-#         elif request.GET.get('recipe_type'):
-#             filter_by = request.GET.get('recipe_type')
-#             recipies_query = Recipies.objects.filter(recipe_type_id=filter_by)
-#             form = RecipeTypeFilterBox(initial={'recipe_type': filter_by})
-#         elif request.GET.get('tags'):
-#             filter_by = request.GET.get('tags')
-#             recipies_query = Recipies.objects.filter(tags=filter_by)
-#             form = RecipeTypeFilterBox(initial={'tags': filter_by})
-#         # add or delete foodplan from active foodplan
-#     if request.method == 'POST':
-#         if request.POST.get('delete') is not None:
-#             recipe_id = request.POST.get('delete')
-#             foodplan = Foodplans.objects.get(foodplan_id=foodplan_id, recipe_id=recipe_id)
-#             foodplan.delete()
-#         else:
-#             recipe_id = request.POST.get('add')
-#             quantity = request.POST.get('quantity')
-#             foodplan_recipe = FoodplanRecipies(foodplan_id=foodplan_id, recipe_id=recipe_id, quantity=quantity)
-#             foodplan_recipe.save()   
-#     # Get the foodplan recipies and their quantity currently in active foodplan
-#     foodplan_quaryset = FoodplanRecipies.objects.all().filter(foodplan_id=foodplan_id)
-#     foodplan = []
-#     foodplan_recipies = [0]
-#     for recipe in foodplan_quaryset:
-#         foodplan.append({'recipe_id': recipe.recipe_id, 'quantity': recipe.quantity})
-#         foodplan_recipies.append(recipe.recipe_id)
-
-#     context = {'all_recipies': recipies_query, 'foodplan_recipies':foodplan_recipies, 'foodplan_id': foodplan_id, 'form': form}
-#     return render(request, 'foodplans/edit_foodplan.html', context)
-
     
 def delete_foodplan(request, foodplan_id):
     foodplan = Foodplans.objects.get(pk=foodplan_id)
