@@ -27,19 +27,22 @@
         {% endfor  %}
       </datalist>
       
-      <div class="center">
+      <div class="center flex-row">
         <button type="submit" id="ingredient_submit">tilføj</button>
-      </div>
-    </form>
+      </form>
+      <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="margin-left" name="restart" value="True">forfra</button>
+      </form>
+    </div>
+    
+
   </div>
 </div>
 
-<div class="center container">
-  <form method="POST">
-    {% csrf_token %}
-    <button type="submit" name="restart" value="True">forfra</button>
-  </form>
-</div>
+
+  
+
 
 <div class="center container">
 <table>

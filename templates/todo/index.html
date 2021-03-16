@@ -5,16 +5,12 @@
 {% block content %}
 <div class="center container">
     <table class="center">
-    <tbody class="table-body"></tbody>
-        {% if shoppinglists %}
-        <th>
-            Indkøbsliste oprettet:
-        </th>
-        {% else %}
+        {% if not shoppinglists %}
         <th>
             Ingen indkøbslister
         </th>
         {% endif %}
+    <tbody class="table-body"></tbody>
         {% for shoppinglist in shoppinglists %}
         <tr>
             <td>

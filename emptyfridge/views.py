@@ -12,7 +12,9 @@ def index(request):
     request.session['ingredients'] = []
   # if "forfra" pressed
   if request.method == 'POST':
+    print(request.POST)
     if request.POST.get('restart'):
+      print('RESTART--------------------')
       request.session['ingredients'] = []
       added_ingredients = []
   else:
@@ -35,16 +37,16 @@ def index(request):
         recipies_query = Recipies.objects.get(pk=recipe_ingredient.recipe_id)
         # if list is empty, add first recipe
         if not search_result:
-          search_result.append({'rating': 1, 'recipe_obj': recipies_query})
+          search_result.append({'rating': 3, 'recipe_obj': recipies_query})
         else:
           # if recipe is not already in list og search result
           if not any(d['recipe_obj'].id == recipies_query.id for d in search_result):
-            search_result.append({'rating': 1, 'recipe_obj': recipies_query})
+            search_result.append({'rating': 3, 'recipe_obj': recipies_query})
           else:
             # if recipe is in list give higher rating
             for d in search_result:
                 if d['recipe_obj'].id == recipies_query.id:
-                    d['rating'] = d['rating']+1
+                    d['rating'] = d['rating']+3
         # find associated recipies where that ingredient is used in an add_on recipe
         add_on_query = AddOns.objects.filter(add_on=recipies_query.id)
         for add_on in add_on_query:

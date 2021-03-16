@@ -96,6 +96,10 @@ h1, .h1 {
   padding: 6px;
 }
 
+.flex-row {
+  flex-direction: row;
+}
+
 .button {
   box-shadow: 0px 6px 0px rgba(0, 0, 0, 0.01), 0px 6px 5px rgba(0, 0, 0, 0.02), 0px 2px 20px rgba(0, 0, 0, 0.1);
   border-radius: 4px; 
