@@ -77,6 +77,8 @@
 
 {% else %}
     <p>Madplanen har ingen retter endnu</p>
+    <br>
+    <a href="{% url 'delete_foodplan' foodplan_id %}">slet</a>
 {% endif %}
 
 </div>

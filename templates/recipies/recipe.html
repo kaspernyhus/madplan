@@ -36,7 +36,7 @@
           <label id="qty_multiplier"></label>
         </form>
           <a href="{% url 'create_shoppinglist' recipe.id 'recipe' qty_multiplier %}" class="sml-button margin-left">Opret indkøbsseddel</a>
-          <a href="{% url 'add_to_active_foodplan' recipe.id qty_multiplier %}" class="sml-button margin-left {% if foodplan.complete %} disabled {% endif %}">Føj til madplan</a>
+          <a href="{% url 'add_to_active_foodplan' recipe.id qty_multiplier %}" class="sml-button margin-left {% if active_foodplan %} {% else %} disabled {% endif %}">Føj til madplan</a>
       </div>
     </div>
 

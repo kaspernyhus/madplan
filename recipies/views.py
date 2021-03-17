@@ -136,14 +136,17 @@ def show_recipe(request, recipe_id, qty_multiplier=1.0):
     # active foodplan
     try:
         foodplan = Foodplans.objects.latest('id')
+        print('------- foodplan', foodplan)
+        active_foodplan = not foodplan.complete
     except:
-        foodplan = 0
+        active_foodplan = False
+    print('----------', active_foodplan)
     context = { 'recipe': recipe, 
                 'add_ons': add_on_recipies, 
                 'ingredients': ingredients, 
                 'instructions': recipe_instructions, 
                 'qty_multiplier': qty_multiplier, 
-                'foodplan': foodplan
+                'active_foodplan': active_foodplan
                 }
     return render(request, 'recipies/recipe.html', context)
 
