@@ -57,7 +57,7 @@ def view_shoppinglist(request, shoppinglist_id):
   # ingredient categories in shoppinglist
   categories = []
   [categories.append(task.ingredient_category) for task in tasks_quary if task.ingredient_category not in categories]
-
+  print('---------', tasks_quary)
   context = {'tasks': tasks_quary, 'categories': categories, 'form': form}
   return render(request, 'todo/shoppinglist.html', context)
 
