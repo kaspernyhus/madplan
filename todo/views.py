@@ -172,7 +172,7 @@ def create_shoppinglist(request, id, source, qty=1.0):
       consolidated_list.append(ingredient_dict)
   # Create shoppinglist
   for ingredient in consolidated_list:
-    if ingredient['id'] == 49 or ingredient['id'] == 56: # salt
+    if ingredient['id'] == 49 or ingredient['id'] == 56 or ingredient['id'] == 124: # salt / salt / vand
       pass
     else:
       shopping_text = ''
@@ -197,7 +197,7 @@ def create_shoppinglist(request, id, source, qty=1.0):
       if ingredient['amount'].is_integer():
         amount = str(int(ingredient['amount']))
       else:
-        amount = str(ingredient['amount'])
+        amount = "{:.1f}".format(ingredient['amount'])
       # Make string
       shopping_text = amount + unit + ' ' + str(ingredient['name']) + ' ' + ingredient_description + ' ' + recipe_ingredient_description
       # Make db entry
