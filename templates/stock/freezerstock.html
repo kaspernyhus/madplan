@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block content %}
+
+<div class="center container">
+  <h4>I fryseren</h4>
+
+
+  <table class="center">
+    <tbody class="table-body"></tbody>
+    {% if freezer_items %}
+    {% for freezer_item in freezer_items %}
+            <tr>
+              <td>
+                <p>{{freezer_item.qty}}</p>
+              </td>
+              <td>
+                <p>{{freezer_item.name}}</p>
+              </td>
+              <td>
+                <p>{{freezer_item.freeze_date|date:'d/m/Y'}}</p>
+              </td>
+              <td>
+                  <a href="#">slet</a>
+              </td>
+            </tr>
+    {% endfor %}
+    {% endif %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
