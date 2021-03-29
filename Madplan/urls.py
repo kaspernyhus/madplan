@@ -26,4 +26,5 @@ urlpatterns = [
     path('ingredients/', include('ingredients.urls')),
     path('todo/', include('todo.urls')),
     path('emptyfridge/', include('emptyfridge.urls')),
+    path('stock/', include('stock.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
